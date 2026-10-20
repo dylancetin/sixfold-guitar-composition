@@ -1,0 +1,17 @@
+{
+  "scope": "U03 contract/test foundation; not product acceptance",
+  "checkedAt": "2026-10-20T20:46:38.417Z",
+  "status": "absent",
+  "missing": [
+    "package.json",
+    "bun.lock",
+    "tsconfig.json",
+    "src/domain/index.ts",
+    "src/domain/rational.ts",
+    "src/domain/schemas.ts",
+    "tests/fixtures/foundation.test.ts",
+    "tests/fixtures/oracles.test.ts",
+    "docs/CONTRACT.md"
+  ],
+  "checks": []
+}

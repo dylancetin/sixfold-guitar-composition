@@ -1,0 +1,26 @@
+{
+  "scope": "U03 contract/test foundation; not product acceptance",
+  "checkedAt": "2026-10-20T20:55:51.944Z",
+  "status": "passed",
+  "missing": [],
+  "checks": [
+    {
+      "command": "bun run typecheck",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "$ tsc --noEmit\n"
+    },
+    {
+      "command": "bun run test",
+      "exitCode": 0,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "$ bun test tests/fixtures\n\n 20 pass\n 11 todo\n 0 fail\n 120 expect() calls\nRan 31 tests across 2 files. [51.00ms]\n"
+    },
+    {
+      "command": "bun run build",
+      "exitCode": 0,
+      "stdout": "Bundled 76 modules in 7ms\n\n  index.js  138.68 KB  (entry point)\n\n",
+      "stderr": "$ bun build src/domain/index.ts --target=browser --outdir=dist\n"
+    }
+  ]
+}

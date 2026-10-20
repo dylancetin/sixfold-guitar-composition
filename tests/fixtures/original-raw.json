@@ -1,0 +1,22 @@
+{
+  "name": "Two-bar held-voice study",
+  "author": "Guitar composition project",
+  "version": 1,
+  "quarterBpm": 80,
+  "meter": [4, 4],
+  "bars": 2,
+  "columns": ["role", "id", "soundingMidiOrRest", "startQuarters", "durationQuarters"],
+  "events": [
+    ["melody", "src-m0", 64, "0", "1"],
+    ["melody", "src-m1", 67, "1", "2/3"],
+    ["melody", "src-m2", 66, "5/3", "2/3"],
+    ["melody", "src-m3", 64, "7/3", "2/3"],
+    ["melody", "src-m4", 65, "3", "2"],
+    ["melody", "src-rest", "rest", "5", "3"],
+    ["bass", "src-b0", 40, "0", "4"],
+    ["bass", "src-b1", 43, "4", "4"],
+    ["harmony", "src-h0", 59, "0", "2"],
+    ["harmony", "src-h1", 57, "6", "1"]
+  ],
+  "notation": "m1,m2,m3 are quarter-note triplets; m4 ties across the barline."
+}
