@@ -1,0 +1,21 @@
+{
+  "name": "guitar-export-proof-u02",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24.12.0 <25" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "proof": "node run.mjs",
+    "verify": "node verify-artifacts.mjs artifacts"
+  },
+  "dependencies": {
+    "@coderline/alphatab": "1.8.4",
+    "@napi-rs/canvas": "1.0.12",
+    "@tonejs/midi": "2.0.28",
+    "midi-file": "1.2.4",
+    "pdfjs-dist": "6.4.299",
+    "pdfkit": "0.20.2",
+    "svg-to-pdfkit": "0.1.8"
+  }
+}
