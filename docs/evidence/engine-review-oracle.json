@@ -1,0 +1,300 @@
+{
+  "status": "passed",
+  "oracle": "Independent Python Fraction literal visits, source intervals, notation, physical sweep and audits",
+  "sourceRevision": {
+    "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+    "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d",
+    "parentId": null
+  },
+  "all141Part0": true,
+  "selectedWrittenAttacks": 173,
+  "performedMelodyAttacks": 245,
+  "occurrences": 64,
+  "quarters": "256",
+  "seconds": 172.4056795131845,
+  "key": {
+    "status": "unknown",
+    "reason": "Fret-based source supplies no declared key/spelling. Observed pitched classes: 0,1,3,4,6,7,8,9,10,11; these do not distinguish tonic/mode or modulation. Any proposed key (including a user hypothesis) requires review. Sharp spellings are a display convention, not key evidence."
+  },
+  "checkedFiles": [
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/beginner-0.json",
+      "status": "passed",
+      "capo": 0,
+      "difficulty": "beginner",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 37,
+          "performed": 51
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 77,
+        "shortened-sustain": 7,
+        "omission": 9
+      },
+      "bassMaxLeapSemitones": 12,
+      "bassOctaveLeaps": 2,
+      "bassWrittenDurationQuarters": "59"
+    },
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/beginner-2.json",
+      "status": "passed",
+      "capo": 2,
+      "difficulty": "beginner",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 36,
+          "performed": 54
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 76,
+        "shortened-sustain": 7,
+        "omission": 10
+      },
+      "bassMaxLeapSemitones": 8,
+      "bassOctaveLeaps": 0,
+      "bassWrittenDurationQuarters": "59"
+    },
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/beginner-recommend.json",
+      "status": "passed",
+      "capo": 0,
+      "difficulty": "beginner",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 36,
+          "performed": 50
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 76,
+        "shortened-sustain": 6,
+        "omission": 10
+      },
+      "bassMaxLeapSemitones": 12,
+      "bassOctaveLeaps": 2,
+      "bassWrittenDurationQuarters": "59"
+    },
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/intermediate-0.json",
+      "status": "passed",
+      "capo": 0,
+      "difficulty": "intermediate",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 37,
+          "performed": 51
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 77,
+        "shortened-sustain": 7,
+        "omission": 9
+      },
+      "bassMaxLeapSemitones": 12,
+      "bassOctaveLeaps": 2,
+      "bassWrittenDurationQuarters": "59"
+    },
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/intermediate-2.json",
+      "status": "passed",
+      "capo": 2,
+      "difficulty": "intermediate",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 40,
+          "performed": 58
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 80,
+        "shortened-sustain": 6,
+        "omission": 6
+      },
+      "bassMaxLeapSemitones": 8,
+      "bassOctaveLeaps": 0,
+      "bassWrittenDurationQuarters": "59"
+    },
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/intermediate-recommend.json",
+      "status": "passed",
+      "capo": 2,
+      "difficulty": "intermediate",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 40,
+          "performed": 58
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 80,
+        "shortened-sustain": 6,
+        "omission": 6
+      },
+      "bassMaxLeapSemitones": 8,
+      "bassOctaveLeaps": 0,
+      "bassWrittenDurationQuarters": "59"
+    },
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/advanced-0.json",
+      "status": "passed",
+      "capo": 0,
+      "difficulty": "advanced",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 40,
+          "performed": 58
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 80,
+        "shortened-sustain": 6,
+        "omission": 6
+      },
+      "bassMaxLeapSemitones": 12,
+      "bassOctaveLeaps": 4,
+      "bassWrittenDurationQuarters": "59"
+    },
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/advanced-2.json",
+      "status": "passed",
+      "capo": 2,
+      "difficulty": "advanced",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 40,
+          "performed": 58
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 80,
+        "shortened-sustain": 6,
+        "omission": 6
+      },
+      "bassMaxLeapSemitones": 8,
+      "bassOctaveLeaps": 0,
+      "bassWrittenDurationQuarters": "59"
+    },
+    {
+      "file": "/tmp/opencode/guitar-engine-review-root/advanced-recommend.json",
+      "status": "passed",
+      "capo": 2,
+      "difficulty": "advanced",
+      "roles": {
+        "melody": {
+          "written": 173,
+          "performed": 245
+        },
+        "bass": {
+          "written": 40,
+          "performed": 58
+        },
+        "harmony": {
+          "written": 40,
+          "performed": 58
+        }
+      },
+      "seconds": 172.4056795131845,
+      "maxPolyphony": 3,
+      "lastSoundRelease": "255",
+      "changes": {
+        "bass-register": 80,
+        "shortened-sustain": 6,
+        "omission": 6
+      },
+      "bassMaxLeapSemitones": 8,
+      "bassOctaveLeaps": 0,
+      "bassWrittenDurationQuarters": "59"
+    }
+  ]
+}

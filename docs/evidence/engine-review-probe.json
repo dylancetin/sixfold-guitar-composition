@@ -1,0 +1,373 @@
+{
+  "experiments": [
+    {
+      "difficulty": "beginner",
+      "capo": 0,
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 0,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 2185/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "difficulty": "beginner",
+      "capo": 2,
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 2,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 1350/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "difficulty": "beginner",
+      "capo": "recommend",
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 0,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 2657/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "difficulty": "intermediate",
+      "capo": 0,
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 0,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 3787/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "difficulty": "intermediate",
+      "capo": 2,
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 2,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 2869/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "difficulty": "intermediate",
+      "capo": "recommend",
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 2,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 4749/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "difficulty": "advanced",
+      "capo": 0,
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 0,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 6158/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "difficulty": "advanced",
+      "capo": 2,
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 2,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 5377/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "difficulty": "advanced",
+      "capo": "recommend",
+      "status": "candidate",
+      "validation": "passed",
+      "selectedCapo": 2,
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 7863/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    }
+  ],
+  "negativeControls": [
+    {
+      "name": "coherent final-melody removal",
+      "status": "failed",
+      "codes": [
+        "melody-mismatch"
+      ],
+      "expected": "melody-mismatch",
+      "detected": true
+    },
+    {
+      "name": "flattened repeat schedule",
+      "status": "failed",
+      "codes": [
+        "form-mismatch",
+        "tempo-mismatch"
+      ],
+      "expected": "form-mismatch",
+      "detected": true
+    },
+    {
+      "name": "missing repeat-entry tempo",
+      "status": "failed",
+      "codes": [
+        "tempo-mismatch"
+      ],
+      "expected": "tempo-mismatch",
+      "detected": true
+    },
+    {
+      "name": "removed omission audits",
+      "status": "failed",
+      "codes": [
+        "source-mismatch"
+      ],
+      "expected": "source-mismatch",
+      "detected": true
+    },
+    {
+      "name": "removed register-move audits",
+      "status": "failed",
+      "codes": [
+        "source-mismatch"
+      ],
+      "expected": "source-mismatch",
+      "detected": true
+    },
+    {
+      "name": "wrong capo",
+      "status": "failed",
+      "codes": [
+        "pitch-placement",
+        "finger-collision"
+      ],
+      "expected": "pitch-placement",
+      "detected": true
+    },
+    {
+      "name": "wrong source identity",
+      "status": "failed",
+      "codes": [
+        "source-mismatch"
+      ],
+      "expected": "source-mismatch",
+      "detected": true
+    },
+    {
+      "name": "occupied held finger",
+      "status": "failed",
+      "codes": [
+        "finger-collision"
+      ],
+      "expected": "finger-collision",
+      "detected": true
+    },
+    {
+      "name": "later attack on occupied string, pitches correct",
+      "status": "failed",
+      "codes": [
+        "string-collision"
+      ],
+      "expected": "string-collision",
+      "detected": true
+    },
+    {
+      "name": "early contact release",
+      "status": "failed",
+      "codes": [
+        "finger-collision"
+      ],
+      "expected": "finger-collision",
+      "detected": true
+    },
+    {
+      "name": "missing boundary state",
+      "status": "failed",
+      "codes": [
+        "finger-collision"
+      ],
+      "expected": "finger-collision",
+      "detected": true
+    },
+    {
+      "name": "absent referenced approval",
+      "status": "failed",
+      "codes": [
+        "approval-stale"
+      ],
+      "expected": "approval-stale",
+      "detected": true
+    },
+    {
+      "name": "copied digest / modified full lock",
+      "status": "failed",
+      "codes": [
+        "approval-stale"
+      ],
+      "expected": "approval-stale",
+      "detected": true
+    }
+  ],
+  "adapter": [],
+  "lockPositive": "passed",
+  "halfOpenReleaseReusePositive": "passed",
+  "physicalBoundary": [
+    {
+      "capo": 2,
+      "relativeFret": 10,
+      "physicalFret": 12,
+      "maxPhysicalFret": 12,
+      "validation": "passed",
+      "codes": []
+    },
+    {
+      "capo": 2,
+      "relativeFret": 11,
+      "physicalFret": 13,
+      "maxPhysicalFret": 12,
+      "validation": "failed",
+      "codes": [
+        "profile-limit"
+      ]
+    }
+  ]
+}

@@ -8,9 +8,10 @@
     "check": "node scripts/check-foundation.mjs",
     "check:source": "tsc --project tests/source/tsconfig.json && bun test tests/source",
     "typecheck": "tsc --noEmit",
-    "test": "bun test tests/fixtures",
+    "test": "bun test tests/fixtures tests/engine",
     "test:controls": "bun tests/fixtures/check-negative-controls.ts",
-    "build": "bun build src/domain/index.ts --target=browser --outdir=dist"
+    "build": "bun build src/domain/index.ts --target=browser --outdir=dist",
+    "build:engine": "bun build src/engine/index.ts --target=browser --outdir=dist/engine"
   },
   "dependencies": {
     "zod": "4.1.12"

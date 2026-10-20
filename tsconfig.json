@@ -15,5 +15,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src/domain/**/*.ts", "tests/fixtures/**/*.ts"]
+  "include": ["src/domain/**/*.ts", "src/engine/**/*.ts", "tests/fixtures/**/*.ts", "tests/engine/**/*.ts", "scripts/probe-engine.ts"]
 }

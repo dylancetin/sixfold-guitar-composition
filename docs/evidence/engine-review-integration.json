@@ -1,0 +1,99 @@
+{
+  "scope": "Independent bounded engine integration only; product exports/human approval not verified",
+  "before": "4d410ef83a7117f6ed2b488f84acdd73b3972c71",
+  "afterImplementationPicks": "e4842bfdcaa40741b9a1cc2d685ccde3f1b4e323",
+  "picks": [
+    {
+      "worker": "bf6509e88b3f7fb33507382ee55ac7ce9e3a31da",
+      "root": "67968895cbab664671363f26ba86c4c778ab969f",
+      "workerPatchId": "dce5c0edaf907877d7621f65f4fed1d4e0e1fdfd",
+      "rootPatchId": "dce5c0edaf907877d7621f65f4fed1d4e0e1fdfd",
+      "equal": true
+    },
+    {
+      "worker": "3d8fe8ad8e249bb0f365bc7257ace8081ef4371a",
+      "root": "c1d6a2ad16a87465b3dab26b71bd6e47c96d51c2",
+      "workerPatchId": "ae1faa3456a78256f2b3098c345f034bc597942b",
+      "rootPatchId": "ae1faa3456a78256f2b3098c345f034bc597942b",
+      "equal": true
+    },
+    {
+      "worker": "50a0d68895ce02b943bf49e5da29c05a29b852c3",
+      "root": "e4842bfdcaa40741b9a1cc2d685ccde3f1b4e323",
+      "workerPatchId": "704ecc80d126742406741fcc009ba2c0a2d12aad",
+      "rootPatchId": "704ecc80d126742406741fcc009ba2c0a2d12aad",
+      "equal": true
+    }
+  ],
+  "unchanged": {
+    "src/domain": {
+      "beforeObject": "f969b9e325a9bd707eee6bb58d3e52bc14e884ef",
+      "afterObject": "f969b9e325a9bd707eee6bb58d3e52bc14e884ef",
+      "unchanged": true
+    },
+    "src/source": {
+      "beforeObject": "8b523b25eef09d234c3ff95c9726ffac29145162",
+      "afterObject": "8b523b25eef09d234c3ff95c9726ffac29145162",
+      "unchanged": true
+    },
+    "tests/source": {
+      "beforeObject": "a3546bc350c7ad0efe4ea679ee328134d2999963",
+      "afterObject": "a3546bc350c7ad0efe4ea679ee328134d2999963",
+      "unchanged": true
+    },
+    "tools/export-proof": {
+      "beforeObject": "5c1fe1dde77f5a71488687c881bad543b33a94ee",
+      "afterObject": "5c1fe1dde77f5a71488687c881bad543b33a94ee",
+      "unchanged": true
+    },
+    "bun.lock": {
+      "beforeObject": "983623999172dda23985aa58df4aa1548c630338",
+      "afterObject": "983623999172dda23985aa58df4aa1548c630338",
+      "unchanged": true
+    },
+    "docs/CONTRACT.md": {
+      "beforeObject": "d004aa8995919b347b41fa2ccb2e216cc7bc66d4",
+      "afterObject": "d004aa8995919b347b41fa2ccb2e216cc7bc66d4",
+      "unchanged": true
+    }
+  },
+  "exactSuppliedArtifactMatches": {
+    "0": {
+      "exactDocumentMatch": true,
+      "revision": {
+        "id": "candidate-r-49a258db798620566e28ba32",
+        "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49",
+        "parentId": null
+      }
+    },
+    "2": {
+      "exactDocumentMatch": true,
+      "revision": {
+        "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+        "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c",
+        "parentId": null
+      }
+    },
+    "recommend": {
+      "exactDocumentMatch": true,
+      "revision": {
+        "id": "candidate-r-9db947050ddae05ce9b69ea6",
+        "digest": "f85b769a1399927823cc6f9f4fd6ee7521b9feb80aac8ae61dd8ad4b02b942a3",
+        "parentId": null
+      }
+    }
+  },
+  "rootAggregate": "passed",
+  "sourceTests": 46,
+  "fixtureAndEngineTests": 59,
+  "engineTestsLiveEnabled": 27,
+  "existingTodo": 11,
+  "testFailures": 0,
+  "lightweightU02Predicates": 18,
+  "rootLiveExperiments": 9,
+  "independentMutationControlsDetected": 13,
+  "rationalOracle": "passed",
+  "sourceCoverageHookPreserved": true,
+  "adapterIntegration": "not authorized; separate correction/review pending",
+  "humanMusicalMovementApproval": "pending; uncalibrated warning does not block draft downloads"
+}
