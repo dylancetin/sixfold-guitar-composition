@@ -1,0 +1,466 @@
+{
+  "status": "passed",
+  "browser": "156.0.8078.4",
+  "errors": [],
+  "bundleBytes": 2270321,
+  "browserSafe": true,
+  "elapsed": 0.8010884353741498,
+  "quarters": 0.8010884353741498,
+  "renders": [
+    {
+      "capo": 0,
+      "mappings": 387,
+      "performed": 354,
+      "systems": 32,
+      "bars": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "lastSystem": {
+        "index": 31,
+        "bars": [
+          62,
+          63
+        ],
+        "visual": {
+          "x": 35,
+          "y": 8263,
+          "w": 680,
+          "h": 229
+        },
+        "real": {
+          "x": 35,
+          "y": 8263,
+          "w": 680,
+          "h": 244
+        }
+      },
+      "svgFragments": 35
+    },
+    {
+      "capo": 2,
+      "mappings": 395,
+      "performed": 361,
+      "systems": 32,
+      "bars": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "lastSystem": {
+        "index": 31,
+        "bars": [
+          62,
+          63
+        ],
+        "visual": {
+          "x": 35,
+          "y": 8201,
+          "w": 680,
+          "h": 229
+        },
+        "real": {
+          "x": 35,
+          "y": 8201,
+          "w": 680,
+          "h": 244
+        }
+      },
+      "svgFragments": 35
+    },
+    {
+      "capo": 0,
+      "mappings": 11,
+      "performed": 9,
+      "systems": 1,
+      "bars": [
+        0,
+        1
+      ],
+      "lastSystem": {
+        "index": 0,
+        "bars": [
+          0,
+          1
+        ],
+        "visual": {
+          "x": 35,
+          "y": 116,
+          "w": 680,
+          "h": 298
+        },
+        "real": {
+          "x": 35,
+          "y": 116,
+          "w": 680,
+          "h": 303
+        }
+      },
+      "svgFragments": 4
+    },
+    {
+      "capo": 0,
+      "mappings": 11,
+      "performed": 9,
+      "systems": 1,
+      "bars": [
+        0,
+        1
+      ],
+      "lastSystem": {
+        "index": 0,
+        "bars": [
+          0,
+          1
+        ],
+        "visual": {
+          "x": 35,
+          "y": 116,
+          "w": 680,
+          "h": 300
+        },
+        "real": {
+          "x": 35,
+          "y": 116,
+          "w": 680,
+          "h": 305
+        }
+      },
+      "svgFragments": 4
+    }
+  ],
+  "phases": [
+    {
+      "name": "effective-40",
+      "t": 0.2002721088435374,
+      "snapshot": {
+        "state": "playing",
+        "readiness": "ready",
+        "audioState": "running",
+        "tone": "synthetic-plucked",
+        "positionQuarter": 0.12577475434618293,
+        "positionSeconds": 0.18866213151927438,
+        "durationSeconds": 12,
+        "tempoScale": 0.5,
+        "loop": null,
+        "occurrenceId": "o1-p1",
+        "activePerformedSoundIds": [
+          "bass0@o1-p1",
+          "h0@o1-p1",
+          "m0@o1-p1"
+        ],
+        "audiblePerformedSoundIds": [
+          "bass0@o1-p1",
+          "h0@o1-p1",
+          "m0@o1-p1"
+        ],
+        "activeSegments": [
+          {
+            "eventId": "m0",
+            "segmentId": "n0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "m0@o1-p1"
+          },
+          {
+            "eventId": "bass0",
+            "segmentId": "nb0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "bass0@o1-p1"
+          },
+          {
+            "eventId": "h0",
+            "segmentId": "nh0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "h0@o1-p1"
+          }
+        ],
+        "mutedRoles": [],
+        "soloRoles": [],
+        "error": null
+      },
+      "rms": 0.09065568158324067,
+      "sampleCount": 2048
+    },
+    {
+      "name": "absolute-60",
+      "t": 0.2002721088435374,
+      "snapshot": {
+        "state": "playing",
+        "readiness": "ready",
+        "audioState": "running",
+        "tone": "synthetic-plucked",
+        "positionQuarter": 0.12577475434618293,
+        "positionSeconds": 0.12577475434618293,
+        "durationSeconds": 8,
+        "tempoScale": 0.75,
+        "loop": null,
+        "occurrenceId": "o1-p1",
+        "activePerformedSoundIds": [
+          "bass0@o1-p1",
+          "h0@o1-p1",
+          "m0@o1-p1"
+        ],
+        "audiblePerformedSoundIds": [
+          "bass0@o1-p1",
+          "h0@o1-p1",
+          "m0@o1-p1"
+        ],
+        "activeSegments": [
+          {
+            "eventId": "m0",
+            "segmentId": "n0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "m0@o1-p1"
+          },
+          {
+            "eventId": "bass0",
+            "segmentId": "nb0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "bass0@o1-p1"
+          },
+          {
+            "eventId": "h0",
+            "segmentId": "nh0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "h0@o1-p1"
+          }
+        ],
+        "mutedRoles": [],
+        "soloRoles": [],
+        "error": null
+      },
+      "rms": 0.09065568158324067,
+      "sampleCount": 2048
+    },
+    {
+      "name": "absolute-60-later",
+      "t": 1.0013605442176872,
+      "snapshot": {
+        "state": "playing",
+        "readiness": "ready",
+        "audioState": "running",
+        "tone": "synthetic-plucked",
+        "positionQuarter": 0.9268631897203327,
+        "positionSeconds": 0.9268631897203327,
+        "durationSeconds": 8,
+        "tempoScale": 0.75,
+        "loop": null,
+        "occurrenceId": "o1-p1",
+        "activePerformedSoundIds": [
+          "bass0@o1-p1",
+          "h0@o1-p1",
+          "m0@o1-p1"
+        ],
+        "audiblePerformedSoundIds": [
+          "bass0@o1-p1",
+          "h0@o1-p1",
+          "m0@o1-p1"
+        ],
+        "activeSegments": [
+          {
+            "eventId": "m0",
+            "segmentId": "n0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "m0@o1-p1"
+          },
+          {
+            "eventId": "bass0",
+            "segmentId": "nb0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "bass0@o1-p1"
+          },
+          {
+            "eventId": "h0",
+            "segmentId": "nh0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "h0@o1-p1"
+          }
+        ],
+        "mutedRoles": [],
+        "soloRoles": [],
+        "error": null
+      },
+      "rms": 0.06281548429936494,
+      "sampleCount": 2048
+    },
+    {
+      "name": "paused",
+      "t": 1.1000453514739228,
+      "snapshot": {
+        "state": "paused",
+        "readiness": "ready",
+        "audioState": "running",
+        "tone": "synthetic-plucked",
+        "positionQuarter": 0.9268631897203327,
+        "positionSeconds": 0.9268631897203327,
+        "durationSeconds": 8,
+        "tempoScale": 0.75,
+        "loop": null,
+        "occurrenceId": "o1-p1",
+        "activePerformedSoundIds": [
+          "bass0@o1-p1",
+          "h0@o1-p1",
+          "m0@o1-p1"
+        ],
+        "audiblePerformedSoundIds": [],
+        "activeSegments": [
+          {
+            "eventId": "m0",
+            "segmentId": "n0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "m0@o1-p1"
+          },
+          {
+            "eventId": "bass0",
+            "segmentId": "nb0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "bass0@o1-p1"
+          },
+          {
+            "eventId": "h0",
+            "segmentId": "nh0",
+            "occurrenceId": "o1-p1",
+            "performedSoundId": "h0@o1-p1"
+          }
+        ],
+        "mutedRoles": [],
+        "soloRoles": [],
+        "error": null
+      },
+      "rms": 0,
+      "sampleCount": 2048
+    }
+  ],
+  "tempoChange": {
+    "before": 0.12577475434618293,
+    "after": 0.12577475434618293
+  },
+  "sampleRate": 44100,
+  "rawSamples": {
+    "path": "/tmp/opencode/guitar-adapters-review-r2/root-browser/browser.json",
+    "sha256": "1677b62add31904165bc68cfe2ab996b402e6b5afedd88761501353a98d62e6a"
+  }
+}

@@ -1,0 +1,582 @@
+{
+  "startedAt": "2026-10-20T22:40:36.023Z",
+  "experiment": "riskiest-integration-smoke-not-release-approval",
+  "adapterCommit": "665d98d750852daaaf1a6d5d09b17790a31dc413",
+  "adapterWorktreeStatus": "M scripts/check-foundation.mjs",
+  "adapterWorkingDiffSha256": "11f3d7af204339e365f761a7cce73abae9a9ba40e4b9247535ebae377d4c5fc2",
+  "engineCommit": "665d98d750852daaaf1a6d5d09b17790a31dc413",
+  "sourcePath": "/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7364a0c1/tests/source/.local/live/source.json",
+  "sourceRevision": {
+    "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+    "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d",
+    "parentId": null
+  },
+  "sourceFileSha256": "554df7017cf8eb5e26714cff74f82c8df6260c92d1f21067df82e0f195afc26b",
+  "rawShape": {
+    "sourceKeys": [
+      "schemaVersion",
+      "revision",
+      "manifest",
+      "key",
+      "parts",
+      "bars",
+      "tempos",
+      "form",
+      "events"
+    ],
+    "candidateShape": "direct ScoreV1 JSON, not ArrangeResult/envelope"
+  },
+  "candidates": [
+    {
+      "variant": "2",
+      "file": "/tmp/opencode/engine-live-2.json",
+      "fileSha256": "85b14c1f1635ea7f6635bbca13d8262eb83ff359d15ad45c9eab658abe319642",
+      "revision": {
+        "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+        "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c",
+        "parentId": null
+      },
+      "capo": 2,
+      "preferenceTempoScale": 1,
+      "counts": {
+        "bars": 46,
+        "occurrences": 64,
+        "performedTempos": 64,
+        "sounds": 253,
+        "rests": 17,
+        "notation": 280,
+        "performedSounds": 361
+      },
+      "validationCalls": [
+        {
+          "status": "passed",
+          "scoreRevision": {
+            "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+            "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c"
+          },
+          "validatorVersion": "independent-guitar-validator-1",
+          "diagnosticCount": 1
+        },
+        {
+          "status": "passed",
+          "scoreRevision": {
+            "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+            "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c"
+          },
+          "validatorVersion": "independent-guitar-validator-1",
+          "diagnosticCount": 1
+        },
+        {
+          "status": "passed",
+          "scoreRevision": {
+            "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+            "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c"
+          },
+          "validatorVersion": "independent-guitar-validator-1",
+          "diagnosticCount": 1
+        }
+      ],
+      "exports": [
+        {
+          "format": "midi",
+          "status": "generated",
+          "artifactPath": "/tmp/opencode/guitar-adapters-review-r2/root-generated/capo-2/full-song.mid",
+          "byteLength": 5691,
+          "sha256": "c704cc754aaea01856fa27e32c1debafc4a16892ebd683cf66edea1f45245328",
+          "elapsedMs": 690.8115690000001,
+          "manifest": {
+            "schemaVersion": 1,
+            "scoreRevision": {
+              "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+              "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c"
+            },
+            "sourceRevision": {
+              "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+              "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+            },
+            "ability": {
+              "id": "conservative-intermediate-no-barre",
+              "version": "1"
+            },
+            "adapter": {
+              "name": "canonical-guitar",
+              "version": "canonical-guitar-1.0.1"
+            },
+            "format": "midi",
+            "artifactDigest": "c704cc754aaea01856fa27e32c1debafc4a16892ebd683cf66edea1f45245328",
+            "byteLength": 5691,
+            "occurrenceCount": 64,
+            "soundingAttackCount": 361,
+            "notationSegmentCount": 395,
+            "review": "unreviewed-draft",
+            "validationVersion": "independent-guitar-validator-1",
+            "tuning": [
+              40,
+              45,
+              50,
+              55,
+              59,
+              64
+            ],
+            "capo": 2,
+            "midiPitchPolicy": "already-sounding-no-capo-offset"
+          }
+        },
+        {
+          "format": "pdf",
+          "pageSize": "A4",
+          "status": "generated",
+          "artifactPath": "/tmp/opencode/guitar-adapters-review-r2/root-generated/capo-2/full-song.pdf",
+          "byteLength": 80380,
+          "sha256": "f4d821287393ed4c1f8636cab490213c50128a17a45921e5ea2d796fc84d29d4",
+          "elapsedMs": 887.1732279999999,
+          "manifest": {
+            "schemaVersion": 1,
+            "scoreRevision": {
+              "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+              "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c"
+            },
+            "sourceRevision": {
+              "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+              "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+            },
+            "ability": {
+              "id": "conservative-intermediate-no-barre",
+              "version": "1"
+            },
+            "adapter": {
+              "name": "canonical-guitar",
+              "version": "canonical-guitar-1.0.1"
+            },
+            "format": "pdf",
+            "artifactDigest": "f4d821287393ed4c1f8636cab490213c50128a17a45921e5ea2d796fc84d29d4",
+            "byteLength": 80380,
+            "occurrenceCount": 64,
+            "soundingAttackCount": 361,
+            "notationSegmentCount": 395,
+            "review": "unreviewed-draft",
+            "validationVersion": "independent-guitar-validator-1",
+            "tuning": [
+              40,
+              45,
+              50,
+              55,
+              59,
+              64
+            ],
+            "capo": 2,
+            "midiPitchPolicy": "already-sounding-no-capo-offset"
+          }
+        },
+        {
+          "format": "pdf",
+          "pageSize": "LETTER",
+          "status": "generated",
+          "artifactPath": "/tmp/opencode/guitar-adapters-review-r2/root-generated/capo-2/full-song-letter.pdf",
+          "byteLength": 80285,
+          "sha256": "74b10bb9a7f0eaaad60f05fef1026399568424c3dee96589c8ceff79345202d6",
+          "elapsedMs": 795.2386280000001,
+          "manifest": {
+            "schemaVersion": 1,
+            "scoreRevision": {
+              "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+              "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c"
+            },
+            "sourceRevision": {
+              "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+              "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+            },
+            "ability": {
+              "id": "conservative-intermediate-no-barre",
+              "version": "1"
+            },
+            "adapter": {
+              "name": "canonical-guitar",
+              "version": "canonical-guitar-1.0.1"
+            },
+            "format": "pdf",
+            "artifactDigest": "74b10bb9a7f0eaaad60f05fef1026399568424c3dee96589c8ceff79345202d6",
+            "byteLength": 80285,
+            "occurrenceCount": 64,
+            "soundingAttackCount": 361,
+            "notationSegmentCount": 395,
+            "review": "unreviewed-draft",
+            "validationVersion": "independent-guitar-validator-1",
+            "tuning": [
+              40,
+              45,
+              50,
+              55,
+              59,
+              64
+            ],
+            "capo": 2,
+            "midiPitchPolicy": "already-sounding-no-capo-offset"
+          }
+        }
+      ],
+      "initialValidation": {
+        "status": "passed",
+        "scoreRevision": {
+          "id": "candidate-r-c82ff6b7023dae0ad19010e3",
+          "digest": "3e54c2cbad5c719cacb5b3f0eeeed83f5f78faaaec81510d87a9856d08c9c02c"
+        },
+        "sourceRevision": {
+          "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+          "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+        },
+        "validatorVersion": "independent-guitar-validator-1",
+        "diagnostics": [
+          {
+            "code": "transition-unverified",
+            "severity": "warning",
+            "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+            "eventIds": [],
+            "barIds": [],
+            "occurrenceIds": []
+          }
+        ],
+        "checks": [
+          "source-identity",
+          "melody",
+          "form-tempo",
+          "physical",
+          "approval-locks"
+        ],
+        "transitions": "uncalibrated"
+      },
+      "status": "generated-needs-independent-artifact-inspection"
+    },
+    {
+      "variant": "0",
+      "file": "/tmp/opencode/engine-live-0.json",
+      "fileSha256": "beb4f13b57b4bdd1ec10220583e01cb40e5c3609f24635f0c15f3a431a1e70df",
+      "revision": {
+        "id": "candidate-r-49a258db798620566e28ba32",
+        "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49",
+        "parentId": null
+      },
+      "capo": 0,
+      "preferenceTempoScale": 1,
+      "counts": {
+        "bars": 46,
+        "occurrences": 64,
+        "performedTempos": 64,
+        "sounds": 250,
+        "rests": 17,
+        "notation": 276,
+        "performedSounds": 354
+      },
+      "validationCalls": [
+        {
+          "status": "passed",
+          "scoreRevision": {
+            "id": "candidate-r-49a258db798620566e28ba32",
+            "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49"
+          },
+          "validatorVersion": "independent-guitar-validator-1",
+          "diagnosticCount": 1
+        },
+        {
+          "status": "passed",
+          "scoreRevision": {
+            "id": "candidate-r-49a258db798620566e28ba32",
+            "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49"
+          },
+          "validatorVersion": "independent-guitar-validator-1",
+          "diagnosticCount": 1
+        },
+        {
+          "status": "passed",
+          "scoreRevision": {
+            "id": "candidate-r-49a258db798620566e28ba32",
+            "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49"
+          },
+          "validatorVersion": "independent-guitar-validator-1",
+          "diagnosticCount": 1
+        }
+      ],
+      "exports": [
+        {
+          "format": "midi",
+          "status": "generated",
+          "artifactPath": "/tmp/opencode/guitar-adapters-review-r2/root-generated/capo-0/full-song.mid",
+          "byteLength": 5621,
+          "sha256": "46f90c60871867344fe62f6bdac09102eb4bccdc85324b86be45be1eaf201d96",
+          "elapsedMs": 625.9154169999997,
+          "manifest": {
+            "schemaVersion": 1,
+            "scoreRevision": {
+              "id": "candidate-r-49a258db798620566e28ba32",
+              "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49"
+            },
+            "sourceRevision": {
+              "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+              "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+            },
+            "ability": {
+              "id": "conservative-intermediate-no-barre",
+              "version": "1"
+            },
+            "adapter": {
+              "name": "canonical-guitar",
+              "version": "canonical-guitar-1.0.1"
+            },
+            "format": "midi",
+            "artifactDigest": "46f90c60871867344fe62f6bdac09102eb4bccdc85324b86be45be1eaf201d96",
+            "byteLength": 5621,
+            "occurrenceCount": 64,
+            "soundingAttackCount": 354,
+            "notationSegmentCount": 387,
+            "review": "unreviewed-draft",
+            "validationVersion": "independent-guitar-validator-1",
+            "tuning": [
+              40,
+              45,
+              50,
+              55,
+              59,
+              64
+            ],
+            "capo": 0,
+            "midiPitchPolicy": "already-sounding-no-capo-offset"
+          }
+        },
+        {
+          "format": "pdf",
+          "pageSize": "A4",
+          "status": "generated",
+          "artifactPath": "/tmp/opencode/guitar-adapters-review-r2/root-generated/capo-0/full-song.pdf",
+          "byteLength": 80185,
+          "sha256": "3daea72d6a417abe2614b1713570cd4fcf55154d0822f8a808d85c7e9fde40e5",
+          "elapsedMs": 735.2686610000001,
+          "manifest": {
+            "schemaVersion": 1,
+            "scoreRevision": {
+              "id": "candidate-r-49a258db798620566e28ba32",
+              "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49"
+            },
+            "sourceRevision": {
+              "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+              "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+            },
+            "ability": {
+              "id": "conservative-intermediate-no-barre",
+              "version": "1"
+            },
+            "adapter": {
+              "name": "canonical-guitar",
+              "version": "canonical-guitar-1.0.1"
+            },
+            "format": "pdf",
+            "artifactDigest": "3daea72d6a417abe2614b1713570cd4fcf55154d0822f8a808d85c7e9fde40e5",
+            "byteLength": 80185,
+            "occurrenceCount": 64,
+            "soundingAttackCount": 354,
+            "notationSegmentCount": 387,
+            "review": "unreviewed-draft",
+            "validationVersion": "independent-guitar-validator-1",
+            "tuning": [
+              40,
+              45,
+              50,
+              55,
+              59,
+              64
+            ],
+            "capo": 0,
+            "midiPitchPolicy": "already-sounding-no-capo-offset"
+          }
+        },
+        {
+          "format": "pdf",
+          "pageSize": "LETTER",
+          "status": "generated",
+          "artifactPath": "/tmp/opencode/guitar-adapters-review-r2/root-generated/capo-0/full-song-letter.pdf",
+          "byteLength": 80094,
+          "sha256": "9a423534d2e7f0e2ff7b713d23a35d48aea32cac106ca527520ca2ee4cffea26",
+          "elapsedMs": 843.7561900000001,
+          "manifest": {
+            "schemaVersion": 1,
+            "scoreRevision": {
+              "id": "candidate-r-49a258db798620566e28ba32",
+              "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49"
+            },
+            "sourceRevision": {
+              "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+              "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+            },
+            "ability": {
+              "id": "conservative-intermediate-no-barre",
+              "version": "1"
+            },
+            "adapter": {
+              "name": "canonical-guitar",
+              "version": "canonical-guitar-1.0.1"
+            },
+            "format": "pdf",
+            "artifactDigest": "9a423534d2e7f0e2ff7b713d23a35d48aea32cac106ca527520ca2ee4cffea26",
+            "byteLength": 80094,
+            "occurrenceCount": 64,
+            "soundingAttackCount": 354,
+            "notationSegmentCount": 387,
+            "review": "unreviewed-draft",
+            "validationVersion": "independent-guitar-validator-1",
+            "tuning": [
+              40,
+              45,
+              50,
+              55,
+              59,
+              64
+            ],
+            "capo": 0,
+            "midiPitchPolicy": "already-sounding-no-capo-offset"
+          }
+        }
+      ],
+      "initialValidation": {
+        "status": "passed",
+        "scoreRevision": {
+          "id": "candidate-r-49a258db798620566e28ba32",
+          "digest": "104121377d09031f71f5b94e2d27e3a42fc60d5ab85ab3cf4b5bc43775020c49"
+        },
+        "sourceRevision": {
+          "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+          "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+        },
+        "validatorVersion": "independent-guitar-validator-1",
+        "diagnostics": [
+          {
+            "code": "transition-unverified",
+            "severity": "warning",
+            "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+            "eventIds": [],
+            "barIds": [],
+            "occurrenceIds": []
+          }
+        ],
+        "checks": [
+          "source-identity",
+          "melody",
+          "form-tempo",
+          "physical",
+          "approval-locks"
+        ],
+        "transitions": "uncalibrated"
+      },
+      "status": "generated-needs-independent-artifact-inspection"
+    },
+    {
+      "variant": "recommend",
+      "file": "/tmp/opencode/engine-live-recommend.json",
+      "fileSha256": "3d80dbacf2da039535736d44787534f1e977d7ec7d0ee4e730b4e041552d4e1a",
+      "revision": {
+        "id": "candidate-r-9db947050ddae05ce9b69ea6",
+        "digest": "f85b769a1399927823cc6f9f4fd6ee7521b9feb80aac8ae61dd8ad4b02b942a3",
+        "parentId": null
+      },
+      "capo": 2,
+      "preferenceTempoScale": 1,
+      "counts": {
+        "bars": 46,
+        "occurrences": 64,
+        "performedTempos": 64,
+        "sounds": 253,
+        "rests": 17,
+        "notation": 280,
+        "performedSounds": 361
+      },
+      "validationCalls": [
+        {
+          "status": "passed",
+          "scoreRevision": {
+            "id": "candidate-r-9db947050ddae05ce9b69ea6",
+            "digest": "f85b769a1399927823cc6f9f4fd6ee7521b9feb80aac8ae61dd8ad4b02b942a3"
+          },
+          "validatorVersion": "independent-guitar-validator-1",
+          "diagnosticCount": 1
+        }
+      ],
+      "exports": [
+        {
+          "format": "midi",
+          "status": "generated",
+          "artifactPath": "/tmp/opencode/guitar-adapters-review-r2/root-generated/capo-recommend/full-song.mid",
+          "byteLength": 5691,
+          "sha256": "237486776b194b483409b61358df8542623fa444e1451359897812e4297a447d",
+          "elapsedMs": 1097.4741020000001,
+          "manifest": {
+            "schemaVersion": 1,
+            "scoreRevision": {
+              "id": "candidate-r-9db947050ddae05ce9b69ea6",
+              "digest": "f85b769a1399927823cc6f9f4fd6ee7521b9feb80aac8ae61dd8ad4b02b942a3"
+            },
+            "sourceRevision": {
+              "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+              "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+            },
+            "ability": {
+              "id": "conservative-intermediate-no-barre",
+              "version": "1"
+            },
+            "adapter": {
+              "name": "canonical-guitar",
+              "version": "canonical-guitar-1.0.1"
+            },
+            "format": "midi",
+            "artifactDigest": "237486776b194b483409b61358df8542623fa444e1451359897812e4297a447d",
+            "byteLength": 5691,
+            "occurrenceCount": 64,
+            "soundingAttackCount": 361,
+            "notationSegmentCount": 395,
+            "review": "unreviewed-draft",
+            "validationVersion": "independent-guitar-validator-1",
+            "tuning": [
+              40,
+              45,
+              50,
+              55,
+              59,
+              64
+            ],
+            "capo": 2,
+            "midiPitchPolicy": "already-sounding-no-capo-offset"
+          }
+        }
+      ],
+      "initialValidation": {
+        "status": "passed",
+        "scoreRevision": {
+          "id": "candidate-r-9db947050ddae05ce9b69ea6",
+          "digest": "f85b769a1399927823cc6f9f4fd6ee7521b9feb80aac8ae61dd8ad4b02b942a3"
+        },
+        "sourceRevision": {
+          "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+          "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d"
+        },
+        "validatorVersion": "independent-guitar-validator-1",
+        "diagnostics": [
+          {
+            "code": "transition-unverified",
+            "severity": "warning",
+            "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+            "eventIds": [],
+            "barIds": [],
+            "occurrenceIds": []
+          }
+        ],
+        "checks": [
+          "source-identity",
+          "melody",
+          "form-tempo",
+          "physical",
+          "approval-locks"
+        ],
+        "transitions": "uncalibrated"
+      },
+      "status": "generated-needs-independent-artifact-inspection"
+    }
+  ],
+  "finishedAt": "2026-10-20T22:40:43.464Z"
+}

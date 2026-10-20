@@ -1,0 +1,254 @@
+{
+  "status": "passed",
+  "validatorPath": "/home/taytay/.t3-nightly/projects/guitar-composition/src/engine/index.ts",
+  "observations": [
+    {
+      "name": "constant-80-at-half",
+      "validatorVersion": "independent-guitar-validator-1",
+      "validatorCalls": 2,
+      "revisionScale": 0.5,
+      "canonicalBpms": [
+        40,
+        40
+      ],
+      "expectedBpms": [
+        40,
+        40
+      ],
+      "expectedSeconds": 12,
+      "actualMidiSeconds": 12,
+      "actualAudioSeconds": 12,
+      "runtimeRequestedScale": 0.75,
+      "expectedRuntimeSeconds": 8,
+      "actualRuntimeSeconds": 8,
+      "quarterBeforeRuntimeChange": 1.4999999999999973,
+      "quarterAfterRuntimeChange": 1.4999999999999973,
+      "tempos": [
+        {
+          "tick": 0,
+          "micros": 1500000
+        },
+        {
+          "tick": 3840,
+          "micros": 1500000
+        }
+      ],
+      "expectedTempos": [
+        {
+          "tick": 0,
+          "micros": 1500000
+        },
+        {
+          "tick": 3840,
+          "micros": 1500000
+        }
+      ],
+      "pdfTempoCaptions": [
+        40,
+        40
+      ],
+      "scheduledEvents": [
+        {
+          "performedSoundId": "bass0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0,
+          "audioTime": 0,
+          "offAudioTime": 6,
+          "elapsedSeconds": 0
+        },
+        {
+          "performedSoundId": "h0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0,
+          "audioTime": 0,
+          "offAudioTime": 3,
+          "elapsedSeconds": 0
+        },
+        {
+          "performedSoundId": "m0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0,
+          "audioTime": 0,
+          "offAudioTime": 1.5,
+          "elapsedSeconds": 0
+        },
+        {
+          "performedSoundId": "m1@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 1.5,
+          "audioTime": 1.5,
+          "offAudioTime": 2.4999999999999996,
+          "elapsedSeconds": 0
+        },
+        {
+          "performedSoundId": "bass0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0.7499999999999987,
+          "audioTime": 2.249999999999996,
+          "offAudioTime": 4.749999999999998,
+          "elapsedSeconds": 1.4999999999999973
+        },
+        {
+          "performedSoundId": "h0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0.7499999999999987,
+          "audioTime": 2.249999999999996,
+          "offAudioTime": 2.7499999999999987,
+          "elapsedSeconds": 1.4999999999999973
+        },
+        {
+          "performedSoundId": "m1@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 1.7499999999999987,
+          "audioTime": 2.249999999999996,
+          "offAudioTime": 2.416666666666665,
+          "elapsedSeconds": 0.49999999999999734
+        },
+        {
+          "performedSoundId": "m2@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 2.416666666666665,
+          "audioTime": 2.416666666666665,
+          "offAudioTime": 3.083333333333332,
+          "elapsedSeconds": 0
+        }
+      ],
+      "unchangedCanonicalTicks": true
+    },
+    {
+      "name": "repeat-entry-restoration",
+      "validatorVersion": "independent-guitar-validator-1",
+      "validatorCalls": 2,
+      "revisionScale": 0.5,
+      "canonicalBpms": [
+        40,
+        60,
+        40,
+        60
+      ],
+      "expectedBpms": [
+        40,
+        60,
+        40,
+        60
+      ],
+      "expectedSeconds": 20,
+      "actualMidiSeconds": 20,
+      "actualAudioSeconds": 20,
+      "runtimeRequestedScale": 0.75,
+      "expectedRuntimeSeconds": 13.333333333333334,
+      "actualRuntimeSeconds": 13.333333333333332,
+      "quarterBeforeRuntimeChange": 1.4999999999999973,
+      "quarterAfterRuntimeChange": 1.4999999999999973,
+      "tempos": [
+        {
+          "tick": 0,
+          "micros": 1500000
+        },
+        {
+          "tick": 3840,
+          "micros": 1000000
+        },
+        {
+          "tick": 7680,
+          "micros": 1500000
+        },
+        {
+          "tick": 11520,
+          "micros": 1000000
+        }
+      ],
+      "expectedTempos": [
+        {
+          "tick": 0,
+          "micros": 1500000
+        },
+        {
+          "tick": 3840,
+          "micros": 1000000
+        },
+        {
+          "tick": 7680,
+          "micros": 1500000
+        },
+        {
+          "tick": 11520,
+          "micros": 1000000
+        }
+      ],
+      "pdfTempoCaptions": [
+        40,
+        60,
+        40,
+        60
+      ],
+      "scheduledEvents": [
+        {
+          "performedSoundId": "bass0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0,
+          "audioTime": 0,
+          "offAudioTime": 6,
+          "elapsedSeconds": 0
+        },
+        {
+          "performedSoundId": "h0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0,
+          "audioTime": 0,
+          "offAudioTime": 3,
+          "elapsedSeconds": 0
+        },
+        {
+          "performedSoundId": "m0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0,
+          "audioTime": 0,
+          "offAudioTime": 1.5,
+          "elapsedSeconds": 0
+        },
+        {
+          "performedSoundId": "m1@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 1.5,
+          "audioTime": 1.5,
+          "offAudioTime": 2.4999999999999996,
+          "elapsedSeconds": 0
+        },
+        {
+          "performedSoundId": "bass0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0.7499999999999987,
+          "audioTime": 2.249999999999996,
+          "offAudioTime": 4.749999999999998,
+          "elapsedSeconds": 1.4999999999999973
+        },
+        {
+          "performedSoundId": "h0@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 0.7499999999999987,
+          "audioTime": 2.249999999999996,
+          "offAudioTime": 2.7499999999999987,
+          "elapsedSeconds": 1.4999999999999973
+        },
+        {
+          "performedSoundId": "m1@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 1.7499999999999987,
+          "audioTime": 2.249999999999996,
+          "offAudioTime": 2.416666666666665,
+          "elapsedSeconds": 0.49999999999999734
+        },
+        {
+          "performedSoundId": "m2@o1-p1",
+          "cycle": 0,
+          "expectedAudioTime": 2.416666666666665,
+          "audioTime": 2.416666666666665,
+          "offAudioTime": 3.083333333333332,
+          "elapsedSeconds": 0
+        }
+      ],
+      "unchangedCanonicalTicks": true
+    }
+  ]
+}

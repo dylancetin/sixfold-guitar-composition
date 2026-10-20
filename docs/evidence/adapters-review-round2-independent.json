@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "reviewedCommits": [
+    "043b1fc216cd46c9bf3998b022150783df0b89a4",
+    "6f1f455e11c30a90ab983626b631e261c39c0745",
+    "ee367928997e7df1011f018b13d14dd3ddf21c3d"
+  ],
+  "validatorSha256": "d1cc9dc2915855640863351eee34458db456195b4de7cc7a60aaff0969cf8154",
+  "results": [
+    {
+      "capo": 0,
+      "sourceMelodyAttacks": 245,
+      "exportedAttacks": 354,
+      "sourceMelodyEqualsActualMidi": true,
+      "sourceTempoEqualsMidi": true,
+      "performanceEndTicks": 245760,
+      "performanceSeconds": 172.40552399999987,
+      "actualLastOff": 244800,
+      "nativeBeats": 571,
+      "allNativeMappings": 387,
+      "nativeExactCoverage": true,
+      "freshMidiIdentical": true,
+      "realValidatorRejectsMissingMelody": true,
+      "sourceAndCandidateFilesUnchangedSinceFailedGapRun": true,
+      "diagnostics": [
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+          "eventIds": [],
+          "barIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "capo": 2,
+      "sourceMelodyAttacks": 245,
+      "exportedAttacks": 361,
+      "sourceMelodyEqualsActualMidi": true,
+      "sourceTempoEqualsMidi": true,
+      "performanceEndTicks": 245760,
+      "performanceSeconds": 172.40552399999987,
+      "actualLastOff": 244800,
+      "nativeBeats": 578,
+      "allNativeMappings": 395,
+      "nativeExactCoverage": true,
+      "freshMidiIdentical": true,
+      "realValidatorRejectsMissingMelody": true,
+      "sourceAndCandidateFilesUnchangedSinceFailedGapRun": true,
+      "diagnostics": [
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+          "eventIds": [],
+          "barIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    }
+  ],
+  "originalOldAdapter": {
+    "commit": "6f1f455e11c30a90ab983626b631e261c39c0745",
+    "oldError": "alphaTab cannot represent exact timing at beat 6",
+    "oldBass": [
+      {
+        "start": 0,
+        "duration": 1440,
+        "rest": false,
+        "dots": 1
+      },
+      {
+        "start": 1440,
+        "duration": 1280,
+        "rest": true,
+        "dots": 3
+      }
+    ]
+  }
+}

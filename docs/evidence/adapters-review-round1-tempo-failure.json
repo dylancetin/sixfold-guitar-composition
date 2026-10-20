@@ -1,0 +1,46 @@
+{
+  "status": "NOT VERIFIED",
+  "validation": {
+    "status": "passed",
+    "scoreRevision": {
+      "id": "adapter-study-p1-c0-shift0",
+      "digest": "b9f24095fbf5d2f76588626c5815eed48f1f03b7f72b18e82089c34f8e0e6495"
+    },
+    "sourceRevision": {
+      "id": "adapter-source-p1-shift0",
+      "digest": "d614f29267b3348f2b5eed7f9b73a06e18e723cd97655206d9ad24384d1c48a1"
+    },
+    "validatorVersion": "independent-guitar-validator-1",
+    "diagnostics": [
+      {
+        "code": "transition-unverified",
+        "severity": "warning",
+        "message": "Static occupancy checks only; movement limits uncalibrated: Not a human playability claim. Not a human-playability claim.",
+        "eventIds": [],
+        "barIds": [],
+        "occurrenceIds": []
+      }
+    ],
+    "checks": [
+      "source-identity",
+      "melody",
+      "form-tempo",
+      "physical",
+      "approval-locks"
+    ],
+    "transitions": "uncalibrated"
+  },
+  "sourceWrittenBpm": 80,
+  "preferenceScale": 0.5,
+  "canonicalEffectiveBpm": 40,
+  "expectedSeconds": 12,
+  "actualMidiBpm": 20,
+  "actualMidiSeconds": 24,
+  "actualAudioSeconds": 24,
+  "runtimeScale075": {
+    "expectedBpm": 60,
+    "expectedSeconds": 8,
+    "actualSeconds": 16
+  },
+  "pdfText": "unreviewed-draft | adapter-study-p1-c0-shift0 | Capo 0 | b9f24095fbf5d2f76588626c5815eed48f1f03b7f72b18e82089c34f8e0e6495 A4 - 1 | S=original bar, P=pass | capo-relative TAB; written = sounding + 12  Solo guitar arrangement  Capo 0 | frets relative to capo | unfolded performance  Standard EADGBE  SYSTEM01        1                         = 20  o1-p1/S1/P1    2                 = 20  o2-p1/S2/P1 FINAL     0 0 0   3   2   0   1 2 3 (1)  Gtr.      rendered by alphaTab"
+}

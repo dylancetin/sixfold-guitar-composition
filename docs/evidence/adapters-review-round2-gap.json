@@ -1,0 +1,53 @@
+{
+  "legacyUnsafeRestTicks": 1280,
+  "expectedGapTicks": 2400,
+  "actualGapTicks": 2400,
+  "nativeBass": [
+    {
+      "nativeBeatId": 5,
+      "startTick": 0,
+      "durationTick": 1440,
+      "rest": false,
+      "dots": 1,
+      "tuplet": false
+    },
+    {
+      "nativeBeatId": 6,
+      "startTick": 1440,
+      "durationTick": 1920,
+      "rest": true,
+      "dots": 0,
+      "tuplet": false
+    },
+    {
+      "nativeBeatId": 7,
+      "startTick": 3360,
+      "durationTick": 480,
+      "rest": true,
+      "dots": 0,
+      "tuplet": false
+    }
+  ],
+  "bassMidi": [
+    {
+      "tick": 0,
+      "type": "noteOn",
+      "pitch": 40
+    },
+    {
+      "tick": 1440,
+      "type": "noteOff",
+      "pitch": 40
+    },
+    {
+      "tick": 3840,
+      "type": "noteOn",
+      "pitch": 43
+    },
+    {
+      "tick": 7680,
+      "type": "noteOff",
+      "pitch": 43
+    }
+  ]
+}

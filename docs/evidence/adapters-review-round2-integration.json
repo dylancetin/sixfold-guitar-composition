@@ -1,0 +1,241 @@
+{
+  "status": "VERIFIED adapter + actual-artifact scope",
+  "checkedAt": "2026-10-20T22:43:22.153Z",
+  "before": "d2a00d3c09635189df5f90f8181c0354104d7181",
+  "afterImplementationPicks": "665d98d750852daaaf1a6d5d09b17790a31dc413",
+  "picks": [
+    {
+      "worker": "043b1fc216cd46c9bf3998b022150783df0b89a4",
+      "root": "39dcceb8355e2d875c5442d2744c9377c1b276a9",
+      "patchScope": "All files except package.json (separately checked additive union; retained engine script affects patch context)",
+      "workerPatchId": "427317510664e38c2339a966c2acf9d5396b7397",
+      "rootPatchId": "427317510664e38c2339a966c2acf9d5396b7397",
+      "equal": true
+    },
+    {
+      "worker": "6f1f455e11c30a90ab983626b631e261c39c0745",
+      "root": "3a6fabf5dde4481435f9d299d224225ae278e7bb",
+      "patchScope": "All files except package.json (separately checked additive union; retained engine script affects patch context)",
+      "workerPatchId": "a36229893c6416cee638f72a022ad7785cc5d5a1",
+      "rootPatchId": "a36229893c6416cee638f72a022ad7785cc5d5a1",
+      "equal": true
+    },
+    {
+      "worker": "ee367928997e7df1011f018b13d14dd3ddf21c3d",
+      "root": "665d98d750852daaaf1a6d5d09b17790a31dc413",
+      "patchScope": "Full commit",
+      "workerPatchId": "0f382bc9133cb74d3b378385173a0828a996228c",
+      "rootPatchId": "0f382bc9133cb74d3b378385173a0828a996228c",
+      "equal": true
+    }
+  ],
+  "unchanged": {
+    "src/domain": {
+      "before": "f969b9e325a9bd707eee6bb58d3e52bc14e884ef",
+      "after": "f969b9e325a9bd707eee6bb58d3e52bc14e884ef",
+      "equal": true
+    },
+    "src/source": {
+      "before": "8b523b25eef09d234c3ff95c9726ffac29145162",
+      "after": "8b523b25eef09d234c3ff95c9726ffac29145162",
+      "equal": true
+    },
+    "src/engine": {
+      "before": "1ae829f9c81e0420202b5b018e492f3b1bb1c220",
+      "after": "1ae829f9c81e0420202b5b018e492f3b1bb1c220",
+      "equal": true
+    },
+    "tests/fixtures": {
+      "before": "cacef26c5dca83729cf71af8c46bae3fca2a0ced",
+      "after": "cacef26c5dca83729cf71af8c46bae3fca2a0ced",
+      "equal": true
+    },
+    "tests/source": {
+      "before": "a3546bc350c7ad0efe4ea679ee328134d2999963",
+      "after": "a3546bc350c7ad0efe4ea679ee328134d2999963",
+      "equal": true
+    },
+    "tests/engine": {
+      "before": "62cb67658f97e00f5b7ecb27e8e3b74872ca9391",
+      "after": "62cb67658f97e00f5b7ecb27e8e3b74872ca9391",
+      "equal": true
+    },
+    "tools/export-proof": {
+      "before": "5c1fe1dde77f5a71488687c881bad543b33a94ee",
+      "after": "5c1fe1dde77f5a71488687c881bad543b33a94ee",
+      "equal": true
+    },
+    "docs/CONTRACT.md": {
+      "before": "d004aa8995919b347b41fa2ccb2e216cc7bc66d4",
+      "after": "d004aa8995919b347b41fa2ccb2e216cc7bc66d4",
+      "equal": true
+    },
+    "tsconfig.json": {
+      "before": "6c11208f119bb3ffde02d1324880a23424cf379f",
+      "after": "6c11208f119bb3ffde02d1324880a23424cf379f",
+      "equal": true
+    },
+    "docs/evidence/agent-review-r1.md": {
+      "before": "9c2d0b1e7e2fea4e2ab715e6e94d563d5c39c4cc",
+      "after": "9c2d0b1e7e2fea4e2ab715e6e94d563d5c39c4cc",
+      "equal": true
+    },
+    "docs/evidence/agent-review-r1-guard.ts": {
+      "before": "4b35d24e419f09b245f652ae0cb73b2b99b886e3",
+      "after": "4b35d24e419f09b245f652ae0cb73b2b99b886e3",
+      "equal": true
+    }
+  },
+  "canonicalAdapterContentMatches": true,
+  "lockEqualsCanonicalWorker": true,
+  "priorPackageHooksPreserved": true,
+  "addedAggregateHooks": [
+    "typecheck:adapters",
+    "test:adapters",
+    "test:adapters:tempo",
+    "build:adapters"
+  ],
+  "priorAggregateHooksPreserved": [
+    "typecheck",
+    "check:source",
+    "test",
+    "test:controls",
+    "build",
+    "build:engine"
+  ],
+  "rootAggregate": "passed",
+  "rootSourceTests": 46,
+  "rootFixtureEngineTests": {
+    "pass": 58,
+    "skip": 1,
+    "todo": 11,
+    "fail": 0
+  },
+  "separateLiveEngineTest": {
+    "pass": 1,
+    "assertions": 21
+  },
+  "rootAdapterTests": {
+    "pass": 14,
+    "assertions": 112
+  },
+  "rootU02LightweightTests": 18,
+  "actualFullSongPdfPages": 44,
+  "actualArtifactCheck": "passed",
+  "browserCheck": "passed",
+  "humanMusicalAndPhysicalReview": "open",
+  "publicationWorkflow": "A02 NOT VERIFIED separately; no workflow implementation/typecheck integrated",
+  "copiedEvidence": [
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r1.md",
+      "to": "docs/evidence/adapters-review-round1.md",
+      "bytes": 14765,
+      "sha256": "323d13fc5bb5860715e9245d5c0a0c9316b20368356623f13908bbe90307dac6"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r1/tempo-repro.json",
+      "to": "docs/evidence/adapters-review-round1-tempo-failure.json",
+      "bytes": 1790,
+      "sha256": "0ee4bbf537e982819e1a3d754f15f2aaaf6e75b830b7ef1582fb7f9dc0811964"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r2.md",
+      "to": "docs/evidence/adapters-review-round2.md",
+      "bytes": 12058,
+      "sha256": "8c0683dd1c06c2c0c879f57e52b938be8b09694a59ba03f4e1785e03a66d1aba"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r2/independent.ts",
+      "to": "docs/evidence/adapters-review-round2-independent.ts",
+      "bytes": 10853,
+      "sha256": "ca798c4e35a75ae5df743a0f1fff9bbca00be19193d3dace8c5151af0f496c2e"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r2/independent.json",
+      "to": "docs/evidence/adapters-review-round2-independent.json",
+      "bytes": 2650,
+      "sha256": "e4decaf833e05b5528d968c47c7a8c35f9b3f7c00a1c353beaf4bbc643bed757"
+    },
+    {
+      "from": "/tmp/opencode/guitar-live-exports/check.ts",
+      "to": "docs/evidence/adapters-live-artifact-check.ts",
+      "bytes": 18223,
+      "sha256": "b10a39da03ae578485fad600d7d9a6f3d519e03678d1b4c9692f1e6f8816d54e"
+    },
+    {
+      "from": "/tmp/opencode/guitar-live-exports/report.md",
+      "to": "docs/evidence/adapters-live-exports-report.md",
+      "bytes": 15958,
+      "sha256": "2ef6db9f99bbb22ca069b502535d044dec6591fe5f40324793e9bb531cabc88e"
+    },
+    {
+      "from": "/tmp/opencode/guitar-live-exports/report-before-gap-fix.md",
+      "to": "docs/evidence/adapters-live-exports-before-gap-fix.md",
+      "bytes": 8468,
+      "sha256": "25f898a9e1701e5d961c505cc8604ec8b2fb7f12ed857eecd429c55996cad204"
+    },
+    {
+      "from": "/tmp/opencode/guitar-live-exports/generation-before-gap-fix.json",
+      "to": "docs/evidence/adapters-live-gap-failure.json",
+      "bytes": 12706,
+      "sha256": "c97e666b8905732f89433e91bfebfbe577d527c489b04b0644525b689e147bec"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r2/root-generated/generation.json",
+      "to": "docs/evidence/adapters-review-round2-generation.json",
+      "bytes": 21305,
+      "sha256": "930eaff24df59b6095c59434124ef9dbebe7f709dc590e66ef9adf10063916c0"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r2/root-generated/verification.json",
+      "to": "docs/evidence/adapters-review-round2-artifacts.json",
+      "bytes": 97980,
+      "sha256": "00020d229ea7286282f6c80a579b2ace8c30ab5f68872d5f009e764d0c157f1e"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r2/root-check.json",
+      "to": "docs/evidence/adapters-review-round2-root-check.json",
+      "bytes": 12004,
+      "sha256": "313892be9992dabce6b7d6a45d330e3e233789cdd668870f4acfaeaf54a6857a"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-effective-tempo/result.json",
+      "to": "docs/evidence/adapters-review-round2-tempo.json",
+      "bytes": 6496,
+      "sha256": "62dcfa2641cf59426f45eea709c22c5fcf65fd82a4449f04b0d9b9d1aba3c1fc"
+    },
+    {
+      "from": "/tmp/opencode/guitar-adapters-review-r2/original-gap/observation.json",
+      "to": "docs/evidence/adapters-review-round2-gap.json",
+      "bytes": 877,
+      "sha256": "1ff630c2114781f2247b0e2921d764fe41ab140518486cd91335cfb453d3b0dc"
+    }
+  ],
+  "reviewerToolingCorrections": [
+    {
+      "initial": "redirected byte checker output directories absent",
+      "correction": "create output directories before running",
+      "productionChange": false
+    },
+    {
+      "initial": "global native Score.finish observer raced parallel generation",
+      "correction": "isolate original-gap observation after other jobs",
+      "productionChange": false
+    },
+    {
+      "initial": "nonexistent U02 verify.mjs command",
+      "correction": "use existing package npm test; 18 lightweight predicates passed",
+      "productionChange": false
+    },
+    {
+      "initial": "live engine test invoked from U02 subdirectory",
+      "correction": "invoke from root; 1 test / 21 assertions passed",
+      "productionChange": false
+    },
+    {
+      "initial": "preservation checker demanded full identical tempo-pick patch ID despite retained engine-script package context",
+      "correction": "compare non-package patch IDs for first two picks; separately assert exact additive package union and final canonical content",
+      "productionChange": false
+    }
+  ]
+}
