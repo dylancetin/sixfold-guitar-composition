@@ -66,6 +66,7 @@ export interface ScoreAdapter {
 }
 
 export const RevisionMutationSchema = z.discriminatedUnion('kind', [
+  z.strictObject({ kind: z.literal('create'), expectedHead: z.null(), replacement: ScoreV1Schema.refine((score) => score.revision.parentId === null, 'Create requires a parentless revision') }),
   z.strictObject({ kind: z.literal('source-edit'), expectedHead: RevisionRefSchema, replacement: ScoreV1Schema }),
   z.strictObject({ kind: z.literal('melody-edit'), expectedHead: RevisionRefSchema, replacement: ScoreV1Schema }),
   z.strictObject({ kind: z.literal('bass-edit'), expectedHead: RevisionRefSchema, replacement: ScoreV1Schema }),
@@ -76,13 +77,24 @@ export const RevisionMutationSchema = z.discriminatedUnion('kind', [
 export const ExportRequestSchema = z.strictObject({
   projectId: IdSchema, expectedHead: RevisionRefSchema, format: z.enum(['pdf', 'midi']),
 });
+export const LocalDownloadPathSchema = z.string().startsWith('/').refine(
+  (path) => !path.startsWith('//') && !/[\\\u0000-\u001f\u007f-\u009f]/u.test(path),
+  'Download path must be root-relative without an authority, backslashes or control characters',
+);
+export function resolveLocalDownloadUrl(path: string, baseOrigin: string): URL {
+  const base = new URL(baseOrigin);
+  if (base.protocol !== 'https:' && base.protocol !== 'http:') throw new TypeError('Expected an HTTP(S) application origin');
+  const resolved = new URL(LocalDownloadPathSchema.parse(path), base.origin);
+  if (resolved.origin !== base.origin) throw new TypeError('Download URL must be same-origin');
+  return resolved;
+}
 export const ExportResponseSchema = z.discriminatedUnion('status', [
-  z.strictObject({ status: z.literal('ready'), manifest: ArtifactManifestSchema, downloadPath: z.string().startsWith('/'), filename: z.string().min(1), mediaType: z.enum(['application/pdf', 'audio/midi']) }),
+  z.strictObject({ status: z.literal('ready'), manifest: ArtifactManifestSchema, downloadPath: LocalDownloadPathSchema, filename: z.string().min(1), mediaType: z.enum(['application/pdf', 'audio/midi']) }),
   z.strictObject({ status: z.enum(['stale-revision', 'validation-failed', 'unsupported', 'unavailable']), diagnostics: z.array(DiagnosticSchema).min(1) }),
 ]);
 export const SaveResultSchema = z.discriminatedUnion('status', [
   z.strictObject({ status: z.literal('saved'), revision: RevisionRefSchema }),
-  z.strictObject({ status: z.literal('conflict'), currentHead: RevisionRefSchema }),
+  z.strictObject({ status: z.literal('conflict'), currentHead: RevisionRefSchema.nullable() }),
   z.strictObject({ status: z.literal('invalid'), diagnostics: z.array(DiagnosticSchema).min(1) }),
 ]);
 export interface RevisionStore {

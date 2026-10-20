@@ -14,7 +14,7 @@ describe('literal negative oracle examples — not engine/validator acceptance',
     expect(matchesLiteralMelody(score.sounds.filter((s) => s.id !== 'm4'))).toBe(false);
     expect(matchesLiteralMelody(score.sounds.map((s) => ({ ...s, soundingMidi: s.soundingMidi + 12 })))).toBe(false);
   });
-  test('dropped triplet, shortened/retriggered tie and omitted rest corrupt the literal oracle', () => {
+  test('interval oracle detects dropped triplet/retriggered tie; literal rest fixture sanity', () => {
     expect(matchesLiteralMelody(score.sounds.filter((s) => s.id !== 'm1'))).toBe(false);
     const retriggered = structuredClone(score.sounds);
     const held = retriggered.find((s) => s.id === 'm4')!;
@@ -73,7 +73,7 @@ describe('literal negative oracle examples — not engine/validator acceptance',
       expect(cursor).toEqual(add(event.start, event.duration));
     }
   });
-  test('capo-relative zero, physical limits, and already-sounding MIDI are distinct', () => {
+  test('literal capo arithmetic sanity: relative zero, physical limits and sounding MIDI', () => {
     const tuning = [40, 45, 50, 55, 59, 64];
     for (const row of capoCases) {
       expect(tuning[row.string]! + row.capo + row.fret).toBe(row.pitch);
@@ -93,7 +93,7 @@ describe('literal negative oracle examples — not engine/validator acceptance',
     expect(secondsForFourQuarterEntries(restoreTempoExample.incorrectCarriedBpm)).not.toBe(restoreTempoExample.restoredSeconds);
     expect(exactTicks(q(12), 960)).toBe(11520);
   });
-  test('technical full-form oracle rejects flattened bars and a final repeat played only twice', () => {
+  test('literal full-form fixture sanity: 64 visits differs from flattened/truncated lists', () => {
     const literal = requestedSongFacts.occurrenceWrittenBars;
     expect(literal).toHaveLength(64);
     expect(literal.length * 4).toBe(256);

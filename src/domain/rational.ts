@@ -56,6 +56,7 @@ export function compare(a: Q, b: Q): -1 | 0 | 1 {
 }
 
 export function overlaps(aStart: Q, aEnd: Q, bStart: Q, bEnd: Q): boolean {
+  if (compare(aStart, aEnd) >= 0 || compare(bStart, bEnd) >= 0) return false;
   return compare(aStart, bEnd) < 0 && compare(bStart, aEnd) < 0;
 }
 

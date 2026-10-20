@@ -1,0 +1,78 @@
+bun test v1.4.2 (744846f84)
+
+tests/fixtures/boundaries.test.ts:
+14 |   },
+15 | };
+16 |
+17 | describe('review boundary regressions — schemas/helpers, not storage or artifact execution', () => {
+18 |   test('first create expresses an absent head and requires a parentless revision', () => {
+19 |     expect(RevisionMutationSchema.safeParse({ kind: 'create', expectedHead: null, replacement: score }).success).toBe(true);
+                                                                                                                      ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7599a70e/tests/fixtures/boundaries.test.ts:19:114)
+(fail) review boundary regressions — schemas/helpers, not storage or artifact execution > first create expresses an absent head and requires a parentless revision [1.73ms]
+28 |   });
+29 |
+30 |   test.each(['//example.org/x.mid', '/\\example.org/x.mid', '/\n/example.org/x.mid'])(
+31 |     'local download response rejects browser cross-origin spelling %j', (downloadPath) => {
+32 |       expect(new URL(downloadPath, 'https://guitar.example').origin).toBe('https://example.org');
+33 |       expect(ExportResponseSchema.safeParse({ ...readyDownload, downloadPath }).success).toBe(false);
+                                                                                              ^
+error: expect(received).toBe(expected)
+
+Expected: false
+Received: true
+
+      at <anonymous> (/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7599a70e/tests/fixtures/boundaries.test.ts:33:90)
+(fail) review boundary regressions — schemas/helpers, not storage or artifact execution > local download response rejects browser cross-origin spelling "//example.org/x.mid" [0.15ms]
+28 |   });
+29 |
+30 |   test.each(['//example.org/x.mid', '/\\example.org/x.mid', '/\n/example.org/x.mid'])(
+31 |     'local download response rejects browser cross-origin spelling %j', (downloadPath) => {
+32 |       expect(new URL(downloadPath, 'https://guitar.example').origin).toBe('https://example.org');
+33 |       expect(ExportResponseSchema.safeParse({ ...readyDownload, downloadPath }).success).toBe(false);
+                                                                                              ^
+error: expect(received).toBe(expected)
+
+Expected: false
+Received: true
+
+      at <anonymous> (/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7599a70e/tests/fixtures/boundaries.test.ts:33:90)
+(fail) review boundary regressions — schemas/helpers, not storage or artifact execution > local download response rejects browser cross-origin spelling "/\\example.org/x.mid" [0.06ms]
+28 |   });
+29 |
+30 |   test.each(['//example.org/x.mid', '/\\example.org/x.mid', '/\n/example.org/x.mid'])(
+31 |     'local download response rejects browser cross-origin spelling %j', (downloadPath) => {
+32 |       expect(new URL(downloadPath, 'https://guitar.example').origin).toBe('https://example.org');
+33 |       expect(ExportResponseSchema.safeParse({ ...readyDownload, downloadPath }).success).toBe(false);
+                                                                                              ^
+error: expect(received).toBe(expected)
+
+Expected: false
+Received: true
+
+      at <anonymous> (/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7599a70e/tests/fixtures/boundaries.test.ts:33:90)
+(fail) review boundary regressions — schemas/helpers, not storage or artifact execution > local download response rejects browser cross-origin spelling "/\n/example.org/x.mid" [0.04ms]
+33 |       expect(ExportResponseSchema.safeParse({ ...readyDownload, downloadPath }).success).toBe(false);
+34 |     },
+35 |   );
+36 |
+37 |   test('empty or reversed half-open intervals never overlap', () => {
+38 |     expect(overlaps(q(1), q(1), q(0), q(2))).toBe(false);
+                                                  ^
+error: expect(received).toBe(expected)
+
+Expected: false
+Received: true
+
+      at <anonymous> (/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7599a70e/tests/fixtures/boundaries.test.ts:38:46)
+(fail) review boundary regressions — schemas/helpers, not storage or artifact execution > empty or reversed half-open intervals never overlap [0.12ms]
+
+ 1 pass
+ 5 fail
+ 9 expect() calls
+Ran 6 tests across 1 file. [42.00ms]

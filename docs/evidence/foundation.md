@@ -2,6 +2,10 @@
 
 **VERIFIED: bounded foundation only. Independent contract review pending.**
 
+Review follow-up: the independent review returned **NOT VERIFIED for integration** at the
+original commit. See [`foundation.review-fix.md`](foundation.review-fix.md) for the two boundary
+corrections and focused checks; fresh independent approval remains pending.
+
 - Base: planning commit `25b1aea`.
 - Worktree: `/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7599a70e`.
 - Branch: `t3/u03-contract-foundation`.

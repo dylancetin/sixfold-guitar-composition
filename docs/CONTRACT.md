@@ -33,7 +33,9 @@ External untrusted JSON may of course enter `.parse()` as `unknown`.
   BPM, not beat-unit-dependent BPM. Seconds and integer-microsecond MIDI tempo rounding exist
   only at playback/export boundaries. `tempoScale` multiplies BPM once, not note times.
 - Written `start` is absolute from written-score origin. Performed `start` is absolute from
-  unfolded-performance origin. Every interval is half-open `[start,end)`. A bar's `length`
+  unfolded-performance origin. Every interval is half-open `[start,end)`; `overlaps` returns
+  false for empty or reversed intervals. Schema-valid sounds/contacts still require positive duration.
+  A bar's `length`
   equals its meter unless explicitly marked pickup/partial. Meter is materialized per occurrence.
 - IDs are nonempty stable strings scoped by their containing immutable document. Part IDs are
   source integers; never confuse part 0 with the website default 2. Source event IDs identify
@@ -65,9 +67,26 @@ Undefined, NaN, Infinity, negative zero, sparse arrays and nonplain objects are 
 Use strict schema parsing before hashing/persistence. Hashes are corruption/staleness checks,
 not authorization or proof of music correctness.
 
-Every edit **and approval** creates a new ID/parentId and recomputed digest, including unapproved
-drafts. `RevisionStore.commit(projectId, {expectedHead, kind, replacement})` compares **both**
-head ID and digest atomically. Reject duplicate ID, wrong parent, changed project identity,
+**API orchestration owns authoritative project/revision identity allocation and stamping**, for
+both source imports and arrangement candidates. It allocates a fresh project ID for a first
+save, retains the trusted project ID for later revisions, allocates every new revision ID,
+sets the parent from the trusted head (or null for first create), then computes the digest.
+The pure engine performs no random ID allocation, head lookup or persistence: its required
+score header may use deterministic provisional candidate identities. API replaces that header
+before validation, approval or persistence; provisional identities/digests are never authoritative.
+It must not rewrite musical event IDs or existing approval/source references while stamping.
+Canonical source revision IDs are API-owned; provider song/upstream revision identities remain unchanged.
+
+First save uses `RevisionStore.commit(projectId, {kind:'create', expectedHead:null, replacement})`.
+Create requires `replacement.revision.parentId:null` and an **absent** project head, checked
+atomically with insertion. Create on an existing project returns `conflict` with its current
+reference and does not overwrite it. A schema alone cannot check storage absence.
+
+Every later edit **and approval** creates a new ID/parentId and recomputed digest, including
+unapproved drafts. Existing mutation kinds retain their nonnull `expectedHead`; commit compares
+**both** head ID and digest atomically. An edit of an absent project returns
+`{status:'conflict', currentHead:null}` rather than implicitly creating it.
+Reject duplicate ID, wrong parent, changed project identity,
 or a changed source outside the explicit `source-edit` mutation,
 bad digest or stale head; do not overwrite either revision. Errors/cancellation preserve the old head.
 Load recomputes source and arrangement digests; an export request must match the current head.
@@ -95,8 +114,13 @@ Copying a lock onto a changed candidate does not preserve validity.
 
 `MelodySelection` binds the exact source revision. Sections are ordered nonoverlapping written-time
 ranges covering the complete form; selectors specify **part + voice + event IDs**, including rests.
-An intentional silent interval is explicit with reason, not a missing event. Import/engine must
-return `selection-needed` for gaps, overlaps, polyphony or unresolved intro/outro decisions.
+An intentional silent interval is explicit with reason, not a missing event. `source-ready`
+means acquired source, not musician-approved melody. A **complete source-grounded proposed
+default map** (for example intro from part 1/main vocal from part 0, with disclosed remaining
+choices) can produce an auditionable, unapproved draft without manually resolving subjective
+intro/outro judgments first. Show the actual selected events and pending review; do not claim
+musical approval. Return `selection-needed` for an actually incomplete/conflicting map (gaps,
+overlaps or unresolved polyphony), not merely because a complete disclosed default is unapproved.
 Track selection alone is insufficient. Events crossing a section boundary require consistent
 selection of the whole merged event (no implicit clipping). Melody and bass are each monophonic;
 harmony can have multiple independent voices. Equal pitches in different roles remain distinct.
@@ -266,7 +290,13 @@ if (report.status === 'passed') {
 
 Transport can use multipart for `ImportInput.bytes`, and binary download for `Artifact.bytes`;
 these local port values are intentionally not persisted JSON. API export responses instead carry
-a same-origin download path and parsed manifest. Source import/score/store/export requests must
+a same-origin download path and parsed manifest. Shared `LocalDownloadPathSchema` requires a
+root-relative path and rejects `//` authority references, every backslash and C0/C1 control
+character. Where the application origin is available, use
+`resolveLocalDownloadUrl(downloadPath, location.origin)` to normalize with the URL parser and
+verify the final HTTP(S) origin before navigation/fetch. Do not decode/reinterpret the returned
+path as another URL or use an off-origin redirect to circumvent this boundary.
+Source import/score/store/export requests must
 be runtime parsed at their boundaries; UI workers share these schemas, not parallel note models.
 
 Concrete request construction once the source and explicit selection are available:
@@ -285,7 +315,16 @@ const request = ArrangementRequestSchema.parse({
   budget: {maxStates: 10000, maxElapsedMs: 5000},
 });
 const proposal = await api.arrange(request.sourceRevision, request, signal);
-// After saving a candidate as the current immutable head and independent validation:
+// For proposal.status === 'candidate', saved is its API-stamped ScoreV1:
+// API allocated the project/revision header and computed its digest first.
+const firstSave = await api.commit(saved.projectId, {
+  kind: 'create', expectedHead: null, replacement: saved,
+});
+if (firstSave.status !== 'saved') return firstSave; // Existing head is a conflict, never overwrite.
+// For approve/edit, API stamps a NEW replacement, parentId = firstSave.revision.id,
+// then commit uses expectedHead: firstSave.revision (nonnull). See typed schema-only
+// first-create -> approve -> edit example in tests/fixtures/boundaries.test.ts.
+// After independent validation of the saved current head:
 const download = await api.exportArtifact({
   projectId: saved.projectId,
   expectedHead: {id: saved.revision.id, digest: saved.revision.digest},
@@ -293,7 +332,7 @@ const download = await api.exportArtifact({
 }, signal);
 if (download.status === 'ready') {
   // downloadPath is same-origin; label using manifest.review, not approval assumptions.
-  return download.downloadPath;
+  return resolveLocalDownloadUrl(download.downloadPath, location.origin).href;
 }
 // stale-revision or validation-failed must never return old cached bytes as success.
 ```
