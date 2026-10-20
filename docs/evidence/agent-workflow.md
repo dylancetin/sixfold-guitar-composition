@@ -2,6 +2,8 @@
 
 Date: 2026-10-20. Scope: owned `src/agent/**`, `src/publication/**`, two CLI scripts, agent tests, orchestration docs. No client/server/viewer or root package/check/ignore/TSV edits. **Implementation self-checks, pending parent independent review/integration.**
 
+Historical initial checks below describe `4a039f3`. Independent R1 review rejected its unconditional baseline-equivalence rule; that rule is removed, not an authorship safeguard. See `agent-review-fix-r1.md` for the narrow failing-before/passing-after correction and current tests. Actual model source review may retain baseline choices without claiming new composition.
+
 ## Executed checks
 
 | Command / control | Observed result |

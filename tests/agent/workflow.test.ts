@@ -78,9 +78,20 @@ test('plan boundary rejects unknown source IDs and fake response digest, and acc
   await expect(acceptAgentPlan({ bytes: new TextEncoder().encode(`${JSON.stringify(plan)}\n\n`), delegation: receipt, source: loaded.source, requestDigest: loaded.run.requestDigest, baseline: loaded.baseline })).rejects.toThrow('exact raw');
   const bad = jsonBytes({ ...plan, candidates: [{ ...plan.candidates[0], sourceEventIds: ['invented-note'] }] });
   await expect(acceptAgentPlan({ bytes: bad, delegation: { ...receipt, responseDigest: sha256(bad) }, source: loaded.source, requestDigest: loaded.run.requestDigest, baseline: loaded.baseline })).rejects.toThrow('Unknown/non-note');
-  const renamed = jsonBytes({ ...loaded.baseline, version: 'pretend-ai', candidates: loaded.baseline.candidates.map((c) => ({ ...c, id: `renamed-${c.id}`, reason: 'AI renamed this' })) });
-  await expect(acceptAgentPlan({ bytes: renamed, delegation: { ...receipt, responseDigest: sha256(renamed) }, source: loaded.source, requestDigest: loaded.run.requestDigest, baseline: loaded.baseline })).rejects.toThrow('Baseline-equivalent');
   await expect(acceptAgentPlan({ bytes, delegation: { ...receipt, requestDigest: '0'.repeat(64) }, source: loaded.source, requestDigest: loaded.run.requestDigest, baseline: loaded.baseline })).rejects.toThrow('different source/request');
+});
+
+test('baseline agreement accepts a bound task receipt, but never infers model involvement without one', async () => {
+  const directory = await root(); const run = await prepared(directory); const loaded = await loadPreparedRun(run.directory);
+  // Identical choices are legitimate model-reviewed/retained baseline, not newly composed material.
+  // This synthetic receipt tests the boundary only; it is NOT evidence of a real model review.
+  const bytes = jsonBytes(loaded.baseline);
+  const receipt = { schemaVersion: 1, transport: 'project-subagent', provider: 'test-fixture-NOT-live', model: 'synthetic-receipt-NOT-a-model-call', taskId: 'fixture-baseline-review-NOT-live', callId: 'fixture-call-NOT-live', calledAt: '2026-10-20T00:00:00Z', responseDigest: sha256(bytes), sourceRevision: loaded.run.sourceRevision, requestDigest: loaded.run.requestDigest };
+  const accepted = await acceptAgentPlan({ bytes, delegation: receipt, source: loaded.source, requestDigest: loaded.run.requestDigest, baseline: loaded.baseline });
+  expect(accepted.plan).toEqual(loaded.baseline);
+  expect(accepted.provenance).toMatchObject({ mode: 'configured-llm', responseDigest: sha256(bytes), acceptedCandidateIds: loaded.baseline.candidates.map((c) => c.id) });
+  await expect(acceptAgentPlan({ bytes, delegation: undefined, source: loaded.source, requestDigest: loaded.run.requestDigest, baseline: loaded.baseline })).rejects.toThrow();
+  await expect(publishArrangement({ runDirectory: run.directory, baseUrl: 'https://viewer.test', planPath: run.baselinePlanPath }, { scoreAdapter: storageAdapterDouble() })).rejects.toThrow('--delegation');
 });
 
 test('immutable storage publication is complete, digest-bound, replay-safe and returns absolute deep links (test-double exports)', async () => {

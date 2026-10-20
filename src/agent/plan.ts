@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { contentDigest, DigestSchema, PlanSchema, PlannerProvenanceSchema, RevisionRefSchema } from '../domain';
+import { DigestSchema, PlanSchema, PlannerProvenanceSchema, RevisionRefSchema } from '../domain';
 import type { Plan, PlannerProvenance, SourceScoreV1 } from '../domain';
 import { sha256 } from './files';
 
@@ -26,8 +26,6 @@ export function validatePlan(input: unknown, source: SourceScoreV1): Plan {
   return plan;
 }
 
-const musicalChoices = (plan: Plan) => plan.candidates.map((c) => JSON.stringify({ role: c.role, sourceEventIds: [...c.sourceEventIds].sort(), octaveShift: c.octaveShift, density: c.density })).sort();
-
 export async function acceptAgentPlan(options: {
   bytes: Uint8Array; delegation: unknown; source: SourceScoreV1; requestDigest: string; baseline: Plan;
 }): Promise<{ plan: Plan; provenance: PlannerProvenance; delegation: AgentDelegation }> {
@@ -35,7 +33,8 @@ export async function acceptAgentPlan(options: {
   if (delegation.responseDigest !== sha256(options.bytes)) throw new Error('Delegation responseDigest must hash the exact raw plan-file bytes');
   if (delegation.sourceRevision.id !== options.source.revision.id || delegation.sourceRevision.digest !== options.source.revision.digest || delegation.requestDigest !== options.requestDigest) throw new Error('Delegation is bound to a different source/request');
   const plan = validatePlan(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(options.bytes)), options.source);
-  if (await contentDigest(musicalChoices(plan)) === await contentDigest(musicalChoices(options.baseline))) throw new Error('Baseline-equivalent choices cannot be relabeled AI-authored; publish the deterministic fallback or author a substantive source-grounded plan');
+  // Agreement/difference with the baseline is not authorship evidence. The parent
+  // attests the actual task; independent review checks that evidence and its reasons.
   const provenance = PlannerProvenanceSchema.parse({
     mode: 'configured-llm', provider: delegation.provider, model: delegation.model,
     plannerVersion: plan.version, callId: delegation.callId, calledAt: delegation.calledAt,

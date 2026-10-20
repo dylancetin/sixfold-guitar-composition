@@ -46,7 +46,7 @@ The parent delegates to the requested GPT-6.1-Sol xhigh, then uses a separate in
 }
 ```
 
-The placeholder above is documentation, **not a valid song plan or evidence of a call**. Candidates may only reference existing source notes; IDs must be unique; role is bass/harmony, octaveShift -3…3 and density sparse/regular. The plan cannot change protected melody/selection/key, directly prescribe arbitrary new rhythms/chords or guarantee candidate retention. Bass register is independently explored by the engine; harmony uses the proposed octave. The engine audits actual register moves, shortened accompaniment and omissions. Ask for source-specific reasons and meaningful phrase/density/register choices, not a mechanical baseline rename.
+The placeholder above is documentation, **not a valid song plan or evidence of a call**. Candidates may only reference existing source notes; IDs must be unique; role is bass/harmony, octaveShift -3…3 and density sparse/regular. The plan cannot change protected melody/selection/key, directly prescribe arbitrary new rhythms/chords or guarantee candidate retention. Bass register is independently explored by the engine; harmony uses the proposed octave. The engine audits actual register moves, shortened accompaniment and omissions. Ask for source-specific review and reasons. A real musician task may independently retain good baseline choices; describe that as model-reviewed/selected baseline, not newly composed material. Do not force musical differences for provenance.
 
 ### Factual delegation receipt
 
@@ -65,7 +65,7 @@ After the actual task, the **parent** writes `<run>/delegation.json` using `Agen
 
 The canonical `configured-llm` provenance schema already accommodates this real delegated model call: provider/model, plan version, callId/time, raw response digest and all accepted plan candidate IDs. Transport and task identity are retained in publication notes/manifest; it is **not** a new HTTP planner. Accepted means schema/source-validated proposal, not that every proposed accompaniment survives constraints. A receipt is an honest orchestrator attestation, not cryptographic proof a model read music. The independent judge must inspect task evidence and actual output.
 
-The publisher rejects wrong raw digest, wrong source/request, invented/non-note source references, duplicate candidates, and baseline-equivalent candidate choices even if names/reasons/version changed. That last guard prevents a trivial deterministic-to-AI relabel; it does not itself prove musical reasoning. If real planning fails or no factual receipt exists, publish explicitly `--baseline` or report the blocker. No automatic AI label and no new secret prompt.
+The publisher rejects wrong raw digest, wrong source/request, invented/non-note source references, duplicate candidates and missing/malformed receipts. It permits baseline-equivalent choices with the same factual task/output evidence required for any other plan. Neither equality nor a trivial density/name/reason edit proves or disproves model involvement: the parent attests the actual source-reading task, and the independent judge inspects its evidence and reasons. A synthetic test receipt proves only the boundary checks, not actual authorship or new composition. If real planning fails or no factual receipt exists, publish explicitly `--baseline` or report the blocker. No automatic AI label and no new secret prompt.
 
 ## 3. Validate, export and atomically publish
 

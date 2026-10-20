@@ -13,7 +13,7 @@ export function musicianBrief(source: SourceScoreV1, request: ArrangementRequest
     'No network planner or new credentials. The project subagent is the actual reasoning model.',
     'Preserve every selected melody pitch, onset, release and rest. Capo is not transposition.',
     'Choose source-grounded bass first, then sparse inner harmony. Explain phrase/register/density decisions in candidate.reason.',
-    'Do not simply rename baseline-plan.json. Its deterministic fallback is a comparison, not AI output.',
+    'Review baseline-plan.json against the source. You may retain good baseline choices; explain them as model-reviewed/selected, not newly composed material. A rename or a difference alone proves no model involvement.',
     'Plan cannot edit melody/selection, shorten notes directly, label chords, or guarantee retention: engine chooses feasible register/sustain variants and audits omissions.',
     '', `Source revision: ${source.revision.id} / ${source.revision.digest}`,
     `Difficulty: ${request.preferences.difficulty}; tuning: standard [40,45,50,55,59,64]; capo: ${JSON.stringify(request.preferences.capo)}`,
