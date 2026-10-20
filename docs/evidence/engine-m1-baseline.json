@@ -1,0 +1,2853 @@
+{
+  "scope": "M1 source-oriented register correction; metadata only; no listening or calibrated human-playability claim",
+  "planRawSha256": "07e999ffdfa59e3507fdd125a505829e02b1ee082245d0843cc78f3d91f9f34b",
+  "planDigest": "d260b508c7cdd7c0eb43a42350e9435c4bbd9b63494f9cb0ade65dfd2bdf3b51",
+  "sourceRawSha256": "1e73fdea5d3d7ea48572fa7da82aa0e2b1517da4f1d380a692cbdeb8eca682e5",
+  "requestRawSha256": "832e6c574ea2bdecc398f24cbf4a61a90049c6f4714a6e52c27cabb215e42044",
+  "inputsUnchanged": true,
+  "reusedOriginalPlannerProvenance": {
+    "mode": "configured-llm",
+    "provider": "opencode",
+    "model": "openai/gpt-6.1-sol",
+    "plannerVersion": "agent-source-phrase-plan-2",
+    "callId": "node:delegated-task:command%3Amcp%3A6402f533-82cb-4de9-b53f-d4ed4f0055a5%3Adelegate-task%3Aguitar-musician-arrangement-r1",
+    "calledAt": "2026-10-20T22:24:18.147Z",
+    "responseDigest": "07e999ffdfa59e3507fdd125a505829e02b1ee082245d0843cc78f3d91f9f34b",
+    "acceptedCandidateIds": [
+      "bass-bar1-p7-bt0-n0",
+      "bass-bar2-p7-bt1-n0",
+      "bass-bar3-p7-bt1-n0",
+      "bass-bar4-p7-bt0-n0",
+      "bass-bar5-p8-bt0-n0",
+      "bass-bar5-p8-bt2-n0",
+      "bass-bar5-p8-bt3-n0",
+      "bass-bar6-p8-bt0-n0",
+      "bass-bar6-p8-bt2-n0",
+      "bass-bar6-p8-bt3-n0",
+      "bass-bar7-p8-bt0-n0",
+      "bass-bar7-p8-bt2-n0",
+      "bass-bar7-p8-bt3-n0",
+      "bass-bar17-p8-bt0-n0",
+      "bass-bar17-p8-bt2-n0",
+      "bass-bar17-p8-bt3-n0",
+      "bass-bar18-p8-bt0-n0",
+      "bass-bar18-p8-bt2-n0",
+      "bass-bar18-p8-bt3-n0",
+      "bass-bar19-p8-bt0-n0",
+      "bass-bar19-p8-bt2-n0",
+      "bass-bar19-p8-bt3-n0",
+      "bass-bar30-p8-bt0-n0",
+      "bass-bar30-p8-bt2-n0",
+      "bass-bar30-p8-bt3-n0",
+      "bass-bar31-p8-bt0-n0",
+      "bass-bar31-p8-bt2-n0",
+      "bass-bar31-p8-bt3-n0",
+      "bass-bar32-p8-bt0-n0",
+      "bass-bar32-p8-bt2-n0",
+      "bass-bar32-p8-bt3-n0",
+      "bass-bar33-p8-bt0-n0",
+      "bass-bar33-p8-bt2-n0",
+      "bass-bar33-p8-bt3-n0",
+      "bass-bar38-p8-bt0-n0",
+      "bass-bar38-p8-bt2-n0",
+      "bass-bar38-p8-bt3-n0",
+      "bass-bar39-p8-bt0-n0",
+      "bass-bar39-p8-bt2-n0",
+      "bass-bar39-p8-bt3-n0",
+      "bass-bar40-p8-bt0-n0",
+      "bass-bar40-p8-bt2-n0",
+      "bass-bar40-p8-bt3-n0",
+      "bass-bar43-p8-bt0-n0",
+      "bass-bar43-p8-bt2-n0",
+      "bass-bar43-p8-bt3-n0",
+      "bass-bar44-p8-bt0-n0",
+      "bass-bar44-p8-bt2-n0",
+      "bass-bar44-p8-bt3-n0",
+      "bass-bar45-p8-bt0-n0",
+      "bass-bar45-p8-bt2-n0",
+      "bass-bar45-p8-bt3-n0",
+      "bass-bar46-p8-bt0-n0",
+      "bass-bar46-p8-bt2-n0",
+      "bass-bar46-p8-bt3-n0",
+      "bass-bar8-p8-bt0-n0",
+      "bass-bar8-p8-bt2-n0",
+      "bass-bar8-p8-bt3-n0",
+      "harmony-bar8-p7-bt0-n0",
+      "harmony-bar8-p7-bt4-n0",
+      "bass-bar9-p8-bt0-n0",
+      "bass-bar9-p8-bt2-n0",
+      "bass-bar9-p8-bt3-n0",
+      "harmony-bar9-p7-bt0-n0",
+      "harmony-bar9-p7-bt4-n0",
+      "bass-bar20-p8-bt0-n0",
+      "bass-bar20-p8-bt2-n0",
+      "bass-bar20-p8-bt3-n0",
+      "harmony-bar20-p7-bt0-n0",
+      "harmony-bar20-p7-bt4-n0",
+      "bass-bar21-p8-bt0-n0",
+      "bass-bar21-p8-bt2-n0",
+      "bass-bar21-p8-bt3-n0",
+      "harmony-bar21-p7-bt0-n0",
+      "harmony-bar21-p7-bt4-n0",
+      "bass-bar10-p6-bt0-n0",
+      "bass-bar22-p6-bt0-n0",
+      "harmony-bar10-p7-bt1-n2",
+      "harmony-bar11-p7-bt1-n2",
+      "harmony-bar22-p7-bt1-n2",
+      "harmony-bar23-p7-bt1-n2",
+      "bass-bar12-p8-bt0-n0",
+      "bass-bar13-p8-bt0-n0",
+      "harmony-bar13-p7-bt7-n2",
+      "bass-bar24-p8-bt0-n0",
+      "bass-bar25-p8-bt0-n0",
+      "harmony-bar25-p7-bt7-n2",
+      "bass-bar14-p8-bt0-n0",
+      "bass-bar14-p8-bt2-n0",
+      "harmony-bar14-p1-bt0-n1",
+      "harmony-bar14-p7-bt4-n0",
+      "bass-bar26-p8-bt0-n0",
+      "bass-bar26-p8-bt2-n0",
+      "harmony-bar26-p1-bt0-n1",
+      "harmony-bar26-p7-bt4-n0",
+      "bass-bar15-p8-bt0-n0",
+      "bass-bar15-p8-bt2-n0",
+      "harmony-bar15-p7-bt0-n1",
+      "harmony-bar15-p7-bt4-n0",
+      "bass-bar27-p8-bt0-n0",
+      "bass-bar27-p8-bt2-n0",
+      "harmony-bar27-p7-bt0-n1",
+      "harmony-bar27-p7-bt4-n0",
+      "bass-bar16-p1-bt0-n1",
+      "harmony-bar16-p7-bt0-n1",
+      "harmony-bar16-p7-bt3-n2",
+      "bass-bar28-p1-bt0-n1",
+      "harmony-bar28-p7-bt0-n1",
+      "harmony-bar28-p7-bt3-n2",
+      "bass-bar29-p8-bt2-n0",
+      "harmony-bar29-p7-bt2-n1",
+      "harmony-bar29-p7-bt5-n2",
+      "harmony-bar5-p7-bt1-n2",
+      "harmony-bar5-p7-bt6-n0",
+      "harmony-bar17-p7-bt1-n2",
+      "harmony-bar17-p7-bt6-n0",
+      "harmony-bar6-p7-bt1-n2",
+      "harmony-bar18-p7-bt1-n2",
+      "harmony-bar7-p7-bt1-n2",
+      "harmony-bar19-p7-bt1-n2",
+      "harmony-bar30-p7-bt1-n2",
+      "harmony-bar30-p7-bt4-n1",
+      "harmony-bar30-p7-bt6-n0",
+      "harmony-bar31-p7-bt1-n2",
+      "harmony-bar31-p7-bt4-n1",
+      "harmony-bar31-p7-bt6-n0",
+      "harmony-bar32-p7-bt4-n1",
+      "harmony-bar32-p7-bt6-n0",
+      "harmony-bar33-p7-bt1-n2",
+      "bass-bar34-p8-bt4-n0",
+      "harmony-bar34-p7-bt2-n0",
+      "harmony-bar34-p7-bt6-n0",
+      "bass-bar35-p8-bt0-n0",
+      "bass-bar35-p8-bt4-n0",
+      "harmony-bar35-p7-bt0-n0",
+      "harmony-bar35-p7-bt4-n0",
+      "bass-bar36-p8-bt2-n0",
+      "harmony-bar38-p1-bt0-n0",
+      "harmony-bar38-p1-bt2-n1",
+      "harmony-bar38-p1-bt5-n2",
+      "harmony-bar43-p1-bt0-n0",
+      "harmony-bar43-p1-bt2-n1",
+      "harmony-bar43-p1-bt5-n2",
+      "harmony-bar39-p1-bt0-n0",
+      "harmony-bar39-p1-bt3-n1",
+      "harmony-bar44-p1-bt0-n0",
+      "harmony-bar44-p1-bt3-n1",
+      "harmony-bar40-p1-bt1-n1",
+      "harmony-bar40-p1-bt2-n1",
+      "harmony-bar45-p1-bt1-n1",
+      "harmony-bar45-p1-bt2-n1",
+      "bass-bar41-p8-bt0-n0",
+      "harmony-bar41-p1-bt0-n2",
+      "bass-bar42-p8-bt0-n0",
+      "harmony-bar46-p1-bt0-n2",
+      "bass-bar13-p8-bt3-n0",
+      "harmony-bar13-p7-bt4-n1",
+      "bass-bar25-p8-bt3-n0",
+      "harmony-bar25-p7-bt4-n1"
+    ]
+  },
+  "original": [
+    {
+      "name": "held-crossing",
+      "status": "candidate",
+      "pitches": [
+        {
+          "role": "bass",
+          "pitch": 59,
+          "start": {
+            "n": 0,
+            "d": 1
+          },
+          "duration": {
+            "n": 4,
+            "d": 1
+          }
+        },
+        {
+          "role": "melody",
+          "pitch": 66,
+          "start": {
+            "n": 0,
+            "d": 1
+          },
+          "duration": {
+            "n": 2,
+            "d": 1
+          }
+        },
+        {
+          "role": "harmony",
+          "pitch": 57,
+          "start": {
+            "n": 1,
+            "d": 1
+          },
+          "duration": {
+            "n": 2,
+            "d": 1
+          }
+        },
+        {
+          "role": "melody",
+          "pitch": 68,
+          "start": {
+            "n": 2,
+            "d": 1
+          },
+          "duration": {
+            "n": 2,
+            "d": 1
+          }
+        }
+      ],
+      "validation": "passed"
+    },
+    {
+      "name": "isolated-high",
+      "status": "candidate",
+      "pitches": [
+        {
+          "role": "bass",
+          "pitch": 40,
+          "start": {
+            "n": 0,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "role": "melody",
+          "pitch": 65,
+          "start": {
+            "n": 0,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "role": "bass",
+          "pitch": 59,
+          "start": {
+            "n": 1,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "role": "melody",
+          "pitch": 67,
+          "start": {
+            "n": 3,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        }
+      ],
+      "validation": "passed"
+    }
+  ],
+  "crossedLiteralValidation": {
+    "status": "passed",
+    "scoreRevision": {
+      "id": "study-r1",
+      "digest": "c5571530a3247deb32acf9bc3412d2b76699757a30cc628a7ef6f976dec2460b"
+    },
+    "sourceRevision": {
+      "id": "one-bar-original-study",
+      "digest": "9712c3df3ee03a1ff4517be345a8cb5b0f3465855c5da572a1a34c8c7cf16d85"
+    },
+    "validatorVersion": "independent-guitar-validator-1",
+    "diagnostics": [
+      {
+        "code": "transition-unverified",
+        "severity": "warning",
+        "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+        "eventIds": [],
+        "barIds": [],
+        "occurrenceIds": []
+      }
+    ],
+    "checks": [
+      "source-identity",
+      "melody",
+      "form-tempo",
+      "physical",
+      "approval-locks"
+    ],
+    "transitions": "uncalibrated"
+  },
+  "results": [
+    {
+      "capo": 0,
+      "status": "candidate",
+      "elapsedMs": 1792.4955329999998,
+      "selectedCapo": 0,
+      "melody": {
+        "written": 173,
+        "performed": 245
+      },
+      "bass": {
+        "written": 92,
+        "performed": 146
+      },
+      "harmony": {
+        "written": 67,
+        "performed": 99
+      },
+      "exactSelectedMelody": true,
+      "melodyTimelineDigest": "320c63841f31fee1da83c039de4b8f5930f3613ef06c032c83d581445d57534b",
+      "restsDigest": "466138c794e23dff58ac6bd8a0a036bc43beaed8f123d589fef5fc3c904709cd",
+      "formDigest": "87a7681bcd981cd710f50573e65719b64aae7b5984b16086c00013a0f374dd81",
+      "occurrences": 64,
+      "planUnchanged": true,
+      "crossedWrittenIntervals": 10,
+      "crossedPerformedIntervals": 16,
+      "crossedPerformedQuarters": {
+        "n": 11,
+        "d": 1
+      },
+      "crossings": [
+        {
+          "bar": 8,
+          "bassSource": [
+            "p8:b8:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b8:v0:bt4:n0"
+          ],
+          "bassPitch": 59,
+          "harmonyPitch": 57,
+          "start": {
+            "n": 30,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 9,
+          "bassSource": [
+            "p8:b9:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b9:v0:bt4:n0"
+          ],
+          "bassPitch": 59,
+          "harmonyPitch": 57,
+          "start": {
+            "n": 34,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 20,
+          "bassSource": [
+            "p8:b20:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b20:v0:bt4:n0"
+          ],
+          "bassPitch": 59,
+          "harmonyPitch": 57,
+          "start": {
+            "n": 78,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 21,
+          "bassSource": [
+            "p8:b21:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b21:v0:bt4:n0"
+          ],
+          "bassPitch": 59,
+          "harmonyPitch": 57,
+          "start": {
+            "n": 82,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 30,
+          "bassSource": [
+            "p8:b30:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b30:v0:bt4:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 118,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 31,
+          "bassSource": [
+            "p8:b31:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b31:v0:bt4:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 122,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 38,
+          "bassSource": [
+            "p8:b38:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b38:v0:bt2:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 150,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 39,
+          "bassSource": [
+            "p8:b39:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b39:v0:bt3:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 154,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 43,
+          "bassSource": [
+            "p8:b43:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b43:v0:bt2:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 170,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 44,
+          "bassSource": [
+            "p8:b44:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b44:v0:bt3:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 174,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        }
+      ],
+      "largeBassLeaps": [
+        {
+          "sourceA": "p8:b7:v0:bt0:n0",
+          "sourceB": "p8:b7:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b7:v0:bt2:n0",
+          "sourceB": "p8:b7:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b8:v0:bt0:n0",
+          "sourceB": "p8:b8:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b8:v0:bt3:n0",
+          "sourceB": "p8:b9:v0:bt0:n0",
+          "from": 56,
+          "to": 40,
+          "delta": -16,
+          "sourceDelta": -4,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt0:n0",
+          "sourceB": "p8:b9:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt2:n0",
+          "sourceB": "p8:b9:v0:bt3:n0",
+          "from": 59,
+          "to": 45,
+          "delta": -14,
+          "sourceDelta": -2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt0:n0",
+          "sourceB": "p8:b19:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt2:n0",
+          "sourceB": "p8:b19:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b20:v0:bt0:n0",
+          "sourceB": "p8:b20:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b20:v0:bt3:n0",
+          "sourceB": "p8:b21:v0:bt0:n0",
+          "from": 56,
+          "to": 40,
+          "delta": -16,
+          "sourceDelta": -4,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt0:n0",
+          "sourceB": "p8:b21:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt2:n0",
+          "sourceB": "p8:b21:v0:bt3:n0",
+          "from": 59,
+          "to": 45,
+          "delta": -14,
+          "sourceDelta": -2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b30:v0:bt0:n0",
+          "sourceB": "p8:b30:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt0:n0",
+          "sourceB": "p8:b31:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt2:n0",
+          "sourceB": "p8:b31:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt0:n0",
+          "sourceB": "p8:b33:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt2:n0",
+          "sourceB": "p8:b33:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b38:v0:bt0:n0",
+          "sourceB": "p8:b38:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt0:n0",
+          "sourceB": "p8:b39:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt2:n0",
+          "sourceB": "p8:b39:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b41:v0:bt0:n0",
+          "sourceB": "p8:b42:v0:bt0:n0",
+          "from": 47,
+          "to": 59,
+          "delta": 12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b42:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt0:n0",
+          "from": 59,
+          "to": 47,
+          "delta": -12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b43:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt0:n0",
+          "sourceB": "p8:b44:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt2:n0",
+          "sourceB": "p8:b44:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        }
+      ],
+      "inflatedSameLineLeaps": [
+        {
+          "sourceA": "p8:b7:v0:bt0:n0",
+          "sourceB": "p8:b7:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b7:v0:bt2:n0",
+          "sourceB": "p8:b7:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b8:v0:bt0:n0",
+          "sourceB": "p8:b8:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b8:v0:bt3:n0",
+          "sourceB": "p8:b9:v0:bt0:n0",
+          "from": 56,
+          "to": 40,
+          "delta": -16,
+          "sourceDelta": -4,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt0:n0",
+          "sourceB": "p8:b9:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt2:n0",
+          "sourceB": "p8:b9:v0:bt3:n0",
+          "from": 59,
+          "to": 45,
+          "delta": -14,
+          "sourceDelta": -2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt0:n0",
+          "sourceB": "p8:b19:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt2:n0",
+          "sourceB": "p8:b19:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b20:v0:bt0:n0",
+          "sourceB": "p8:b20:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b20:v0:bt3:n0",
+          "sourceB": "p8:b21:v0:bt0:n0",
+          "from": 56,
+          "to": 40,
+          "delta": -16,
+          "sourceDelta": -4,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt0:n0",
+          "sourceB": "p8:b21:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt2:n0",
+          "sourceB": "p8:b21:v0:bt3:n0",
+          "from": 59,
+          "to": 45,
+          "delta": -14,
+          "sourceDelta": -2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b30:v0:bt0:n0",
+          "sourceB": "p8:b30:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt0:n0",
+          "sourceB": "p8:b31:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt2:n0",
+          "sourceB": "p8:b31:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt0:n0",
+          "sourceB": "p8:b33:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt2:n0",
+          "sourceB": "p8:b33:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b38:v0:bt0:n0",
+          "sourceB": "p8:b38:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt0:n0",
+          "sourceB": "p8:b39:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt2:n0",
+          "sourceB": "p8:b39:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b41:v0:bt0:n0",
+          "sourceB": "p8:b42:v0:bt0:n0",
+          "from": 47,
+          "to": 59,
+          "delta": 12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b42:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt0:n0",
+          "from": 59,
+          "to": 47,
+          "delta": -12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b43:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt0:n0",
+          "sourceB": "p8:b44:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt2:n0",
+          "sourceB": "p8:b44:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        }
+      ],
+      "totalSameLineContourDistortionSemitones": 396,
+      "isolatedHighBass": [
+        {
+          "source": [
+            "p8:b7:v0:bt2:n0"
+          ],
+          "pitch": 61
+        },
+        {
+          "source": [
+            "p8:b19:v0:bt2:n0"
+          ],
+          "pitch": 61
+        },
+        {
+          "source": [
+            "p8:b33:v0:bt2:n0"
+          ],
+          "pitch": 61
+        },
+        {
+          "source": [
+            "p8:b42:v0:bt0:n0"
+          ],
+          "pitch": 59
+        },
+        {
+          "source": [
+            "p8:b46:v0:bt3:n0"
+          ],
+          "pitch": 54
+        }
+      ],
+      "bassRange": [
+        40,
+        61
+      ],
+      "maxPhysicalFret": 7,
+      "maxStoppedSpan": 3,
+      "maxSounding": 3,
+      "maxStopped": 3,
+      "maxObservedAnchorStep": 5,
+      "maxObservedAnchorFretsPerSecond": 36,
+      "movementStatus": "uncalibrated",
+      "movementProxyNotHumanCalibration": true,
+      "omissions": [],
+      "shortened": [
+        {
+          "role": "bass",
+          "sourceIds": [
+            "p8:b35:v0:bt0:n0"
+          ],
+          "before": {
+            "soundingMidi": 35,
+            "duration": {
+              "n": 3,
+              "d": 2
+            }
+          },
+          "after": {
+            "soundingMidi": 47,
+            "duration": {
+              "n": 1,
+              "d": 1
+            }
+          }
+        }
+      ],
+      "registerChangeCount": 146,
+      "m2CandidatePresent": true,
+      "m2CandidateRetained": true,
+      "comparison": {
+        "selected": 0,
+        "reason": "User-chosen capo; sounding melody preserved",
+        "alternatives": [
+          {
+            "capo": 0,
+            "outcome": "candidate",
+            "reason": "Retained 92 bass and 67 harmony attacks; concert melody unchanged"
+          }
+        ]
+      },
+      "validation": {
+        "status": "passed",
+        "scoreRevision": {
+          "id": "candidate-r-80a0d925eb260abd03771cca",
+          "digest": "3bee8211cff4fd1d44dc1fd6bfed491130a8e3490224a217f857e6822996c08e"
+        },
+        "sourceRevision": {
+          "id": "source-ed7baa36-0b63-4f29-ad92-b84068b2675b",
+          "digest": "a529154e74d43b2a84361112eb6c2333723e8363a8dd2cb5181c9fa7a37ccb8e"
+        },
+        "validatorVersion": "independent-guitar-validator-1",
+        "diagnostics": [
+          {
+            "code": "transition-unverified",
+            "severity": "warning",
+            "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+            "eventIds": [],
+            "barIds": [],
+            "occurrenceIds": []
+          }
+        ],
+        "checks": [
+          "source-identity",
+          "melody",
+          "form-tempo",
+          "physical",
+          "approval-locks"
+        ],
+        "transitions": "uncalibrated"
+      },
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 6122/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "capo": 2,
+      "status": "candidate",
+      "elapsedMs": 1517.9625200000005,
+      "selectedCapo": 2,
+      "melody": {
+        "written": 173,
+        "performed": 245
+      },
+      "bass": {
+        "written": 92,
+        "performed": 146
+      },
+      "harmony": {
+        "written": 67,
+        "performed": 99
+      },
+      "exactSelectedMelody": true,
+      "melodyTimelineDigest": "320c63841f31fee1da83c039de4b8f5930f3613ef06c032c83d581445d57534b",
+      "restsDigest": "466138c794e23dff58ac6bd8a0a036bc43beaed8f123d589fef5fc3c904709cd",
+      "formDigest": "87a7681bcd981cd710f50573e65719b64aae7b5984b16086c00013a0f374dd81",
+      "occurrences": 64,
+      "planUnchanged": true,
+      "crossedWrittenIntervals": 10,
+      "crossedPerformedIntervals": 16,
+      "crossedPerformedQuarters": {
+        "n": 11,
+        "d": 1
+      },
+      "crossings": [
+        {
+          "bar": 13,
+          "bassSource": [
+            "p8:b13:v0:bt3:n0"
+          ],
+          "harmonySource": [
+            "p7:b13:v0:bt7:n2"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 59,
+          "start": {
+            "n": 103,
+            "d": 2
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 14,
+          "bassSource": [
+            "p8:b14:v0:bt0:n0"
+          ],
+          "harmonySource": [
+            "p1:b14:v0:bt0:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 51,
+          "start": {
+            "n": 52,
+            "d": 1
+          },
+          "duration": {
+            "n": 3,
+            "d": 2
+          }
+        },
+        {
+          "bar": 25,
+          "bassSource": [
+            "p8:b25:v0:bt3:n0"
+          ],
+          "harmonySource": [
+            "p7:b25:v0:bt7:n2"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 59,
+          "start": {
+            "n": 199,
+            "d": 2
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 26,
+          "bassSource": [
+            "p8:b26:v0:bt0:n0"
+          ],
+          "harmonySource": [
+            "p1:b26:v0:bt0:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 51,
+          "start": {
+            "n": 100,
+            "d": 1
+          },
+          "duration": {
+            "n": 3,
+            "d": 2
+          }
+        },
+        {
+          "bar": 30,
+          "bassSource": [
+            "p8:b30:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b30:v0:bt4:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 118,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 31,
+          "bassSource": [
+            "p8:b31:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b31:v0:bt4:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 122,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 38,
+          "bassSource": [
+            "p8:b38:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b38:v0:bt2:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 150,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 39,
+          "bassSource": [
+            "p8:b39:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b39:v0:bt3:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 154,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 43,
+          "bassSource": [
+            "p8:b43:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b43:v0:bt2:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 170,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 44,
+          "bassSource": [
+            "p8:b44:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b44:v0:bt3:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 174,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        }
+      ],
+      "largeBassLeaps": [
+        {
+          "sourceA": "p8:b7:v0:bt0:n0",
+          "sourceB": "p8:b7:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b7:v0:bt2:n0",
+          "sourceB": "p8:b7:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt3:n0",
+          "sourceB": "p6:b10:v0:bt0:n0",
+          "from": 57,
+          "to": 44,
+          "delta": -13,
+          "sourceDelta": 11,
+          "sameSourceLine": false,
+          "addedContourSemitones": 24
+        },
+        {
+          "sourceA": "p8:b13:v0:bt0:n0",
+          "sourceB": "p8:b13:v0:bt3:n0",
+          "from": 49,
+          "to": 61,
+          "delta": 12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b14:v0:bt0:n0",
+          "sourceB": "p8:b14:v0:bt2:n0",
+          "from": 61,
+          "to": 49,
+          "delta": -12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt0:n0",
+          "sourceB": "p8:b19:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt2:n0",
+          "sourceB": "p8:b19:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt3:n0",
+          "sourceB": "p6:b22:v0:bt0:n0",
+          "from": 57,
+          "to": 44,
+          "delta": -13,
+          "sourceDelta": 11,
+          "sameSourceLine": false,
+          "addedContourSemitones": 24
+        },
+        {
+          "sourceA": "p8:b25:v0:bt0:n0",
+          "sourceB": "p8:b25:v0:bt3:n0",
+          "from": 49,
+          "to": 61,
+          "delta": 12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b26:v0:bt0:n0",
+          "sourceB": "p8:b26:v0:bt2:n0",
+          "from": 61,
+          "to": 49,
+          "delta": -12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p1:b28:v0:bt0:n1",
+          "sourceB": "p8:b29:v0:bt2:n0",
+          "from": 43,
+          "to": 55,
+          "delta": 12,
+          "sourceDelta": -12,
+          "sameSourceLine": false,
+          "addedContourSemitones": 24
+        },
+        {
+          "sourceA": "p8:b30:v0:bt0:n0",
+          "sourceB": "p8:b30:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b30:v0:bt2:n0",
+          "sourceB": "p8:b30:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt0:n0",
+          "sourceB": "p8:b31:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt2:n0",
+          "sourceB": "p8:b31:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt0:n0",
+          "sourceB": "p8:b33:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt2:n0",
+          "sourceB": "p8:b33:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b38:v0:bt0:n0",
+          "sourceB": "p8:b38:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b38:v0:bt2:n0",
+          "sourceB": "p8:b38:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt0:n0",
+          "sourceB": "p8:b39:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt2:n0",
+          "sourceB": "p8:b39:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b43:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b43:v0:bt2:n0",
+          "sourceB": "p8:b43:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt0:n0",
+          "sourceB": "p8:b44:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt2:n0",
+          "sourceB": "p8:b44:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        }
+      ],
+      "inflatedSameLineLeaps": [
+        {
+          "sourceA": "p8:b7:v0:bt0:n0",
+          "sourceB": "p8:b7:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b7:v0:bt2:n0",
+          "sourceB": "p8:b7:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b13:v0:bt0:n0",
+          "sourceB": "p8:b13:v0:bt3:n0",
+          "from": 49,
+          "to": 61,
+          "delta": 12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b14:v0:bt0:n0",
+          "sourceB": "p8:b14:v0:bt2:n0",
+          "from": 61,
+          "to": 49,
+          "delta": -12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt0:n0",
+          "sourceB": "p8:b19:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt2:n0",
+          "sourceB": "p8:b19:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b25:v0:bt0:n0",
+          "sourceB": "p8:b25:v0:bt3:n0",
+          "from": 49,
+          "to": 61,
+          "delta": 12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b26:v0:bt0:n0",
+          "sourceB": "p8:b26:v0:bt2:n0",
+          "from": 61,
+          "to": 49,
+          "delta": -12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b30:v0:bt0:n0",
+          "sourceB": "p8:b30:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b30:v0:bt2:n0",
+          "sourceB": "p8:b30:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt0:n0",
+          "sourceB": "p8:b31:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt2:n0",
+          "sourceB": "p8:b31:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt0:n0",
+          "sourceB": "p8:b33:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt2:n0",
+          "sourceB": "p8:b33:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b38:v0:bt0:n0",
+          "sourceB": "p8:b38:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b38:v0:bt2:n0",
+          "sourceB": "p8:b38:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt0:n0",
+          "sourceB": "p8:b39:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt2:n0",
+          "sourceB": "p8:b39:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b43:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b43:v0:bt2:n0",
+          "sourceB": "p8:b43:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt0:n0",
+          "sourceB": "p8:b44:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt2:n0",
+          "sourceB": "p8:b44:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        }
+      ],
+      "totalSameLineContourDistortionSemitones": 396,
+      "isolatedHighBass": [
+        {
+          "source": [
+            "p8:b7:v0:bt2:n0"
+          ],
+          "pitch": 61
+        },
+        {
+          "source": [
+            "p8:b19:v0:bt2:n0"
+          ],
+          "pitch": 61
+        },
+        {
+          "source": [
+            "p8:b33:v0:bt2:n0"
+          ],
+          "pitch": 61
+        }
+      ],
+      "bassRange": [
+        42,
+        61
+      ],
+      "maxPhysicalFret": 9,
+      "maxStoppedSpan": 4,
+      "maxSounding": 3,
+      "maxStopped": 3,
+      "maxObservedAnchorStep": 4,
+      "maxObservedAnchorFretsPerSecond": 9,
+      "movementStatus": "uncalibrated",
+      "movementProxyNotHumanCalibration": true,
+      "omissions": [],
+      "shortened": [
+        {
+          "role": "bass",
+          "sourceIds": [
+            "p8:b35:v0:bt0:n0"
+          ],
+          "before": {
+            "soundingMidi": 35,
+            "duration": {
+              "n": 3,
+              "d": 2
+            }
+          },
+          "after": {
+            "soundingMidi": 47,
+            "duration": {
+              "n": 1,
+              "d": 1
+            }
+          }
+        }
+      ],
+      "registerChangeCount": 146,
+      "m2CandidatePresent": true,
+      "m2CandidateRetained": true,
+      "comparison": {
+        "selected": 2,
+        "reason": "User-chosen capo; sounding melody preserved",
+        "alternatives": [
+          {
+            "capo": 2,
+            "outcome": "candidate",
+            "reason": "Retained 92 bass and 67 harmony attacks; concert melody unchanged"
+          }
+        ]
+      },
+      "validation": {
+        "status": "passed",
+        "scoreRevision": {
+          "id": "candidate-r-d7e6254a56e7ab665c5d2a1d",
+          "digest": "a24fd185019d5d39ec65ac9ac3df5c07e04916cce4122dfd0cc0e73d26a83fa6"
+        },
+        "sourceRevision": {
+          "id": "source-ed7baa36-0b63-4f29-ad92-b84068b2675b",
+          "digest": "a529154e74d43b2a84361112eb6c2333723e8363a8dd2cb5181c9fa7a37ccb8e"
+        },
+        "validatorVersion": "independent-guitar-validator-1",
+        "diagnostics": [
+          {
+            "code": "transition-unverified",
+            "severity": "warning",
+            "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+            "eventIds": [],
+            "barIds": [],
+            "occurrenceIds": []
+          }
+        ],
+        "checks": [
+          "source-identity",
+          "melody",
+          "form-tempo",
+          "physical",
+          "approval-locks"
+        ],
+        "transitions": "uncalibrated"
+      },
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 4961/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "capo": "compare",
+      "status": "candidate",
+      "elapsedMs": 3052.017111,
+      "selectedCapo": 0,
+      "melody": {
+        "written": 173,
+        "performed": 245
+      },
+      "bass": {
+        "written": 92,
+        "performed": 146
+      },
+      "harmony": {
+        "written": 67,
+        "performed": 99
+      },
+      "exactSelectedMelody": true,
+      "melodyTimelineDigest": "320c63841f31fee1da83c039de4b8f5930f3613ef06c032c83d581445d57534b",
+      "restsDigest": "466138c794e23dff58ac6bd8a0a036bc43beaed8f123d589fef5fc3c904709cd",
+      "formDigest": "87a7681bcd981cd710f50573e65719b64aae7b5984b16086c00013a0f374dd81",
+      "occurrences": 64,
+      "planUnchanged": true,
+      "crossedWrittenIntervals": 10,
+      "crossedPerformedIntervals": 16,
+      "crossedPerformedQuarters": {
+        "n": 11,
+        "d": 1
+      },
+      "crossings": [
+        {
+          "bar": 8,
+          "bassSource": [
+            "p8:b8:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b8:v0:bt4:n0"
+          ],
+          "bassPitch": 59,
+          "harmonyPitch": 57,
+          "start": {
+            "n": 30,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 9,
+          "bassSource": [
+            "p8:b9:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b9:v0:bt4:n0"
+          ],
+          "bassPitch": 59,
+          "harmonyPitch": 57,
+          "start": {
+            "n": 34,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 20,
+          "bassSource": [
+            "p8:b20:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b20:v0:bt4:n0"
+          ],
+          "bassPitch": 59,
+          "harmonyPitch": 57,
+          "start": {
+            "n": 78,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 21,
+          "bassSource": [
+            "p8:b21:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b21:v0:bt4:n0"
+          ],
+          "bassPitch": 59,
+          "harmonyPitch": 57,
+          "start": {
+            "n": 82,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 30,
+          "bassSource": [
+            "p8:b30:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b30:v0:bt4:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 118,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 31,
+          "bassSource": [
+            "p8:b31:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p7:b31:v0:bt4:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 122,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 1
+          }
+        },
+        {
+          "bar": 38,
+          "bassSource": [
+            "p8:b38:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b38:v0:bt2:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 150,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 39,
+          "bassSource": [
+            "p8:b39:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b39:v0:bt3:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 154,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 43,
+          "bassSource": [
+            "p8:b43:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b43:v0:bt2:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 170,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        },
+        {
+          "bar": 44,
+          "bassSource": [
+            "p8:b44:v0:bt2:n0"
+          ],
+          "harmonySource": [
+            "p1:b44:v0:bt3:n1"
+          ],
+          "bassPitch": 61,
+          "harmonyPitch": 52,
+          "start": {
+            "n": 174,
+            "d": 1
+          },
+          "duration": {
+            "n": 1,
+            "d": 2
+          }
+        }
+      ],
+      "largeBassLeaps": [
+        {
+          "sourceA": "p8:b7:v0:bt0:n0",
+          "sourceB": "p8:b7:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b7:v0:bt2:n0",
+          "sourceB": "p8:b7:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b8:v0:bt0:n0",
+          "sourceB": "p8:b8:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b8:v0:bt3:n0",
+          "sourceB": "p8:b9:v0:bt0:n0",
+          "from": 56,
+          "to": 40,
+          "delta": -16,
+          "sourceDelta": -4,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt0:n0",
+          "sourceB": "p8:b9:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt2:n0",
+          "sourceB": "p8:b9:v0:bt3:n0",
+          "from": 59,
+          "to": 45,
+          "delta": -14,
+          "sourceDelta": -2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt0:n0",
+          "sourceB": "p8:b19:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt2:n0",
+          "sourceB": "p8:b19:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b20:v0:bt0:n0",
+          "sourceB": "p8:b20:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b20:v0:bt3:n0",
+          "sourceB": "p8:b21:v0:bt0:n0",
+          "from": 56,
+          "to": 40,
+          "delta": -16,
+          "sourceDelta": -4,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt0:n0",
+          "sourceB": "p8:b21:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt2:n0",
+          "sourceB": "p8:b21:v0:bt3:n0",
+          "from": 59,
+          "to": 45,
+          "delta": -14,
+          "sourceDelta": -2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b30:v0:bt0:n0",
+          "sourceB": "p8:b30:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt0:n0",
+          "sourceB": "p8:b31:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt2:n0",
+          "sourceB": "p8:b31:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt0:n0",
+          "sourceB": "p8:b33:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt2:n0",
+          "sourceB": "p8:b33:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b38:v0:bt0:n0",
+          "sourceB": "p8:b38:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt0:n0",
+          "sourceB": "p8:b39:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt2:n0",
+          "sourceB": "p8:b39:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b41:v0:bt0:n0",
+          "sourceB": "p8:b42:v0:bt0:n0",
+          "from": 47,
+          "to": 59,
+          "delta": 12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b42:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt0:n0",
+          "from": 59,
+          "to": 47,
+          "delta": -12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b43:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt0:n0",
+          "sourceB": "p8:b44:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt2:n0",
+          "sourceB": "p8:b44:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        }
+      ],
+      "inflatedSameLineLeaps": [
+        {
+          "sourceA": "p8:b7:v0:bt0:n0",
+          "sourceB": "p8:b7:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b7:v0:bt2:n0",
+          "sourceB": "p8:b7:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b8:v0:bt0:n0",
+          "sourceB": "p8:b8:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b8:v0:bt3:n0",
+          "sourceB": "p8:b9:v0:bt0:n0",
+          "from": 56,
+          "to": 40,
+          "delta": -16,
+          "sourceDelta": -4,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt0:n0",
+          "sourceB": "p8:b9:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b9:v0:bt2:n0",
+          "sourceB": "p8:b9:v0:bt3:n0",
+          "from": 59,
+          "to": 45,
+          "delta": -14,
+          "sourceDelta": -2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt0:n0",
+          "sourceB": "p8:b19:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b19:v0:bt2:n0",
+          "sourceB": "p8:b19:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b20:v0:bt0:n0",
+          "sourceB": "p8:b20:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b20:v0:bt3:n0",
+          "sourceB": "p8:b21:v0:bt0:n0",
+          "from": 56,
+          "to": 40,
+          "delta": -16,
+          "sourceDelta": -4,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt0:n0",
+          "sourceB": "p8:b21:v0:bt2:n0",
+          "from": 40,
+          "to": 59,
+          "delta": 19,
+          "sourceDelta": 7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b21:v0:bt2:n0",
+          "sourceB": "p8:b21:v0:bt3:n0",
+          "from": 59,
+          "to": 45,
+          "delta": -14,
+          "sourceDelta": -2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b30:v0:bt0:n0",
+          "sourceB": "p8:b30:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt0:n0",
+          "sourceB": "p8:b31:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b31:v0:bt2:n0",
+          "sourceB": "p8:b31:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt0:n0",
+          "sourceB": "p8:b33:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b33:v0:bt2:n0",
+          "sourceB": "p8:b33:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b38:v0:bt0:n0",
+          "sourceB": "p8:b38:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt0:n0",
+          "sourceB": "p8:b39:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b39:v0:bt2:n0",
+          "sourceB": "p8:b39:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b41:v0:bt0:n0",
+          "sourceB": "p8:b42:v0:bt0:n0",
+          "from": 47,
+          "to": 59,
+          "delta": 12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b42:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt0:n0",
+          "from": 59,
+          "to": 47,
+          "delta": -12,
+          "sourceDelta": 0,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b43:v0:bt0:n0",
+          "sourceB": "p8:b43:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt0:n0",
+          "sourceB": "p8:b44:v0:bt2:n0",
+          "from": 47,
+          "to": 61,
+          "delta": 14,
+          "sourceDelta": 2,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        },
+        {
+          "sourceA": "p8:b44:v0:bt2:n0",
+          "sourceB": "p8:b44:v0:bt3:n0",
+          "from": 61,
+          "to": 42,
+          "delta": -19,
+          "sourceDelta": -7,
+          "sameSourceLine": true,
+          "addedContourSemitones": 12
+        }
+      ],
+      "totalSameLineContourDistortionSemitones": 396,
+      "isolatedHighBass": [
+        {
+          "source": [
+            "p8:b7:v0:bt2:n0"
+          ],
+          "pitch": 61
+        },
+        {
+          "source": [
+            "p8:b19:v0:bt2:n0"
+          ],
+          "pitch": 61
+        },
+        {
+          "source": [
+            "p8:b33:v0:bt2:n0"
+          ],
+          "pitch": 61
+        },
+        {
+          "source": [
+            "p8:b42:v0:bt0:n0"
+          ],
+          "pitch": 59
+        },
+        {
+          "source": [
+            "p8:b46:v0:bt3:n0"
+          ],
+          "pitch": 54
+        }
+      ],
+      "bassRange": [
+        40,
+        61
+      ],
+      "maxPhysicalFret": 7,
+      "maxStoppedSpan": 3,
+      "maxSounding": 3,
+      "maxStopped": 3,
+      "maxObservedAnchorStep": 5,
+      "maxObservedAnchorFretsPerSecond": 36,
+      "movementStatus": "uncalibrated",
+      "movementProxyNotHumanCalibration": true,
+      "omissions": [],
+      "shortened": [
+        {
+          "role": "bass",
+          "sourceIds": [
+            "p8:b35:v0:bt0:n0"
+          ],
+          "before": {
+            "soundingMidi": 35,
+            "duration": {
+              "n": 3,
+              "d": 2
+            }
+          },
+          "after": {
+            "soundingMidi": 47,
+            "duration": {
+              "n": 1,
+              "d": 1
+            }
+          }
+        }
+      ],
+      "registerChangeCount": 146,
+      "m2CandidatePresent": true,
+      "m2CandidateRetained": true,
+      "comparison": {
+        "selected": 0,
+        "reason": "Compared capo 0 and 2 with identical concert melody. Prefer retained source bass, then sparse harmony, then lower fretting cost; no key transposition.",
+        "alternatives": [
+          {
+            "capo": 0,
+            "outcome": "candidate",
+            "reason": "Retained 92 bass and 67 harmony attacks; concert melody unchanged"
+          },
+          {
+            "capo": 2,
+            "outcome": "candidate",
+            "reason": "Retained 92 bass and 67 harmony attacks; concert melody unchanged"
+          }
+        ]
+      },
+      "validation": {
+        "status": "passed",
+        "scoreRevision": {
+          "id": "candidate-r-6fd521f04d8f415509ec08f1",
+          "digest": "3e97faf1f536a8d075084a5032b59170dff53ca64a14811e0ba9679cd00e5017"
+        },
+        "sourceRevision": {
+          "id": "source-ed7baa36-0b63-4f29-ad92-b84068b2675b",
+          "digest": "a529154e74d43b2a84361112eb6c2333723e8363a8dd2cb5181c9fa7a37ccb8e"
+        },
+        "validatorVersion": "independent-guitar-validator-1",
+        "diagnostics": [
+          {
+            "code": "transition-unverified",
+            "severity": "warning",
+            "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+            "eventIds": [],
+            "barIds": [],
+            "occurrenceIds": []
+          }
+        ],
+        "checks": [
+          "source-identity",
+          "melody",
+          "form-tempo",
+          "physical",
+          "approval-locks"
+        ],
+        "transitions": "uncalibrated"
+      },
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 6603/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    }
+  ]
+}
