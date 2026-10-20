@@ -1,5 +1,11 @@
 # U11/U12 canonical adapters — implementation evidence
 
+**Round-1 correction note:** independent review found a real non-unit-tempo blocker
+in `043b1fc`; its preference-only scaled fixture was invalid. The historical
+bounded evidence below is not a pass for that gate. See
+[adapters-tempo-correction.md](adapters-tempo-correction.md) for the real-validator
+before/fix/after regression and separately blocked actual-song smoke.
+
 **Verified bounded original-fixture adapters, not the complete requested song or
 product release.** No source/engine/UI/persistence implementation or canonical
 schema/log edits. API integration: [adapters-api.md](adapters-api.md).

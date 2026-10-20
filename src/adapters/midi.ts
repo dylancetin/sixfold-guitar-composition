@@ -27,7 +27,7 @@ export function encodeMidi(timeline: CompiledTimeline): Uint8Array {
   const end = exactTicks(timeline.end, PPQ);
   const conductor: MidiEvent[] = [{ tick: 0, order: 0, data: meta(3, text(`Revision ${timeline.score.revision.id} ${timeline.score.revision.digest}`)) }];
   for (const tempo of timeline.score.performedTempos) {
-    const micros = Math.floor(60000000 / (tempo.quarterBpm * timeline.score.preferences.tempoScale));
+    const micros = Math.floor(60000000 / tempo.quarterBpm);
     requireAdapter(micros >= 1 && micros <= 0xffffff, 'Tempo exceeds MIDI microsecond range');
     conductor.push({ tick: exactTicks(tempo.start, PPQ), order: 1, data: meta(81, int(micros, 3)) });
   }

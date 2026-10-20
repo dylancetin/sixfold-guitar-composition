@@ -97,7 +97,7 @@ function buildNative(timeline: CompiledTimeline, options: NotationOptions) {
     master.isAnacrusis = written.kind !== 'full';
     for (const tempo of canonical.performedTempos.filter(t => t.occurrenceId === occurrence.id)) {
       const offset = subtract(tempo.start, occurrence.start);
-      master.tempoAutomations.push(at.model.Automation.buildTempoAutomation(false, (offset.n / offset.d) / (occurrence.length.n / occurrence.length.d), tempo.quarterBpm * canonical.preferences.tempoScale, 2, true));
+      master.tempoAutomations.push(at.model.Automation.buildTempoAutomation(false, (offset.n / offset.d) / (occurrence.length.n / occurrence.length.d), tempo.quarterBpm, 2, true));
     }
     score.addMasterBar(master);
     const bar = new at.model.Bar(); staff.addBar(bar);

@@ -13,6 +13,7 @@
     "build": "bun build src/domain/index.ts --target=browser --outdir=dist",
     "build:engine": "bun build src/engine/index.ts --target=browser --outdir=dist/engine",
     "test:adapters": "bun test tests/adapters",
+    "test:adapters:tempo": "bun tests/adapters/effective-tempo.ts",
     "typecheck:adapters": "tsc --noEmit -p tests/adapters/tsconfig.json",
     "probe:adapters": "bun scripts/probe-adapters.ts",
     "build:adapters": "bun build src/adapters/index.ts --target=browser --outdir=dist/adapters"

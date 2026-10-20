@@ -81,7 +81,7 @@ export function oracleValidator(passes: number, pitchShift: number): Validator &
       if (score.occurrences.length !== passes * 2 || source.form.repeats.length !== (passes > 1 ? 1 : 0)) errors.push('Form differs');
       if (source.revision.digest !== score.source.revision.digest || context.approvedRevisions.length !== 0) errors.push('Source/context differs');
       for (const p of score.placements) if (score.instrument.tuning[p.stringIndex]! + score.instrument.capo + p.fret !== score.sounds.find(s => s.id === p.soundId)?.soundingMidi) errors.push('Wrong capo/placement');
-      for (const point of score.performedTempos) if (point.quarterBpm !== 80) errors.push('Unexpected fixture tempo');
+      for (const point of score.performedTempos) if (point.quarterBpm !== 80 * score.preferences.tempoScale) errors.push('Unexpected effective fixture tempo');
       const refs = { sourceRevision: { id: source.revision.id, digest: source.revision.digest }, scoreRevision: { id: score.revision.id, digest: score.revision.digest }, validatorVersion: 'independent-literal-fixture-1' };
       return ValidationReportSchema.parse(errors.length ? { ...refs, status: 'failed', diagnostics: errors.map(message => ({ code: 'artifact-mismatch', severity: 'error', message, barIds: [], eventIds: [], occurrenceIds: [] })) } : { ...refs, status: 'passed', checks: ['source-identity', 'melody', 'form-tempo', 'physical', 'approval-locks'], transitions: 'uncalibrated', diagnostics: [] });
     },

@@ -104,10 +104,11 @@ export function compileTimeline(input: ScoreV1) {
 
 export type CompiledTimeline = ReturnType<typeof compileTimeline>;
 
-/** Float conversion occurs only at the audio boundary. Tempo scale multiplies BPM exactly once. */
+/** Performed BPM is already effective. Runtime scale is absolute, relative to the revision's scale. */
 export function createTempoClock(timeline: CompiledTimeline, scale = timeline.score.preferences.tempoScale) {
   requireAdapter(Number.isFinite(scale) && scale > 0, 'Invalid tempo scale');
-  const points = timeline.score.performedTempos.map(t => ({ quarter: t.start.n / t.start.d, bpm: t.quarterBpm * scale, seconds: 0 }));
+  const ratio = scale / timeline.score.preferences.tempoScale;
+  const points = timeline.score.performedTempos.map(t => ({ quarter: t.start.n / t.start.d, bpm: t.quarterBpm * ratio, seconds: 0 }));
   for (let i = 1; i < points.length; i++) {
     const previous = points[i - 1]!;
     points[i]!.seconds = previous.seconds + (points[i]!.quarter - previous.quarter) * 60 / previous.bpm;

@@ -21,7 +21,7 @@ await audio.play(); // creates/resumes AudioContext, synthetic plucked triangle 
 audio.pause();     // preserve position; cancel ALL current and queued sources
 audio.stop();      // cancel and return to zero
 audio.seek(4);     // quarters on the one unfolded performance; resumes held notes
-audio.setTempoScale(0.75); // absolute multiplier of canonical BPM, not compounded
+audio.setTempoScale(0.75); // absolute written-tempo scale; effective map × (0.75/revisionScale)
 audio.setMuted('bass', true);
 audio.setSolo('melody', true); // multiple solo roles supported, mute wins
 audio.setLoop({ startQuarter: 0, endQuarter: 8 }); // half-open, >=100ms
@@ -38,6 +38,10 @@ readiness after loading notation. `activeSegments` includes silent rest segments
 filters role mute/solo only while playing. Snapshot quarter/seconds derive from
 AudioContext time, not timer ticks. A suspended tab pauses/cancels; it requires a
 new gesture to resume. Replace the controller whenever the revision changes.
+Canonical `performedTempos` and occurrence entry BPM already include the revision's
+preference scale. MIDI, native engraving and initial WebAudio consume those BPMs
+directly. Only a runtime change applies requestedScale/revisionScale. For written
+80 BPM and revision scale 0.5, the map is 40 BPM; runtime 0.75 makes it 60, not 30.
 
 This is honestly **synthetic plucked audio**, not a recorded acoustic guitar or
 alphaTab soundfont. Do NOT start alphaTab playback alongside it: there is one

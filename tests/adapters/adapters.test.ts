@@ -122,8 +122,11 @@ describe('canonical notation and runtime export boundary', () => {
     expect(() => checkMidi(new Uint8Array(writeMidi(unmatched)), 1, 0)).toThrow('unmatched');
   });
 
-  test('MIDI tempo scaling is applied once to BPM, never to already-sounding notes or exact ticks', async () => {
-    const { source, score } = await study(2, 2, 2); score.preferences.tempoScale = 0.9; await stamp(score);
+  test('MIDI consumes materialized effective BPM without scaling it again or changing sounding notes/ticks', async () => {
+    const { source, score } = await study(2, 2, 2); score.preferences.tempoScale = 0.9;
+    for (const occurrence of score.occurrences) occurrence.entryQuarterBpm = 72;
+    for (const tempo of score.performedTempos) tempo.quarterBpm = 72;
+    await stamp(score);
     const validator = oracleValidator(2, 2), adapter = createScoreAdapter({ validator, getValidationContext: () => ({ approvedRevisions: [] }) });
     const artifact = await adapter.exportArtifact(source, envelope(source, score, validator), 'midi');
     expect(checkMidi(artifact.bytes, 2, 2, 0.9).finalTick).toBe(15360);
