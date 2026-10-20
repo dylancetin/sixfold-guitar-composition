@@ -1,0 +1,158 @@
+import { useEffect, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { z } from 'zod';
+import { ScoreV1Schema, verifyRevisionDigest } from '../domain';
+import type { ScoreV1 } from '../domain';
+import { LibraryResponseSchema, PublishedManifestSchema } from '../server/published-schema';
+import type { LibraryEntry, PublishedManifest } from '../server/published-schema';
+import { loadViewerAdapter } from './browser-port';
+import type { PlaybackSnapshot, Role, ScoreController } from './browser-port';
+
+const roles: Role[] = ['melody', 'bass', 'harmony'];
+const initial: PlaybackSnapshot = { status: 'stopped', quarter: 0, occurrenceIndex: 0, seconds: 0, durationSeconds: 0, activePerformedSoundIds: [] };
+const fraction = (q: { n: number; d: number }) => q.d === 1 ? `${q.n}` : `${q.n}/${q.d}`;
+const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
+const date = (value: string) => new Date(value).toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const base = (id: string) => `/arrangements/${encodeURIComponent(id)}`;
+async function json<T>(path: string, schema: z.ZodType<T>, signal: AbortSignal): Promise<T> {
+  const response = await fetch(path, { signal });
+  const data: unknown = await response.json();
+  if (!response.ok) {
+    const error = z.object({ error: z.string() }).safeParse(data);
+    throw new Error(error.success ? error.data.error : 'This published arrangement could not be opened.');
+  }
+  return schema.parse(data);
+}
+function Mark() {
+  return <svg viewBox="0 0 40 44" aria-hidden="true"><path d="M7 3v38m5-38v38m5-38v38m5-38v38m5-38v38m5-38v38" /><circle cx="19.5" cy="22" r="10" /></svg>;
+}
+function Icon({ name }: { name: 'play' | 'pause' | 'stop' | 'download' | 'loop' | 'back' }) {
+  const paths = { play: 'M8 5l11 7-11 7z', pause: 'M8 5v14M16 5v14', stop: 'M6 6h12v12H6z', download: 'M12 3v12m-5-5l5 5 5-5M4 16v5h16v-5', loop: 'M5 8h13l-4-4m4 4-4 4M19 16H6l4 4m-4-4 4-4', back: 'M19 12H5m6-6-6 6 6 6' };
+  return <svg className="icon" viewBox="0 0 24 24" aria-hidden="true"><path d={paths[name]} /></svg>;
+}
+function Header() {
+  return <header className="masthead"><a className="brand" href="/" aria-label="Sixfold arrangement library"><Mark /><span>sixfold<small>Acoustic arrangements</small></span></a><a className="library-link" href="/">The library</a><span className="header-caption">One guitar. All the music that matters.</span></header>;
+}
+function ReviewLabel({ manifest }: { manifest: PublishedManifest }) {
+  return <span className={`review-label ${manifest.status === 'musically-reviewed' ? 'reviewed' : ''}`}>{manifest.status === 'musically-reviewed' ? 'Musician reviewed' : 'Unreviewed draft'}</span>;
+}
+function Library() {
+  const [entries, setEntries] = useState<LibraryEntry[] | null>(null);
+  const [unavailable, setUnavailable] = useState(0);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    const abort = new AbortController();
+    void json('/api/arrangements', LibraryResponseSchema, abort.signal).then(data => { setEntries(data.arrangements); setUnavailable(data.unavailableCount); }).catch(error => { if (!abort.signal.aborted) setError(String(error instanceof Error ? error.message : error)); });
+    return () => abort.abort();
+  }, []);
+  return <main className="library-page" id="library-root" tabIndex={-1}>
+    <div className="library-intro"><span className="collection-mark">The listening shelf</span><h1>Arranged for one guitar.</h1><p>Published scores, a little space to listen, and the files to take to your music stand.</p></div>
+    {error && <div className="error-message" role="alert">{error}</div>}
+    {!entries && !error && <div className="loading-state" role="status">Opening the arrangement library…</div>}
+    {entries?.length === 0 && <section className="empty-library"><div className="shelf-strings" aria-hidden="true">{[0, 1, 2, 3, 4, 5].map(i => <i key={i} />)}</div><h2>Your arrangements will live here.</h2><p>Request a song arrangement in this project’s chat. When it’s published, the score, player, PDF and MIDI links will appear here.</p><span>No creation tools or account needed on this site.</span></section>}
+    {entries && entries.length > 0 && <section className="library-collection" aria-label="Published arrangements"><div className="collection-heading"><h2>Published arrangements</h2><span>{entries.length} {entries.length === 1 ? 'score' : 'scores'}</span></div>{entries.map((entry, index) => <article className="arrangement-row" key={entry.manifest.id}>
+      <span className="shelf-number">{String(index + 1).padStart(2, '0')}</span><div className="arrangement-summary"><div className="row-review"><ReviewLabel manifest={entry.manifest} /><span>{date(entry.manifest.createdAt)}</span></div><h3><a href={base(entry.manifest.id)}>{entry.manifest.title}</a></h3><p><span>{entry.summary.difficulty}</span><span>Capo {entry.summary.capo}</span><span>{entry.summary.performedMeasures} performed measures</span></p><a className="open-score" href={base(entry.manifest.id)}>Open score & player <span aria-hidden="true">↗</span></a></div><div className="library-downloads"><a href={`${base(entry.manifest.id)}/arrangement.pdf`} download><Icon name="download" />PDF</a><a href={`${base(entry.manifest.id)}/arrangement.mid`} download><Icon name="download" />MIDI</a></div>
+    </article>)}</section>}
+    {unavailable > 0 && <p className="unavailable-note">{unavailable} incomplete or invalid {unavailable === 1 ? 'publication is' : 'publications are'} hidden. Ask in project chat for a corrected link.</p>}
+    <footer className="library-footer"><span>Made in project chat. Kept here for playing.</span><span>Standard tuning, sounding pitches preserved.</span></footer>
+  </main>;
+}
+
+type Publication = { manifest: PublishedManifest; score: ScoreV1; notes: string };
+function Arrangement({ id }: { id: string }) {
+  const [publication, setPublication] = useState<Publication | null>(null);
+  const [loadError, setLoadError] = useState('');
+  useEffect(() => {
+    const abort = new AbortController(); setPublication(null); setLoadError('');
+    void (async () => {
+      const [manifest, score, notesResponse] = await Promise.all([
+        json(`${base(id)}/manifest.json`, PublishedManifestSchema, abort.signal),
+        json(`${base(id)}/score.json`, ScoreV1Schema, abort.signal),
+        fetch(`${base(id)}/notes.md`, { signal: abort.signal }),
+      ]);
+      if (!notesResponse.ok) throw new Error('The published arrangement notes could not be read.');
+      if (manifest.id !== id || manifest.revision.id !== score.revision.id || manifest.revision.digest !== score.revision.digest) throw new Error('The published score does not match its manifest. No replacement score is shown.');
+      if (globalThis.crypto?.subtle && !await verifyRevisionDigest(score)) throw new Error('The published score digest is invalid.');
+      const notes = await notesResponse.text();
+      if (!abort.signal.aborted) setPublication({ manifest, score, notes });
+    })().catch(error => { if (!abort.signal.aborted) setLoadError(error instanceof Error ? error.message : 'This arrangement could not be opened.'); });
+    return () => abort.abort();
+  }, [id]);
+  if (loadError) return <main className="viewer-error"><a className="back-link" href="/"><Icon name="back" />All arrangements</a><h1>This score couldn’t be opened.</h1><p role="alert">{loadError}</p><p>Check the published link from project chat. Your library has not changed.</p></main>;
+  if (!publication) return <main className="loading-state" role="status">Opening the published score…</main>;
+  return <PublishedScore key={publication.manifest.revision.digest} publication={publication} />;
+}
+
+function PublishedScore({ publication: { manifest, score, notes } }: { publication: Publication }) {
+  const viewport = useRef<HTMLDivElement>(null);
+  const controller = useRef<ScoreController | null>(null);
+  const [ready, setReady] = useState(false);
+  const [renderError, setRenderError] = useState('');
+  const [audioError, setAudioError] = useState('');
+  const [snapshot, setSnapshot] = useState(initial);
+  const [muted, setMuted] = useState<Role[]>([]);
+  const [solo, setSolo] = useState<Role[]>([]);
+  const [tempo, setTempo] = useState(score.preferences.tempoScale);
+  const [loop, setLoop] = useState(false);
+  const [loopFrom, setLoopFrom] = useState(0);
+  const [loopTo, setLoopTo] = useState(score.occurrences.length - 1);
+  const [follow, setFollow] = useState(true);
+  const [zoom, setZoom] = useState(1);
+  const [selected, setSelected] = useState<{ id: string; occurrenceId: string } | null>(null);
+  useEffect(() => { document.title = `${manifest.title} — Sixfold`; return () => { document.title = 'Sixfold — Acoustic arrangements'; }; }, [manifest.title]);
+  useEffect(() => {
+    let disposed = false;
+    void loadViewerAdapter().then(adapter => adapter.mount({ container: viewport.current!, score, title: manifest.title, onCursor: next => { if (!disposed) setSnapshot(next); }, onSelect: (id, occurrenceId) => setSelected({ id, occurrenceId }), onError: setAudioError })).then(next => {
+      if (disposed) next.dispose(); else { controller.current = next; setReady(true); }
+    }).catch(error => { if (!disposed) setRenderError(error instanceof Error ? error.message : 'The score renderer could not be loaded.'); });
+    return () => { disposed = true; controller.current?.dispose(); controller.current = null; };
+  }, [score, manifest.title]);
+  useEffect(() => controller.current?.setMuted(muted), [muted, ready]);
+  useEffect(() => controller.current?.setSolo(solo), [solo, ready]);
+  useEffect(() => controller.current?.setTempo(tempo), [tempo, ready]);
+  useEffect(() => controller.current?.setFollow(follow), [follow, ready]);
+  useEffect(() => controller.current?.setZoom(zoom), [zoom, ready]);
+  useEffect(() => { try { controller.current?.setLoop(loop ? { from: loopFrom, to: loopTo } : null); } catch { setAudioError('This loop is too short to play. Choose a wider measure range.'); setLoop(false); } }, [loop, loopFrom, loopTo, ready]);
+  const sound = score.sounds.find(s => s.id === selected?.id);
+  const performed = score.performedSounds.find(p => p.soundId === selected?.id && p.occurrenceIds.includes(selected.occurrenceId));
+  const placement = score.placements.find(p => p.id === performed?.placementId);
+  const currentOccurrence = score.occurrences[snapshot.occurrenceIndex]!;
+  const currentBar = score.bars.find(b => b.id === currentOccurrence.writtenBarId)!;
+  const activeRoleCounts = roles.map(role => ({ role, count: score.performedSounds.filter(p => score.sounds.find(s => s.id === p.soundId)?.role === role).length }));
+  const label = (index: number) => { const occurrence = score.occurrences[index]!; return `${score.bars.find(b => b.id === occurrence.writtenBarId)!.number} / pass ${occurrence.pass}`; };
+  const play = () => {
+    setAudioError('');
+    if (snapshot.status === 'playing') controller.current?.pause();
+    else void controller.current?.play().catch(error => setAudioError(error instanceof Error ? error.message : 'Allow browser audio and press Play again.'));
+  };
+  return <main className="arrangement-page">
+    <a className="back-link" href="/"><Icon name="back" />All arrangements</a>
+    <div className="song-heading"><div><div className="song-topline"><span>Solo acoustic guitar</span><ReviewLabel manifest={manifest} /></div><h1>{manifest.title}</h1><p className="song-description">The melody in front. Bass beneath it. Just enough harmony.</p></div><div className="download-actions"><a className="button download-primary" href={`${base(manifest.id)}/arrangement.pdf`} download><Icon name="download" />PDF score</a><a className="button download-secondary" href={`${base(manifest.id)}/arrangement.mid`} download><Icon name="download" />MIDI</a></div></div>
+    {!manifest.agent && score.planner.mode === 'deterministic-fallback' && <p className="publication-kind">Deterministic smoke publication. No model-authored arrangement or musician review is claimed.</p>}
+    <div className="score-facts"><span className="difficulty">{score.preferences.difficulty}</span><span>Standard tuning <strong>E A D G B e</strong></span><span>{score.instrument.capo ? `Capo ${score.instrument.capo}` : 'No capo'} <small>relative TAB frets</small></span><span>{score.bars.length} written bars <small>{score.occurrences.length} performed measures</small></span><span>{score.preferences.transposition.mode === 'explicit' ? `Explicit transposition: ${score.preferences.transposition.semitones > 0 ? '+' : ''}${score.preferences.transposition.semitones} st` : 'Original concert pitches preserved'}</span></div>
+    <div className="listening-workspace">
+      <section className="score-panel" aria-label="Published score and playback">
+        <div className="score-toolbar"><span>Guitar <span className="toolbar-divider">/</span> Staff + TAB</span><div><label className="follow-control"><input type="checkbox" checked={follow} disabled={!ready} onChange={e => setFollow(e.target.checked)} />Follow score</label><label className="zoom-control"><span className="sr-only">Notation size</span><select aria-label="Notation size" value={zoom} disabled={!ready} onChange={e => setZoom(Number(e.target.value))}><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option></select></label></div></div>
+        <div className="score-surface-shell"><div className="score-viewport" ref={viewport} aria-label="Scrollable staff and tablature" tabIndex={0} />{!ready && <div className={`score-loading ${renderError ? 'failed' : ''}`} role={renderError ? 'alert' : 'status'}><span className="paper-clef" aria-hidden="true">{'\uE050'}</span><p>{renderError || 'Laying out the published score…'}</p><small>{renderError ? 'PDF, MIDI and arrangement notes remain available below.' : 'One unfolded performance, with written-bar and pass labels.'}</small></div>}</div>
+        <div className="transport" id="transport"><div className="primary-transport"><button className="play-button" aria-label={snapshot.status === 'playing' ? 'Pause playback' : 'Play arrangement'} disabled={!ready} onClick={play}><Icon name={snapshot.status === 'playing' ? 'pause' : 'play'} /></button><button className="stop-button" aria-label="Stop playback" disabled={!ready} onClick={() => controller.current?.stop()}><Icon name="stop" /></button><span className="time-readout">{clock(snapshot.seconds)}<small> / {clock(snapshot.durationSeconds)}</small></span><label className="practice-tempo">Practice tempo<select aria-label="Practice tempo" disabled={!ready} value={tempo} onChange={e => setTempo(Number(e.target.value))}>{[...new Set([.5, .75, 1, 1.25, score.preferences.tempoScale])].sort((a, b) => a - b).map(scale => <option key={scale} value={scale}>{Math.round(scale * 100)}%</option>)}</select></label></div>
+          <div className="seek-row"><label htmlFor="measure-seek">Measure <strong>{currentBar.number}</strong> <span>/ pass {currentOccurrence.pass}</span></label><input id="measure-seek" aria-label="Seek performed measure" type="range" min="0" max={score.occurrences.length - 1} step="1" disabled={!ready} value={snapshot.occurrenceIndex} onChange={e => controller.current?.seek(Number(e.target.value))} /><select aria-label="Jump to measure" disabled={!ready} value={snapshot.occurrenceIndex} onChange={e => controller.current?.seek(Number(e.target.value))}>{score.occurrences.map((o, i) => <option key={o.id} value={i}>{label(i)}</option>)}</select></div>
+          <div className="loop-row"><button className={`loop-button ${loop ? 'enabled' : ''}`} disabled={!ready} aria-pressed={loop} onClick={() => setLoop(!loop)}><Icon name="loop" />Loop measures</button><select aria-label="Loop first measure" value={loopFrom} disabled={!ready} onChange={e => { const from = Number(e.target.value); setLoopFrom(from); if (from > loopTo) setLoopTo(from); }}>{score.occurrences.map((o, i) => <option key={o.id} value={i}>{label(i)}</option>)}</select><span>to</span><select aria-label="Loop last measure" value={loopTo} disabled={!ready} onChange={e => { const to = Number(e.target.value); setLoopTo(to); if (to < loopFrom) setLoopFrom(to); }}>{score.occurrences.map((o, i) => <option key={o.id} value={i}>{label(i)}</option>)}</select><span className="audio-tone">Synthetic plucked audio</span></div>
+          {audioError && <p className="audio-error" role="alert">{audioError}</p>}
+        </div>
+      </section>
+      <aside className="listening-sidebar">
+        <section className="voice-mixer"><h2>Hear the parts</h2><p>Listen together, or make room for one voice.</p>{activeRoleCounts.map(({ role, count }) => <div className={`mixer-row ${role}`} key={role}><div><span className="voice-dot" /><strong>{role}</strong><small>{count} attacks</small></div><div className="mixer-buttons"><button aria-label={`Mute ${role}`} aria-pressed={muted.includes(role)} disabled={!ready || !count} onClick={() => setMuted(muted.includes(role) ? muted.filter(r => r !== role) : [...muted, role])}>M</button><button aria-label={`Solo ${role}`} aria-pressed={solo.includes(role)} disabled={!ready || !count} onClick={() => setSolo(solo.includes(role) ? solo.filter(r => r !== role) : [...solo, role])}>S</button></div></div>)}<span className="mixer-key">M = mute &nbsp; S = solo. Mute takes priority.</span></section>
+        <section className="note-inspector"><h2>{sound ? 'Inside this note' : 'A closer listen'}</h2><label className="note-picker">Inspect a written note<select aria-label="Inspect a written note" value={selected?.id ?? ''} onChange={e => { const performed = score.performedSounds.find(p => p.soundId === e.target.value); setSelected(performed ? { id: performed.soundId, occurrenceId: performed.attackOccurrenceId } : null); }}><option value="">Choose a note, or click the score</option>{score.sounds.map(s => <option key={s.id} value={s.id}>{s.spelling.step}{s.spelling.alter === 1 ? '♯' : s.spelling.alter === -1 ? '♭' : ''}{s.spelling.octave} / {s.role} / {fraction(s.start)} q</option>)}</select></label>{sound && placement ? <><div className={`selected-pitch ${sound.role}`}>{sound.spelling.step}{sound.spelling.alter === 1 ? '♯' : sound.spelling.alter === -1 ? '♭' : ''}<span>{sound.spelling.octave}</span><small>{sound.role}</small></div><dl><dt>Sounding pitch</dt><dd>MIDI {sound.soundingMidi}</dd><dt>Written onset</dt><dd>{fraction(sound.start)} q</dd><dt>Held duration</dt><dd>{fraction(sound.duration)} q</dd><dt>String / fret</dt><dd>{6 - placement.stringIndex} / {placement.fret}</dd><dt>Finger</dt><dd>{placement.finger === 0 ? 'Open' : placement.finger}</dd><dt>Performance</dt><dd>{selected?.occurrenceId}</dd></dl><p className="source-note-id">Source: {sound.provenance.kind === 'source' ? sound.provenance.eventIds.join(', ') : sound.provenance.evidenceEventIds.join(', ')}</p></> : <p className="inspector-invitation">Click a staff note or TAB beat for sounding pitch, fingering and source identity. Nothing here edits the arrangement.</p>}</section>
+        <section className="guitar-note"><h2>A note for the guitar</h2><p>{score.instrument.capo ? `Capo ${score.instrument.capo} preserves the sounding melody. TAB fret 0 is an open string above the capo.` : 'No capo. TAB fret 0 is an open string in standard tuning.'}</p><p>Practice speed changes listening only. Your downloaded score and MIDI stay on this published revision.</p></section>
+      </aside>
+    </div>
+    <section className="arrangement-notes"><div className="notes-heading"><span>From the arrangement desk</span><h2>Notes for playing.</h2><p>{manifest.agent ? `Published from project chat / ${manifest.agent.model}` : 'Published arrangement rationale'}</p></div><div className="markdown-notes"><ReactMarkdown skipHtml components={{ a: ({ href, children }) => <a href={href?.startsWith('https://') ? href : undefined} rel="noreferrer" target="_blank">{children}</a>, img: ({ alt }) => <span>{alt}</span> }}>{notes}</ReactMarkdown></div></section>
+    <section className="publication-details"><details><summary>Source, revision & arrangement changes</summary><div className="provenance-grid"><div><h3>Source & identity</h3><p><a href={manifest.sourceUrl} rel="noreferrer" target="_blank">Open the original song source</a></p><p>Published {date(manifest.createdAt)}. Status: {manifest.status}.</p><p>Revision <code>{manifest.revision.id}</code></p><p>Digest <code>{manifest.revision.digest}</code></p>{manifest.agent && <p>Agent task <code>{manifest.agent.taskId}</code></p>}</div><div><h3>What changed for the guitar</h3><p>{score.capoComparison.reason}</p><p>Key: {score.key.status === 'unknown' ? `not asserted — ${score.key.reason}` : `${score.key.mode}, ${score.key.certainty}`}</p><p>Ability profile {score.ability.id} / {score.ability.version}: {score.ability.calibration}. Software checks are not a human playability certification.</p><p>Core planning: {score.planner.mode === 'configured-llm' ? `${score.planner.provider} / ${score.planner.model}` : `deterministic fallback — ${score.planner.detail}`}</p></div></div><div className="change-list">{score.changes.length ? <details><summary>{score.changes.length} disclosed register moves, shortened sustains or omissions</summary><ul>{score.changes.map(change => <li key={change.id}><strong>{change.role} / {change.kind.replaceAll('-', ' ')}</strong> {change.reason} <small>Source: {change.sourceEventIds.join(', ')}</small></li>)}</ul></details> : <p>No register moves, omissions or shortened sustains are recorded.</p>}</div></details></section>
+    <footer className="viewer-footer"><span>sixfold / acoustic arrangements</span><span>Requests and revisions belong in project chat.</span></footer>
+  </main>;
+}
+
+export function App() {
+  const match = /^\/arrangements\/([a-z0-9][a-z0-9_-]{0,159})\/?$/.exec(location.pathname);
+  return <><a className="skip-link" href={match ? '#transport' : '#library-root'}>{match ? 'Skip to playback' : 'Skip to arrangements'}</a><Header />{match ? <Arrangement id={match[1]!} /> : <Library />}</>;
+}

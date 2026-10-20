@@ -1,0 +1,5 @@
+$ bun build src/engine/index.ts --target=browser --outdir=dist/engine
+Bundled 87 modules in 8ms
+
+  index.js  217.32 KB  (entry point)
+

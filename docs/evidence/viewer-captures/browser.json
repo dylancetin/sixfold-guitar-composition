@@ -1,0 +1,161 @@
+{
+  "capturedAt": "2026-10-20T22:43:27.070Z",
+  "browser": "156.0.8078.4",
+  "origin": "http://beelinkk:5847",
+  "publication": {
+    "schemaVersion": 1,
+    "id": "arr-1a7173e798040887c4c79ab0b56c2c484599c54ba1ffe7d0fd23a5f6ba08a0ac",
+    "title": "The Beach Boys — You Still Believe in Me",
+    "sourceUrl": "https://www.songsterr.com/a/wsa/beach-boys-you-still-believe-in-me-tab-s692866",
+    "createdAt": "2026-10-20T22:22:51.699Z",
+    "revision": {
+      "id": "revision-43c657d4-ae67-44f1-8b24-b17a13c28d69",
+      "digest": "1a7173e798040887c4c79ab0b56c2c484599c54ba1ffe7d0fd23a5f6ba08a0ac"
+    },
+    "files": {
+      "score": "score.json",
+      "pdf": "arrangement.pdf",
+      "midi": "arrangement.mid",
+      "notes": "notes.md"
+    },
+    "status": "unreviewed-draft",
+    "agent": null,
+    "integrity": {
+      "score": "6b9509998216d9acc340e09f54a5830bdc4f0da45ed384954a9b564766b9961c",
+      "pdf": "5bf1bcae7fb7af03f7a1fe9b9386fd280a503695e4b40d63b5b1d8e8b00012ec",
+      "midi": "2098954cbbf4563cbac703c5de1b123873a366271063f636cd9ff092bacc28d5",
+      "notes": "7e0fd2fd66a60374ad09a7939f654a4284f91889f033ae6fa1e4ff754d46b8cc"
+    },
+    "artifacts": {
+      "pdf": {
+        "schemaVersion": 1,
+        "scoreRevision": {
+          "id": "revision-43c657d4-ae67-44f1-8b24-b17a13c28d69",
+          "digest": "1a7173e798040887c4c79ab0b56c2c484599c54ba1ffe7d0fd23a5f6ba08a0ac"
+        },
+        "sourceRevision": {
+          "id": "source-ed7baa36-0b63-4f29-ad92-b84068b2675b",
+          "digest": "a529154e74d43b2a84361112eb6c2333723e8363a8dd2cb5181c9fa7a37ccb8e"
+        },
+        "ability": {
+          "id": "conservative-intermediate-no-barre",
+          "version": "1"
+        },
+        "adapter": {
+          "name": "canonical-guitar",
+          "version": "canonical-guitar-1.0.1"
+        },
+        "format": "pdf",
+        "artifactDigest": "5bf1bcae7fb7af03f7a1fe9b9386fd280a503695e4b40d63b5b1d8e8b00012ec",
+        "byteLength": 80520,
+        "occurrenceCount": 64,
+        "soundingAttackCount": 361,
+        "notationSegmentCount": 395,
+        "review": "unreviewed-draft",
+        "validationVersion": "independent-guitar-validator-1",
+        "tuning": [
+          40,
+          45,
+          50,
+          55,
+          59,
+          64
+        ],
+        "capo": 2,
+        "midiPitchPolicy": "already-sounding-no-capo-offset"
+      },
+      "midi": {
+        "schemaVersion": 1,
+        "scoreRevision": {
+          "id": "revision-43c657d4-ae67-44f1-8b24-b17a13c28d69",
+          "digest": "1a7173e798040887c4c79ab0b56c2c484599c54ba1ffe7d0fd23a5f6ba08a0ac"
+        },
+        "sourceRevision": {
+          "id": "source-ed7baa36-0b63-4f29-ad92-b84068b2675b",
+          "digest": "a529154e74d43b2a84361112eb6c2333723e8363a8dd2cb5181c9fa7a37ccb8e"
+        },
+        "ability": {
+          "id": "conservative-intermediate-no-barre",
+          "version": "1"
+        },
+        "adapter": {
+          "name": "canonical-guitar",
+          "version": "canonical-guitar-1.0.1"
+        },
+        "format": "midi",
+        "artifactDigest": "2098954cbbf4563cbac703c5de1b123873a366271063f636cd9ff092bacc28d5",
+        "byteLength": 5700,
+        "occurrenceCount": 64,
+        "soundingAttackCount": 361,
+        "notationSegmentCount": 395,
+        "review": "unreviewed-draft",
+        "validationVersion": "independent-guitar-validator-1",
+        "tuning": [
+          40,
+          45,
+          50,
+          55,
+          59,
+          64
+        ],
+        "capo": 2,
+        "midiPitchPolicy": "already-sounding-no-capo-offset"
+      }
+    }
+  },
+  "downloads": [
+    {
+      "url": "http://beelinkk:5847/arrangements/arr-1a7173e798040887c4c79ab0b56c2c484599c54ba1ffe7d0fd23a5f6ba08a0ac/arrangement.pdf",
+      "status": 200,
+      "mediaType": "application/pdf",
+      "byteLength": 80520,
+      "sha256": "5bf1bcae7fb7af03f7a1fe9b9386fd280a503695e4b40d63b5b1d8e8b00012ec"
+    },
+    {
+      "url": "http://beelinkk:5847/arrangements/arr-1a7173e798040887c4c79ab0b56c2c484599c54ba1ffe7d0fd23a5f6ba08a0ac/arrangement.mid",
+      "status": 200,
+      "mediaType": "audio/midi",
+      "byteLength": 5700,
+      "sha256": "2098954cbbf4563cbac703c5de1b123873a366271063f636cd9ff092bacc28d5"
+    }
+  ],
+  "audibleCheck": "Not performed: synthetic-audio browser operations are not human listening or playability certification.",
+  "evidence": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1100
+      },
+      "libraryPath": "docs/evidence/viewer-captures/library-desktop.png",
+      "path": "docs/evidence/viewer-captures/viewer-desktop.png",
+      "errors": [],
+      "layout": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "nativeNoteTargets": 373,
+        "scoreWidth": 1064,
+        "creationControls": 0,
+        "note": "B2harmony"
+      }
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "libraryPath": "docs/evidence/viewer-captures/library-mobile.png",
+      "path": "docs/evidence/viewer-captures/viewer-mobile.png",
+      "errors": [],
+      "layout": {
+        "width": 390,
+        "documentWidth": 390,
+        "nativeNoteTargets": 373,
+        "scoreWidth": 790,
+        "creationControls": 0,
+        "note": "B2harmony"
+      }
+    }
+  ]
+}

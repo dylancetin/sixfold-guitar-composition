@@ -1,0 +1,11 @@
+$ playwright test -c tests/studio/playwright.config.ts
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/studio/workflow.spec.ts:14:1 › published library → real score deep link → reload → actual PDF/MIDI bytes (2.0s)
+  ✓  2 tests/studio/workflow.spec.ts:60:1 › canonical playback, pause, seek, practice tempo, loop, mute/solo and note inspection (3.4s)
+  ✓  3 tests/studio/workflow.spec.ts:121:1 › 390px mobile deep link has no page overflow and controls remain usable (1.4s)
+  ✓  4 tests/studio/workflow.spec.ts:149:1 › published markdown cannot execute HTML or javascript links (665ms)
+  ✓  5 tests/studio/workflow.spec.ts:164:1 › empty library directs requests to project chat without creation or study controls (190ms)
+
+  5 passed (8.6s)

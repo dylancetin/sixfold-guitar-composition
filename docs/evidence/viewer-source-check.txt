@@ -1,0 +1,7 @@
+$ tsc --project tests/source/tsconfig.json && bun test tests/source
+bun test v1.4.2 (744846f84)
+
+ 46 pass
+ 0 fail
+ 403 expect() calls
+Ran 46 tests across 1 file. [102.00ms]

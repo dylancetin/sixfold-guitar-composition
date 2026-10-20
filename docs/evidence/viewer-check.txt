@@ -1,0 +1,128 @@
+$ node scripts/check-foundation.mjs && bun run check:viewer
+{
+  "scope": "U03 foundation, U04 source, U05/U07/U08/U09 engine, U11/U12 canonical adapters and A02 agent/publication checks; not product acceptance",
+  "checkedAt": "2026-10-20T22:49:14.511Z",
+  "status": "passed",
+  "missing": [],
+  "checks": [
+    {
+      "command": "bun run typecheck",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "$ tsc --noEmit\n"
+    },
+    {
+      "command": "bun run check:source",
+      "exitCode": 0,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "$ tsc --project tests/source/tsconfig.json && bun test tests/source\n\n 46 pass\n 0 fail\n 403 expect() calls\nRan 46 tests across 1 file. [110.00ms]\n"
+    },
+    {
+      "command": "bun run test",
+      "exitCode": 0,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "$ node scripts/test-features.mjs\n\n 138 pass\n 1 skip\n 11 todo\n 0 fail\n 1074 expect() calls\nRan 150 tests across 12 files. [2.30s]\n"
+    },
+    {
+      "command": "bun run test:controls",
+      "exitCode": 0,
+      "stdout": "{\n  \"scope\": \"Test-only literal oracle/mutation examples, NOT production validator or live-song acceptance\",\n  \"controls\": [\n    {\n      \"id\": \"original-melody\",\n      \"expected\": true,\n      \"actual\": true,\n      \"matched\": true\n    },\n    {\n      \"id\": \"wrong-melody-pitch\",\n      \"expected\": false,\n      \"actual\": false,\n      \"matched\": true\n    },\n    {\n      \"id\": \"missing-middle-melody\",\n      \"expected\": false,\n      \"actual\": false,\n      \"matched\": true\n    },\n    {\n      \"id\": \"missing-final-melody\",\n      \"expected\": false,\n      \"actual\": false,\n      \"matched\": true\n    },\n    {\n      \"id\": \"melody-octave-shift\",\n      \"expected\": false,\n      \"actual\": false,\n      \"matched\": true\n    },\n    {\n      \"id\": \"held-string-re-fret\",\n      \"expected\": \"string-collision\",\n      \"actual\": \"string-collision\",\n      \"matched\": true\n    },\n    {\n      \"id\": \"exact-boundary-release\",\n      \"expected\": \"\",\n      \"actual\": \"\",\n      \"matched\": true\n    },\n    {\n      \"id\": \"held-finger-move\",\n      \"expected\": \"finger-collision\",\n      \"actual\": \"finger-collision\",\n      \"matched\": true\n    },\n    {\n      \"id\": \"repeat-entry-restored-seconds\",\n      \"expected\": 13,\n      \"actual\": 13,\n      \"matched\": true\n    },\n    {\n      \"id\": \"repeat-entry-carried-seconds-negative\",\n      \"expected\": 12,\n      \"actual\": 12,\n      \"matched\": true\n    },\n    {\n      \"id\": \"requested-form-occurrences-literal-only\",\n      \"expected\": 64,\n      \"actual\": 64,\n      \"matched\": true\n    },\n    {\n      \"id\": \"capo2-high-E-open-already-sounding\",\n      \"expected\": 66,\n      \"actual\": 66,\n      \"matched\": true\n    },\n    {\n      \"id\": \"capo2-double-offset-rejected\",\n      \"expected\": false,\n      \"actual\": false,\n      \"matched\": true\n    },\n    {\n      \"id\": \"repeat-restore-tick\",\n      \"expected\": 11520,\n      \"actual\": 11520,\n      \"matched\": true\n    },\n    {\n      \"id\": \"full-original-revision\",\n      \"expected\": true,\n      \"actual\": true,\n      \"matched\": true\n    },\n    {\n      \"id\": \"capo-mutated-old-revision\",\n      \"expected\": false,\n      \"actual\": false,\n      \"matched\": true\n    }\n  ]\n}\n",
+      "stderr": "$ bun tests/fixtures/check-negative-controls.ts\n"
+    },
+    {
+      "command": "bun run build",
+      "exitCode": 0,
+      "stdout": "Bundled 76 modules in 10ms\n\n  index.js  140.66 KB  (entry point)\n\n",
+      "stderr": "$ bun build src/domain/index.ts --target=browser --outdir=dist\n"
+    },
+    {
+      "command": "bun run build:engine",
+      "exitCode": 0,
+      "stdout": "Bundled 87 modules in 11ms\n\n  index.js  217.32 KB  (entry point)\n\n",
+      "stderr": "$ bun build src/engine/index.ts --target=browser --outdir=dist/engine\n"
+    },
+    {
+      "command": "bun run typecheck:adapters",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "$ tsc --noEmit -p tests/adapters/tsconfig.json\n"
+    },
+    {
+      "command": "bun run test:adapters",
+      "exitCode": 0,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "$ bun test tests/adapters\n\n 14 pass\n 0 fail\n 112 expect() calls\nRan 14 tests across 2 files. [960.00ms]\n"
+    },
+    {
+      "command": "bun run test:adapters:tempo",
+      "exitCode": 0,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"root\": \"/tmp/opencode/guitar-adapters-effective-tempo\",\n  \"validatorPath\": \"/tmp/opencode/guitar-viewer-delivery-196ee289/src/engine/index.ts\",\n  \"observations\": [\n    {\n      \"name\": \"constant-80-at-half\",\n      \"validatorVersion\": \"independent-guitar-validator-1\",\n      \"validatorCalls\": 2,\n      \"revisionScale\": 0.5,\n      \"canonicalBpms\": [\n        40,\n        40\n      ],\n      \"expectedBpms\": [\n        40,\n        40\n      ],\n      \"expectedSeconds\": 12,\n      \"actualMidiSeconds\": 12,\n      \"actualAudioSeconds\": 12,\n      \"runtimeRequestedScale\": 0.75,\n      \"expectedRuntimeSeconds\": 8,\n      \"actualRuntimeSeconds\": 8,\n      \"quarterBeforeRuntimeChange\": 1.4999999999999973,\n      \"quarterAfterRuntimeChange\": 1.4999999999999973,\n      \"tempos\": [\n        {\n          \"tick\": 0,\n          \"micros\": 1500000\n        },\n        {\n          \"tick\": 3840,\n          \"micros\": 1500000\n        }\n      ],\n      \"expectedTempos\": [\n        {\n          \"tick\": 0,\n          \"micros\": 1500000\n        },\n        {\n          \"tick\": 3840,\n          \"micros\": 1500000\n        }\n      ],\n      \"pdfTempoCaptions\": [\n        40,\n        40\n      ],\n      \"scheduledEvents\": [\n        {\n          \"performedSoundId\": \"bass0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0,\n          \"audioTime\": 0,\n          \"offAudioTime\": 6,\n          \"elapsedSeconds\": 0\n        },\n        {\n          \"performedSoundId\": \"h0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0,\n          \"audioTime\": 0,\n          \"offAudioTime\": 3,\n          \"elapsedSeconds\": 0\n        },\n        {\n          \"performedSoundId\": \"m0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0,\n          \"audioTime\": 0,\n          \"offAudioTime\": 1.5,\n          \"elapsedSeconds\": 0\n        },\n        {\n          \"performedSoundId\": \"m1@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 1.5,\n          \"audioTime\": 1.5,\n          \"offAudioTime\": 2.4999999999999996,\n          \"elapsedSeconds\": 0\n        },\n        {\n          \"performedSoundId\": \"bass0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0.7499999999999987,\n          \"audioTime\": 2.249999999999996,\n          \"offAudioTime\": 4.749999999999998,\n          \"elapsedSeconds\": 1.4999999999999973\n        },\n        {\n          \"performedSoundId\": \"h0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0.7499999999999987,\n          \"audioTime\": 2.249999999999996,\n          \"offAudioTime\": 2.7499999999999987,\n          \"elapsedSeconds\": 1.4999999999999973\n        },\n        {\n          \"performedSoundId\": \"m1@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 1.7499999999999987,\n          \"audioTime\": 2.249999999999996,\n          \"offAudioTime\": 2.416666666666665,\n          \"elapsedSeconds\": 0.49999999999999734\n        },\n        {\n          \"performedSoundId\": \"m2@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 2.416666666666665,\n          \"audioTime\": 2.416666666666665,\n          \"offAudioTime\": 3.083333333333332,\n          \"elapsedSeconds\": 0\n        }\n      ],\n      \"unchangedCanonicalTicks\": true\n    },\n    {\n      \"name\": \"repeat-entry-restoration\",\n      \"validatorVersion\": \"independent-guitar-validator-1\",\n      \"validatorCalls\": 2,\n      \"revisionScale\": 0.5,\n      \"canonicalBpms\": [\n        40,\n        60,\n        40,\n        60\n      ],\n      \"expectedBpms\": [\n        40,\n        60,\n        40,\n        60\n      ],\n      \"expectedSeconds\": 20,\n      \"actualMidiSeconds\": 20,\n      \"actualAudioSeconds\": 20,\n      \"runtimeRequestedScale\": 0.75,\n      \"expectedRuntimeSeconds\": 13.333333333333334,\n      \"actualRuntimeSeconds\": 13.333333333333332,\n      \"quarterBeforeRuntimeChange\": 1.4999999999999973,\n      \"quarterAfterRuntimeChange\": 1.4999999999999973,\n      \"tempos\": [\n        {\n          \"tick\": 0,\n          \"micros\": 1500000\n        },\n        {\n          \"tick\": 3840,\n          \"micros\": 1000000\n        },\n        {\n          \"tick\": 7680,\n          \"micros\": 1500000\n        },\n        {\n          \"tick\": 11520,\n          \"micros\": 1000000\n        }\n      ],\n      \"expectedTempos\": [\n        {\n          \"tick\": 0,\n          \"micros\": 1500000\n        },\n        {\n          \"tick\": 3840,\n          \"micros\": 1000000\n        },\n        {\n          \"tick\": 7680,\n          \"micros\": 1500000\n        },\n        {\n          \"tick\": 11520,\n          \"micros\": 1000000\n        }\n      ],\n      \"pdfTempoCaptions\": [\n        40,\n        60,\n        40,\n        60\n      ],\n      \"scheduledEvents\": [\n        {\n          \"performedSoundId\": \"bass0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0,\n          \"audioTime\": 0,\n          \"offAudioTime\": 6,\n          \"elapsedSeconds\": 0\n        },\n        {\n          \"performedSoundId\": \"h0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0,\n          \"audioTime\": 0,\n          \"offAudioTime\": 3,\n          \"elapsedSeconds\": 0\n        },\n        {\n          \"performedSoundId\": \"m0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0,\n          \"audioTime\": 0,\n          \"offAudioTime\": 1.5,\n          \"elapsedSeconds\": 0\n        },\n        {\n          \"performedSoundId\": \"m1@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 1.5,\n          \"audioTime\": 1.5,\n          \"offAudioTime\": 2.4999999999999996,\n          \"elapsedSeconds\": 0\n        },\n        {\n          \"performedSoundId\": \"bass0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0.7499999999999987,\n          \"audioTime\": 2.249999999999996,\n          \"offAudioTime\": 4.749999999999998,\n          \"elapsedSeconds\": 1.4999999999999973\n        },\n        {\n          \"performedSoundId\": \"h0@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 0.7499999999999987,\n          \"audioTime\": 2.249999999999996,\n          \"offAudioTime\": 2.7499999999999987,\n          \"elapsedSeconds\": 1.4999999999999973\n        },\n        {\n          \"performedSoundId\": \"m1@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 1.7499999999999987,\n          \"audioTime\": 2.249999999999996,\n          \"offAudioTime\": 2.416666666666665,\n          \"elapsedSeconds\": 0.49999999999999734\n        },\n        {\n          \"performedSoundId\": \"m2@o1-p1\",\n          \"cycle\": 0,\n          \"expectedAudioTime\": 2.416666666666665,\n          \"audioTime\": 2.416666666666665,\n          \"offAudioTime\": 3.083333333333332,\n          \"elapsedSeconds\": 0\n        }\n      ],\n      \"unchangedCanonicalTicks\": true\n    }\n  ]\n}\n",
+      "stderr": "$ bun tests/adapters/effective-tempo.ts\n"
+    },
+    {
+      "command": "bun run build:adapters",
+      "exitCode": 0,
+      "stdout": "Bundled 83 modules in 48ms\n\n  index.js  2.27 MB  (entry point)\n\n",
+      "stderr": "$ bun build src/adapters/index.ts --target=browser --outdir=dist/adapters\n"
+    },
+    {
+      "command": "bun run typecheck:agent",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "$ tsc --noEmit -p tests/agent/tsconfig.json\n"
+    },
+    {
+      "command": "bun run test:agent",
+      "exitCode": 0,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "$ bun test tests/agent\n\n 14 pass\n 0 fail\n 78 expect() calls\nRan 14 tests across 1 file. [1010.00ms]\n"
+    },
+    {
+      "command": "bun run build:publication",
+      "exitCode": 0,
+      "stdout": "Bundled 77 modules in 10ms\n\n  index.js  138.70 KB  (entry point)\n\n",
+      "stderr": "$ bun build src/publication/index.ts --target=browser --outdir=dist/publication\n"
+    }
+  ]
+}
+$ bun run typecheck:viewer && bun run test:viewer && bun run build:client
+$ tsc --noEmit -p tsconfig.viewer.json
+$ bun test tests/studio/*.test.ts
+bun test v1.4.2 (744846f84)
+
+ 6 pass
+ 0 fail
+ 68 expect() calls
+Ran 6 tests across 1 file. [84.00ms]
+$ vite build
+vite v7.1.12 building for production...
+transforming...
+✓ 289 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/client/index.html                                           0.60 kB │ gzip:   0.37 kB
+dist/client/assets/dm-sans-latin-600-normal-Aqo67rzb.woff2      14.14 kB
+dist/client/assets/dm-sans-latin-400-normal-CW0RaeGs.woff2      14.20 kB
+dist/client/assets/dm-sans-latin-500-normal-B9HHJjqV.woff2      14.30 kB
+dist/client/assets/dm-sans-latin-700-normal-DvUfVpUG.woff2      14.35 kB
+dist/client/assets/dm-sans-latin-600-normal-BmdmIIQ2.woff       18.32 kB
+dist/client/assets/dm-sans-latin-400-normal-BwCSEQnW.woff       18.36 kB
+dist/client/assets/dm-sans-latin-700-normal-CUSSCpQX.woff       18.50 kB
+dist/client/assets/dm-sans-latin-500-normal-Dr3UlScf.woff       18.52 kB
+dist/client/assets/literata-latin-400-normal-CLtNJ872.woff2     20.42 kB
+dist/client/assets/literata-latin-500-normal-Dbph1WrK.woff2     21.71 kB
+dist/client/assets/literata-latin-400-normal-CUhpYSl8.woff      25.10 kB
+dist/client/assets/literata-latin-500-normal-B-T_MU67.woff      26.50 kB
+dist/client/assets/THIRD-PARTY-NOTICES.txt                      34.88 kB │ gzip:   7.82 kB
+dist/client/assets/Bravura-BVtSfpnN.woff2                      313.35 kB
+dist/client/assets/viewer-CABIDDxg.css                          22.30 kB │ gzip:   5.57 kB
+dist/client/integrations/canonical.js                            5.92 kB │ gzip:   2.58 kB
+dist/client/assets/ports-B6Tspdti.js                            68.63 kB │ gzip:  19.45 kB
+dist/client/assets/viewer-oO8VjIbw.js                          337.63 kB │ gzip: 105.06 kB
+dist/client/assets/index-XdRq9Cyx.js                         1,185.96 kB │ gzip: 286.71 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.04s

@@ -5,13 +5,20 @@
   "type": "module",
   "packageManager": "bun@1.4.2",
   "scripts": {
-    "check": "node scripts/check-foundation.mjs",
+    "check": "node scripts/check-foundation.mjs && bun run check:viewer",
+    "check:viewer": "bun run typecheck:viewer && bun run test:viewer && bun run build:client",
     "check:source": "tsc --project tests/source/tsconfig.json && bun test tests/source",
     "typecheck": "tsc --noEmit",
-    "test": "bun test tests/fixtures tests/engine",
+    "typecheck:viewer": "tsc --noEmit -p tsconfig.viewer.json",
+    "test": "node scripts/test-features.mjs",
     "test:controls": "bun tests/fixtures/check-negative-controls.ts",
     "build": "bun build src/domain/index.ts --target=browser --outdir=dist",
     "build:engine": "bun build src/engine/index.ts --target=browser --outdir=dist/engine",
+    "build:client": "vite build",
+    "test:viewer": "bun test tests/studio/*.test.ts",
+    "test:browser": "playwright test -c tests/studio/playwright.config.ts",
+    "preview:viewer": "bun run build:client && bun --hot src/server/start.ts",
+    "start": "bun src/server/start.ts",
     "test:adapters": "bun test tests/adapters",
     "test:adapters:tempo": "bun tests/adapters/effective-tempo.ts",
     "typecheck:adapters": "tsc --noEmit -p tests/adapters/tsconfig.json",
@@ -23,19 +30,28 @@
   },
   "dependencies": {
     "@coderline/alphatab": "1.8.4",
+    "@fontsource/dm-sans": "5.2.8",
+    "@fontsource/literata": "5.2.8",
     "pdfkit": "0.20.2",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-markdown": "10.1.0",
     "svg-to-pdfkit": "0.1.8",
     "zod": "4.1.12"
   },
   "devDependencies": {
     "@napi-rs/canvas": "1.0.12",
+    "@playwright/test": "1.56.1",
     "@tonejs/midi": "2.0.28",
     "@types/bun": "1.3.1",
     "@types/pdfkit": "0.17.3",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
     "@types/svg-to-pdfkit": "0.1.3",
     "midi-file": "1.2.4",
     "pdfjs-dist": "6.4.299",
     "playwright-core": "1.58.2",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite": "7.1.12"
   }
 }
