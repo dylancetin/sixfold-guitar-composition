@@ -1,0 +1,465 @@
+{
+  "checkedAt": "2026-10-20T23:05:06.556Z",
+  "status": "passed",
+  "browser": "156.0.8078.4",
+  "origin": "http://beelinkk:5847",
+  "id": "arr-1a7173e798040887c4c79ab0b56c2c484599c54ba1ffe7d0fd23a5f6ba08a0ac",
+  "observed": {
+    "libraryEntries": 1,
+    "nativeTargets": 373,
+    "audio": [
+      {
+        "state": "running",
+        "clock": 1.2625850340136053,
+        "oscillators": 3,
+        "gains": [
+          0.6499999761581421,
+          0.6499999761581421,
+          0.6499999761581421
+        ]
+      }
+    ],
+    "muted": [
+      0.6499999761581421,
+      0,
+      0.6499999761581421
+    ],
+    "solo": [
+      0.6499999761581421,
+      0,
+      0
+    ],
+    "halfSpeed": "0:03 / 5:44",
+    "livePracticeScheduling": {
+      "fullSpeedNotes": [
+        {
+          "frequency": 123.47082531403103,
+          "duration": 3.75
+        },
+        {
+          "frequency": 246.94165062806206,
+          "duration": 0.75
+        },
+        {
+          "frequency": 493.8833012561241,
+          "duration": 0.75
+        }
+      ],
+      "halfSpeedNotes": [
+        {
+          "frequency": 123.47082531403103,
+          "duration": 7.5
+        },
+        {
+          "frequency": 246.94165062806206,
+          "duration": 1.5
+        },
+        {
+          "frequency": 493.8833012561241,
+          "duration": 1.5
+        }
+      ],
+      "samePitchesDoubleHolds": true
+    },
+    "loopSamples": [
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 297.725px; top: 1277px; width: 54.1088px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 297.725px; top: 1277px; width: 54.1088px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 297.725px; top: 1277px; width: 54.1088px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 297.725px; top: 1277px; width: 54.1088px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 365.298px; top: 1277px; width: 67.5728px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 365.298px; top: 1277px; width: 67.5728px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 365.298px; top: 1277px; width: 67.5728px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 365.298px; top: 1277px; width: 67.5728px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:25 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:25 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:25 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 297.725px; top: 1277px; width: 54.1088px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 297.725px; top: 1277px; width: 54.1088px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 297.725px; top: 1277px; width: 54.1088px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 297.725px; top: 1277px; width: 54.1088px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 365.298px; top: 1277px; width: 67.5728px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 365.298px; top: 1277px; width: 67.5728px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 365.298px; top: 1277px; width: 67.5728px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 365.298px; top: 1277px; width: 67.5728px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:24 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:25 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:25 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:25 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:25 / 2:52",
+        "cursor": "left: 432.871px; top: 1277px; width: 124.734px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:22 / 2:52",
+        "cursor": "left: 97.9687px; top: 1277px; width: 62.5571px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 160.526px; top: 1277px; width: 61.178px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      },
+      {
+        "measure": "8",
+        "time": "0:23 / 2:52",
+        "cursor": "left: 235.168px; top: 1277px; width: 76.0211px; height: 36px;",
+        "hidden": false
+      }
+    ],
+    "unknownShowsErrorWithoutDownload": true
+  },
+  "captures": [
+    "viewer-desktop.png",
+    "viewer-mobile.png"
+  ],
+  "errors": [],
+  "writes": [],
+  "limitation": "Headless real WebAudio scheduling/gains, not human audition or physical latency calibration."
+}

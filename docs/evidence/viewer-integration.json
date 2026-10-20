@@ -1,0 +1,231 @@
+{
+  "checkedAt": "2026-10-20T23:02:35.853Z",
+  "verdict": "VERIFIED A03 read-only viewer unit on deterministic actual-song smoke, not final model publication",
+  "originalRoot": "95018b3567febea38c65fbfc05fb695222169650",
+  "originalRootClean": true,
+  "delivery": "7e003c8778eca1e0c06951e74393e609ded9da4d",
+  "integratedAs": "a6aa1ce315a13baffb30bdac25cb54d08c75da4d",
+  "onlyOneImplementationPick": true,
+  "excludedPicks": [
+    "3285c2e",
+    "166fceb"
+  ],
+  "implementationTreesIdentical": true,
+  "stablePatchId": "6a5d5ac652e987f28986def7d18ea1a3eafe5c7f",
+  "canonicalSourceEngineAdapterAgentPublicationUnchanged": true,
+  "originalAggregatorByteIdentical": true,
+  "aggregatorSha256": "48d067dd7a505b8870f4babc2a18a4acc6f71b1f5b2870d94c263c6d865c928e",
+  "preservedHooks": [
+    "typecheck",
+    "check:source",
+    "test",
+    "test:controls",
+    "build",
+    "build:engine",
+    "typecheck:adapters",
+    "test:adapters",
+    "test:adapters:tempo",
+    "build:adapters",
+    "typecheck:agent",
+    "test:agent",
+    "build:publication"
+  ],
+  "appendedChain": "bun run typecheck:viewer && bun run test:viewer && bun run build:client",
+  "testHookChange": "Broadened from fixtures/engine to all root test files, excluding separate Playwright workflow; existing coverage retained.",
+  "checks": {
+    "frozenInstallExit": 0,
+    "rootCheckExit": 0,
+    "viewerTests": {
+      "pass": 6,
+      "assertions": 68
+    },
+    "sourceTests": {
+      "pass": 46,
+      "assertions": 403
+    },
+    "allRootTests": {
+      "pass": 138,
+      "skip": 1,
+      "todo": 11,
+      "fail": 0,
+      "assertions": 1074
+    },
+    "browserWorkflows": {
+      "deliveryPass": 5,
+      "rootPass": 5
+    },
+    "independentLiveAudioGainsLoopCursor": true,
+    "rootHandlerHttpCorruptions": 4,
+    "unknown404": true,
+    "mutations405": true,
+    "independentBrowserProbeRunFromRoot": true,
+    "actualHalfSpeedSamePitchesDoubleHolds": true
+  },
+  "retainedPreview": {
+    "id": "bb98372d-7b4b-46cf-bc0d-10f904d12582",
+    "url": "http://beelinkk:5847/",
+    "unchanged": true,
+    "finalRootPublicationServer": false,
+    "cwd": "/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-196ee289",
+    "store": "/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-bfbeaaab/.arrangements",
+    "adapterOverride": "/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-cf255def/src/adapters/index.ts"
+  },
+  "rootBuildVsLiveAssets": [
+    {
+      "path": "/favicon.svg",
+      "status": 200,
+      "sha256": "558a21d3cc2fe2d8eabd0f5ad64b652e484a122a431309f49b0ed6019d8a92a2",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/Bravura-BVtSfpnN.woff2",
+      "status": 200,
+      "sha256": "181e0e7c4889f9ad57dde0a11988fa61b941617aa499ecdb9dfd4713896c2b19",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/dm-sans-latin-700-normal-DvUfVpUG.woff2",
+      "status": 200,
+      "sha256": "35c5efa0e5daa52ee5c6500f5be354bf751fb65c4e49e1d6806c6eb5883e8fe9",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/literata-latin-500-normal-Dbph1WrK.woff2",
+      "status": 200,
+      "sha256": "29f2713a2f91da895ccf921fcc22cd73ff32cd21cec85a31637eca2987b273b3",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/dm-sans-latin-600-normal-Aqo67rzb.woff2",
+      "status": 200,
+      "sha256": "6bb2b2645ba5eeaecf56322c543fa3a75b87b927977b9c03b1dabc4205089120",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/literata-latin-400-normal-CLtNJ872.woff2",
+      "status": 200,
+      "sha256": "a60c193b55766b68b922e2327e15c2d8c145532f283a27c3411b9c47a8583d18",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/dm-sans-latin-400-normal-BwCSEQnW.woff",
+      "status": 200,
+      "sha256": "38702875fe179437d200e7ba6f7fab4d497ffe48117ef332029b2081751186ad",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/dm-sans-latin-700-normal-CUSSCpQX.woff",
+      "status": 200,
+      "sha256": "af422a448ac00679a8dbb13532db3616829c5a35b58d3eeea5903ce17ad2e36a",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/dm-sans-latin-500-normal-Dr3UlScf.woff",
+      "status": 200,
+      "sha256": "7deb957e430b780ee3272d801af4f9f2211b1330ec40a312a8f25309eacb4034",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/dm-sans-latin-600-normal-BmdmIIQ2.woff",
+      "status": 200,
+      "sha256": "e7351257e49400eff05aca30a2007289194a900860d30c30770d8b8732897564",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/literata-latin-500-normal-B-T_MU67.woff",
+      "status": 200,
+      "sha256": "d72b488f65ea6098a1aaa87ac44892407d4afcb02678c587d12e3389bd03770a",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/literata-latin-400-normal-CUhpYSl8.woff",
+      "status": 200,
+      "sha256": "8e4abe8bdb3ab4fa669a97067200a01111ab8b62abfd9fc05a53e16dfd37ba0f",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/dm-sans-latin-400-normal-CW0RaeGs.woff2",
+      "status": 200,
+      "sha256": "4ab51eb2cd7305d177187908d6397474d4520663f6c6e572feb0a64f4fa80006",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/dm-sans-latin-500-normal-B9HHJjqV.woff2",
+      "status": 200,
+      "sha256": "19bf1984956517c35c2bd35b6cdedac12a21d6fcd3596c614ecdfb88b648909d",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/viewer-CABIDDxg.css",
+      "status": 200,
+      "sha256": "8ee306d92a70d3bfada0df33c8b7531e09b1056fca9905ef34d977efde3c9871",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/viewer-oO8VjIbw.js",
+      "status": 200,
+      "sha256": "688a8a1544f5fd8bb8516adde7295be19f7e6310ac3461275588084592ed3c09",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/ports-B6Tspdti.js",
+      "status": 200,
+      "sha256": "bcc748c2bdb02e7015677f0f7f5ed30f5e34d9b50a6f0b2fe0a17bcf93aee0b8",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/index-XdRq9Cyx.js",
+      "status": 200,
+      "sha256": "f79111fa4080b2cff9243a15d6fc12a5bb50cd569d1afc77e7fed605cbb9694c",
+      "sameBytes": true
+    },
+    {
+      "path": "/assets/THIRD-PARTY-NOTICES.txt",
+      "status": 200,
+      "sha256": "bbc9c1c6e70f6286ed68ed104057d62c1e8cc6fd02da06be87cd1fcc6c39cd40",
+      "sameBytes": true
+    },
+    {
+      "path": "/integrations/canonical.js",
+      "status": 200,
+      "sha256": "6658d0986779d8f5a6f5017dfacbc39ca2defd0333a13cd0fd2b95d9750261f4",
+      "sameBytes": true
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "sha256": "c82532845cd83ebe2381997b38ed3ae47f711a49a9ae1d2e99c31c9b007163aa",
+      "sameBytes": true
+    }
+  ],
+  "visualEvidence": [
+    {
+      "viewport": "desktop",
+      "share_url": "https://nextcloud.tail750ac6.ts.net/s/FG7EQxxd8Wtn6ad",
+      "image_url": "https://nextcloud.tail750ac6.ts.net/public.php/dav/files/FG7EQxxd8Wtn6ad/A7VNx8kBSjG9y-J6.png",
+      "sha256": "2709c4e51fbb468d5e610e555041c4d86febd4683afe713c9e60bfdec98b6cfe",
+      "verifiedAnonymous": true
+    },
+    {
+      "viewport": "mobile",
+      "share_url": "https://nextcloud.tail750ac6.ts.net/s/HFn9M4RQe3aTY2e",
+      "image_url": "https://nextcloud.tail750ac6.ts.net/public.php/dav/files/HFn9M4RQe3aTY2e/5BcfR-9Ep20SBRC8.png",
+      "sha256": "458dea1473b83046134373b19766ca9b3caae1d4848deb870f5c03b0aca75e87",
+      "verifiedAnonymous": true
+    }
+  ],
+  "limitations": [
+    "Deterministic smoke agent:null/unreviewed-draft only",
+    "No model-musical or human audition/calibration/playability approval",
+    "Archived editor source-map bug superseded by removal, not fixed",
+    "Machine-audit-heavy notes are a final-publication content/readability concern, not viewer blocker",
+    "No repeat of unchanged A01 44-page audit; only downloaded PDF first/last freshly inspected"
+  ],
+  "remaining": [
+    "Separately review and integrate bass-foundation engine fix",
+    "Review real musician plan and factual exact-byte/source/request-bound receipt",
+    "Publish corrected root canonical artifacts into ignored dedicated store under new immutable ID",
+    "Shelf-managed final root origin with absolute ARRANGEMENTS_DIR and no worker adapter override; preserve old links",
+    "Test final publication library/direct reload/controls plus exact final viewer/PDF/MIDI URLs MIME/hash/persisted bytes; inspect final notes and capture/upload desktop/mobile"
+  ]
+}
