@@ -22,11 +22,11 @@
 
 The planning checkpoint was documentation-only. U01 evidence preservation/audit, the bounded synthetic U02 export proof, and the independently reviewed U03 contract/test foundation are now integrated. No application is implemented. Unit details, dependencies, estimates, and gates are in `docs/WORKFLOW.md`.
 
-- [x] U01. Preserve and audit existing local exact-song source/probe evidence and access limitations; reference remains read-only. See `docs/evidence/export-review.md` and preserved feasibility/design reports. Actual-song raw retrieval trace and source audition remain open at U04/U06; this is not G1/G2 acceptance.
+- [x] U01. Preserve and audit existing local exact-song source/probe evidence and access limitations; reference remains read-only. See `docs/evidence/export-review.md` and preserved feasibility/design reports. U04 now verifies the actual raw retrieval trace; source audition remains open at U06. This is not full G1/G2 acceptance.
 - [x] U02. Independently verify and integrate the original synthetic alphaTab/PDFKit multi-voice, tie/tuplet, capo 0/2, whole-system A4/Letter PDF and real MIDI proof. See `docs/evidence/export-review.md` and `tools/export-proof/unit-log.tsv`. No full-song/app/playability claim; cosmetic caption/Letter packing limits remain.
 - [ ] Audition and approve the actual full-song melody section/voice/event selection, and obtain human guitarist review at target tempo. Two MIDI parsers do not satisfy a second-player audition or G5.
 - [x] U03. Approve contract version 1, establish project checks, and add independent expected-event fixtures before features. Round 1 failed on first-create/identity ownership and same-origin download paths; corrected in `2319ed8`, independently verified in round 2, then integrated as `1790577` → `68b358f`. See `docs/CONTRACT.md` and `docs/evidence/foundation.review-round2.md`; the unchanged failed review is `foundation.review-round1.md`.
-- [ ] U04. Adapt the existing bounded Songsterr importer with explicit errors, track selection, and source mapping. Do not replace it with speculative extraction.
+- [x] U04. Adapt the existing bounded Songsterr importer with explicit errors, event/voice selection, and exact source mapping. Independently verified and integrated as `b264d9f` → `8a13d0a`; see `docs/evidence/source-review.md`. Fresh raw/reference checks confirm 11 parts / 46 bars, 141 main attacks / 154 refs and a complete monophonic unapproved proposal. Key remains unknown; musician approval and arrangement feasibility are not source-import passes.
 - [ ] U05. Project this song into 64 unfolded occurrences with explicit entry tempos and original-bar/pass labels. Support triplets and remove duplicate repeat instructions.
 - [ ] U06. Implement difficulty and capo prompting, compare capo 0 and 2, preserve original sounding melody, and implement section mapping and melody approval.
 - [ ] U07. Implement source-grounded bass candidates, register changes, editing, and approval without changing the melody.
@@ -39,6 +39,8 @@ The planning checkpoint was documentation-only. U01 evidence preservation/audit,
 - [ ] For each unit, state a hypothesis, run its check, inspect artifacts, log a verdict, and continue only after verification.
 
 U03's combined root check passed pinned installation, typecheck, **32 fixture tests / 11 pending / 0 failures**, 16 test-only oracle expectations, browser-target domain build, independent schema/helper probes and U02's 18 lightweight predicates. U02 artifacts were not regenerated; existing reviewed evidence is unchanged. The 11 named pending gates in `tests/fixtures/literal-oracles.ts` remain pending, including actual create/CAS storage, source/form/physical validation, browser playback, canonical full-song exports and musician review. No product G1–G11 gate is closed by this foundation check.
+
+U04 integration adds `check:source` to the root aggregate: `bun run check` now also executes the strict source typecheck and **46 source tests / 403 assertions / 0 failures**, without traversing the independent export-proof npm package. Independent original/fresh raw-byte reconstruction, nine relevant corruptions, live reference comparison and real resource-timeout controls pass. See `docs/evidence/source-review-root-check.json` and `docs/evidence/source-review.md`; source acquisition/proposal verification does not close audition, API stamping/persistence or arrangement/export gates.
 
 ## Phase D: Keep the audit trail
 

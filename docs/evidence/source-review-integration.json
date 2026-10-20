@@ -1,0 +1,117 @@
+{
+  "checkedAt": "2026-10-20T21:45:10.100763+00:00",
+  "status": "VERIFIED bounded U04 integration only",
+  "base": "ce201e04fd0e10bff826731ac77152ff76faafdc",
+  "integrations": [
+    {
+      "worker": "95e2b753b5bf191f23066abf46a04de1e2f758e6",
+      "integrated": "b264d9fea96613452bc68112f51fc798428801f9",
+      "stablePatchId": "8937b8f7fdf637c1b2d3c3051b6c0488d36c9d79",
+      "equal": true
+    },
+    {
+      "worker": "e081e61ba4014aab9fe1f7ddf0c1160ae6156065",
+      "integrated": "8a13d0a700f024e15f9d31ba17073837af4d6bf9",
+      "stablePatchId": "eaefbca88d28097a3213c628ceed3123205b4a74",
+      "equal": true
+    }
+  ],
+  "preexistingTrackedFilesChangedByCherryPicks": [],
+  "domainContractAndU02Unchanged": true,
+  "referenceHead": "15e6e75b123c7e2426f6ec5376f241d1c14b4153",
+  "referenceClean": true,
+  "install": {
+    "command": "bun install --frozen-lockfile",
+    "exitCode": 0,
+    "result": "8 installs across 9 packages; no changes"
+  },
+  "rootCheck": "source-review-root-check.json",
+  "rootCheckRunsSourceTypesAndAll46Tests": true,
+  "lightweightU02Tests": {
+    "command": "npm --prefix tools/export-proof test",
+    "exitCode": 0,
+    "pass": 18,
+    "note": "predicates only; no heavy artifact regeneration"
+  },
+  "referenceScopedTests": {
+    "command": "bun test src/server/songsterr.test.ts",
+    "cwd": "/home/taytay/workspace/midi-to-readable-notaion",
+    "exitCode": 0,
+    "pass": 45,
+    "skip": 6,
+    "fail": 0
+  },
+  "freshLive": {
+    "command": "bun scripts/probe-source.ts --live --compare-reference --out tests/source/.local/review-live",
+    "exitCode": 0,
+    "sourcePath": "/home/taytay/.t3-nightly/projects/guitar-composition/tests/source/.local/review-live/source.json",
+    "proposalPath": "/home/taytay/.t3-nightly/projects/guitar-composition/tests/source/.local/review-live/melody-proposal.json",
+    "sourceIdentity": {
+      "kind": "songsterr",
+      "url": "https://www.songsterr.com/a/wsa/beach-boys-you-still-believe-in-me-tab-s692866",
+      "songId": 692866,
+      "upstreamRevisionId": 847990,
+      "formatVersion": 5
+    },
+    "all11RawPartHashesMatchOriginalWorkerAcquisition": true,
+    "rawPartHashes": {
+      "part-0": "9b6afb9d292f5db557ede12bfc5deff0b047cca1a3f6a19b27cd964b74d7e9a3",
+      "part-1": "4519a57150e982dbba2172807e549a4225cd272bebf6e50af6bfa58f78cb4a7e",
+      "part-2": "dc223dfa13ec997c0214360c2c1d6f725819054bee6b8aa17b3edf2a1398eea7",
+      "part-3": "09440494298882618a56a2af855f73cd1c84a4f1049a6ae13a3dcbfc225ec685",
+      "part-4": "8dbfbe54d0d4f5cb8dc26a9334641d3e1e4e429cb43b977f2fbc80100a48a97d",
+      "part-5": "42851324156c871ceaba311d394f6a5017640efffc5a0eea4d1eae678f465bf4",
+      "part-6": "ff7b7606d8bb2f66b13c592b7321e4768c4ef1b11fda2822f6e2e81f6ccbca46",
+      "part-7": "839e886bae28a9901eaa1be8ea08b9ec1575619784163d943ca0f85878a729e4",
+      "part-8": "76e6661694cf9aa3a34f44a06cf8af5a154307d16197ca74f31095274e23f9d8",
+      "part-9": "7dea788d2ab8c6931c36f7d722a133235bbcfe494862eacdfaa3509c50527274",
+      "part-10": "9c2d076134e71e19ecb336e58c9fbed1dcc7b0e10fb52a76b9b28125c68ed93e"
+    },
+    "literalOpeningTieTripletRepeatChecksPassed": true,
+    "referenceFacts": [
+      {
+        "partId": 0,
+        "referenceNoteSlots": 154,
+        "bars": 46,
+        "warnings": [],
+        "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+      },
+      {
+        "partId": 1,
+        "referenceNoteSlots": 156,
+        "bars": 46,
+        "warnings": [],
+        "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+      },
+      {
+        "partId": 2,
+        "referenceNoteSlots": 143,
+        "bars": 46,
+        "warnings": [],
+        "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+      },
+      {
+        "partId": 7,
+        "referenceNoteSlots": 948,
+        "bars": 46,
+        "warnings": [],
+        "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+      },
+      {
+        "partId": 8,
+        "referenceNoteSlots": 174,
+        "bars": 46,
+        "warnings": [],
+        "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+      },
+      {
+        "partId": 9,
+        "referenceNoteSlots": 174,
+        "bars": 46,
+        "warnings": [],
+        "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+      }
+    ]
+  },
+  "limits": "No full-song audition, human approval, difficulty/capo prompting, form expansion, playable arrangement, UI, playback or canonical export claim."
+}

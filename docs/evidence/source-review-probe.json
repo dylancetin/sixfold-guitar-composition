@@ -1,0 +1,94 @@
+{
+  "status": "VERIFIED U04 source, not musical approval",
+  "checkedAt": "2026-10-20T21:46:57.429Z",
+  "repo": "/home/taytay/.t3-nightly/projects/guitar-composition",
+  "local": "/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7364a0c1/tests/source/.local/live",
+  "checks": 22343,
+  "sourceFileSha256": "554df7017cf8eb5e26714cff74f82c8df6260c92d1f21067df82e0f195afc26b",
+  "sourceFileBytes": 2124889,
+  "sourceRevision": {
+    "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+    "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d",
+    "parentId": null
+  },
+  "parts": [
+    {
+      "partId": 0,
+      "slots": 154,
+      "attacks": 141,
+      "tripletBars": [
+        6,
+        8,
+        9,
+        18,
+        20,
+        21,
+        29
+      ]
+    },
+    {
+      "partId": 1,
+      "slots": 156,
+      "attacks": 146,
+      "tripletBars": []
+    },
+    {
+      "partId": 2,
+      "slots": 143,
+      "attacks": 143,
+      "tripletBars": []
+    },
+    {
+      "partId": 3,
+      "slots": 147,
+      "attacks": 147,
+      "tripletBars": []
+    },
+    {
+      "partId": 4,
+      "slots": 11,
+      "attacks": 10,
+      "tripletBars": []
+    },
+    {
+      "partId": 5,
+      "slots": 8,
+      "attacks": 4,
+      "tripletBars": []
+    },
+    {
+      "partId": 6,
+      "slots": 8,
+      "attacks": 4,
+      "tripletBars": []
+    },
+    {
+      "partId": 7,
+      "slots": 948,
+      "attacks": 496,
+      "tripletBars": []
+    },
+    {
+      "partId": 8,
+      "slots": 174,
+      "attacks": 174,
+      "tripletBars": []
+    },
+    {
+      "partId": 9,
+      "slots": 174,
+      "attacks": 174,
+      "tripletBars": []
+    },
+    {
+      "partId": 10,
+      "slots": 50,
+      "attacks": 50,
+      "tripletBars": []
+    }
+  ],
+  "independentCorruptCases": 9,
+  "rawReplayExact": true,
+  "selection": "complete monophonic 0–184; all 141 main attacks; part1 intro/interlude; source-silent42",
+  "key": "unknown"
+}

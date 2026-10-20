@@ -6,6 +6,7 @@
   "packageManager": "bun@1.4.2",
   "scripts": {
     "check": "node scripts/check-foundation.mjs",
+    "check:source": "tsc --project tests/source/tsconfig.json && bun test tests/source",
     "typecheck": "tsc --noEmit",
     "test": "bun test tests/fixtures",
     "test:controls": "bun tests/fixtures/check-negative-controls.ts",

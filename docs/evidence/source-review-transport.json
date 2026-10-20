@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-20T21:44:20.692Z",
+  "status": "passed",
+  "checks": [
+    "alternate CDN redirect rejected before destination",
+    "wrong MIME rejected",
+    "declared size rejected",
+    "32 MiB cumulative byte limit stops before remaining parts",
+    "real 15-second stalled-body timeout cancels stream"
+  ],
+  "stalledBodyElapsedMs": 15001
+}
