@@ -1,0 +1,4 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["../../src/domain/**/*.ts", "../../src/source/**/*.ts", "../../src/engine/**/*.ts", "../../src/agent/**/*.ts", "../../src/publication/**/*.ts", "../../scripts/prepare-arrangement.ts", "../../scripts/publish-arrangement.ts", "./**/*.ts", "../fixtures/original.ts"]
+}

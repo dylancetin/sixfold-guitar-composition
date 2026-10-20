@@ -1,5 +1,15 @@
 # Grounding and delivery checklist
 
+## Current user scope — supersedes original generation UI / HTTP planner
+
+Users prompt agents/subagents **from this project chat** with song URL/difficulty/capo; agents return tested stable viewer/PDF/MIDI links. The website is a read-only viewer/player/downloads. No create button, in-site arrangement generation, runtime provider/API-credential setup or HTTP planner. Reuse the reviewed source/engine/musical core. See `AGENT-WORKFLOW.md` and root `AGENTS.md`; older unit language below is historical where superseded.
+
+- [ ] **A01 — adapter fix:** independently verify exact gap notation and single tempo scaling, then integrate the canonical adapter. An external uncommitted-fix smoke is not integration acceptance.
+- [ ] **A02 — agent workflow/publication:** review/integrate prepare → actual source-reading musician PlanSchema output → independent validation/actual exports → atomic `.arrangements/<digest-id>` bundle. Implementation/check evidence lives in `docs/evidence/agent-workflow.md`; no live-model authorship is claimed by unit-test receipts or deterministic smoke.
+- [ ] **A03 — read-only viewer/deep links:** consume publication manifest/ScoreV1, serve only immutable validated bundles, refresh direct links, test playback/downloads, and capture current UI. The old original-study studio is baseline only.
+- [ ] **A04 — actual musical-agent/full-song acceptance:** parent delegates requested GPT-6.1-Sol xhigh and an independent judge using real source details; publish with factual task/provider/model/time/raw-byte-digest receipt; verify exact viewer/PDF/MIDI links and independent artifacts. Human audition/calibration remains explicitly pending until actually performed.
+- [ ] Integrator adds root check/script/ignore aggregation and canonical decision-log entries after owned-path review. No concurrent shared-root/TSV writes by implementation workers.
+
 - [x] Read Principles section of `/home/taytay/.agents/skills/poteto-mode/SKILL.md`.
 
 ## Phase A: Frame
