@@ -8,6 +8,7 @@ import type { Budget, SearchItem, SearchState } from './search';
 import { selectMelody, spell } from './selection';
 import { guitarValidator } from './validator';
 import { scopeDigest } from './scopes';
+import { roleOrderConflict } from './roles';
 
 type Note=Extract<SourceEvent,{kind:'note'}>;
 type Trial={status:'candidate';score:ScoreV1;state:SearchState}|Exclude<ArrangeResult,{status:'candidate'}>;
@@ -83,6 +84,8 @@ function arrangeCapo(source:SourceScoreV1,request:ArrangementRequest,plan:Plan,p
   const items:SearchItem[]=requiredMelody.map((s)=>({id:s.id,start:s.start,role:s.role,required:true,variants:[s]}));
   const rests=melodyLock?melodyLock.rests:melodyRests;
   for (const lock of request.locks.filter((l)=>l.role!=='melody')) for (const s of lock.sounds) items.push({id:s.id,start:s.start,role:s.role,required:true,variants:[s]});
+  const mandatory=items.flatMap((item)=>item.variants);
+  for(const [i,a] of mandatory.entries()) for(const b of mandatory.slice(i+1)) if(roleOrderConflict(a,b)&&overlaps(a.start,eventEnd(a),b.start,eventEnd(b))) return {status:'reapproval-needed',diagnostics:[diagnostic('unsatisfied','[role-order-v1] Existing locked accompaniment crosses another mandatory role; explicitly reapprove/revoice it. Locks were not altered.',[a.id,b.id])]};
   const planned=plannedSounds(source,request,plan,melody,instrument);
   for (const item of planned) if (!roles.has(item.role)) items.push(item);
   const written=expandForm({...source,form:{...source.form,repeats:[]},events:[]},request.preferences.tempoScale);

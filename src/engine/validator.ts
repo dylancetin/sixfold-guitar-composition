@@ -3,7 +3,7 @@ import type { Diagnostic, Occurrence, PerformedTempo, Q, ScoreV1, Sound, SourceE
 import { documentDigest, same } from './identity';
 import { ordered, scopeDigest } from './scopes';
 
-const version = 'independent-guitar-validator-1';
+const version = 'independent-guitar-validator-2-role-order-v1';
 const zero = q(0);
 const inside = (time: Q, start: Q, end: Q) => compare(time, start) >= 0 && compare(time, end) < 0;
 const spellingPitch = (s: Sound['spelling']) => (s.octave + 1) * 12 + ({ C:0,D:2,E:4,F:5,G:7,A:9,B:11 }[s.step]) + s.alter;
@@ -268,6 +268,15 @@ function elapsedSeconds(from: Q,to: Q,tempos: PerformedTempo[]): number {
 }
 
 function validateEvidence(source: SourceScoreV1,score: ScoreV1,events: Map<string,SourceEvent>,error: ErrorSink) {
+  // Independent interval oracle, deliberately not the generator's role predicate.
+  // Full performed expansion is checked separately, so every written overlap
+  // here also covers all its sounding occurrences (including held transitions).
+  for(const lower of score.sounds) for(const upper of score.sounds) {
+    const ordered=lower.role==='bass'&&(upper.role==='harmony'||upper.role==='melody')||lower.role==='harmony'&&upper.role==='melody';
+    if(!ordered||lower.soundingMidi<upper.soundingMidi||!overlaps(lower.start,eventEnd(lower),upper.start,eventEnd(upper))) continue;
+    const barIds=score.bars.filter((b)=>overlaps(b.start,add(b.start,b.length),lower.start,eventEnd(lower))&&overlaps(b.start,add(b.start,b.length),upper.start,eventEnd(upper))).map((b)=>b.id);
+    error('unsatisfied',`[role-order-v1] Sounding ${lower.role} must be strictly below ${upper.role} throughout their overlap; explicit reapproval/revoicing is required, not an implicit inversion`,[lower.id,upper.id],barIds);
+  }
   for (const c of score.plan.candidates) for (const id of c.sourceEventIds) if (events.get(id)?.kind!=='note') error('source-mismatch','Plan references a nonexistent/non-note source event',[id]);
   const bass=score.sounds.filter((s)=>s.role==='bass').sort((a,b)=>compare(a.start,b.start));
   for (let i=1;i<bass.length;i++) if (overlaps(bass[i-1]!.start,eventEnd(bass[i-1]!),bass[i]!.start,eventEnd(bass[i]!))) error('profile-limit','Bass is monophonic, even on different strings',[bass[i-1]!.id,bass[i]!.id]);
@@ -278,10 +287,6 @@ function validateEvidence(source: SourceScoreV1,score: ScoreV1,events: Map<strin
     if (evidence.some((e)=>!e||e.kind!=='note'||e.effects.some((fx)=>fx.affectsMelody))) error('source-mismatch','Accompaniment has missing or unsupported source evidence',[s.id]);
     const exact=evidence.find((e)=>e?.kind==='note'&&same(e.start,s.start)&&((s.soundingMidi-e.soundingMidi-score.preferences.transposition.semitones)%12===0)&&compare(s.duration,e.duration)<=0);
     if (!exact||exact.kind!=='note') { error('source-mismatch','Accompaniment must preserve source attack, pitch class and no longer than source duration',[s.id]);continue; }
-    if (s.role==='bass') {
-      const simultaneous=score.sounds.filter((m)=>m.role==='melody'&&overlaps(s.start,eventEnd(s),m.start,eventEnd(m)));
-      if (simultaneous.some((m)=>s.soundingMidi>=m.soundingMidi)) error('profile-limit','Bass must stay in register below the sounding melody',[s.id]);
-    }
     const shifted=s.soundingMidi!==exact.soundingMidi+score.preferences.transposition.semitones;
     const shortened=!same(s.duration,exact.duration);
     if ((shifted||shortened)&&s.provenance.kind!=='generated') error('source-mismatch','Adapted accompaniment must disclose generated strategy/evidence provenance',[s.id]);

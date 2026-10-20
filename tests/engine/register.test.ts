@@ -3,12 +3,38 @@ import { eventEnd, overlaps } from '../../src/domain';
 import { guitarEngine, guitarValidator } from '../../src/engine';
 import { crossedRegisterScore, heldRegisterStudy, isolatedRegisterStudy } from './register-studies';
 import { literalPlanner } from './studies';
+import { documentDigest } from '../../src/engine/identity';
+import { scopeDigest } from '../../src/engine/scopes';
 
 test('independent role gate rejects statically valid held bass ABOVE later inner harmony',()=>{
   const {source,score}=crossedRegisterScore();
   const report=guitarValidator.validate(source,score,{approvedRevisions:[]});
   expect(report.status).toBe('failed');
   expect(report.diagnostics.some((d)=>d.message.includes('role-order-v1'))).toBe(true);
+});
+
+test('role gate also rejects bass attacking under already held harmony, but releases before equal-time attacks',()=>{
+  const held=crossedRegisterScore('harmony-first');
+  const report=guitarValidator.validate(held.source,held.score,{approvedRevisions:[]});
+  expect(report.status).toBe('failed');
+  expect(report.diagnostics.filter((d)=>d.severity==='error').map((d)=>d.code)).toEqual(['unsatisfied']);
+  const boundary=crossedRegisterScore('boundary');
+  expect(guitarValidator.validate(boundary.source,boundary.score,{approvedRevisions:[]}).status).toBe('passed');
+});
+
+test('crossing approved snapshots do not authorize silent inversions or lock edits',()=>{
+  const {source,score}=crossedRegisterScore();
+  const request=heldRegisterStudy().request;
+  request.locks=(['bass','harmony'] as const).map((role)=>({role,approvedFrom:{id:score.revision.id,digest:score.revision.digest},scopeDigest:scopeDigest(score,role),sounds:score.sounds.filter((s)=>s.role===role),rests:[]}));
+  const before=JSON.stringify(request.locks);
+  const result=guitarEngine.arrange(source,request,score.plan,score.planner);
+  expect(result.status).toBe('reapproval-needed');
+  expect(result.diagnostics.some((d)=>d.message.includes('role-order-v1'))).toBe(true);
+  expect(JSON.stringify(request.locks)).toBe(before);
+  const candidate=structuredClone(score);candidate.locks=request.locks;candidate.revision.digest=documentDigest(candidate);
+  const report=guitarValidator.validate(source,candidate,{approvedRevisions:[score]});
+  expect(report.status).toBe('failed');
+  expect(report.diagnostics.filter((d)=>d.severity==='error').map((d)=>d.code)).toEqual(['unsatisfied']);
 });
 
 test('held-role sequence retains lower source bass and inner harmony through both lead notes',()=>{

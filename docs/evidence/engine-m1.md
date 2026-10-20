@@ -27,3 +27,11 @@ bun tests/engine/probe-register.ts \
 For overlapping half-open sounding intervals, bass < inner harmony < protected melody, whenever those roles coexist. The independent validator must reconstruct this order, not accept solver flags. Existing crossing locks require explicit reapproval rather than silent alteration. Intentional inverted role labels are not representable as an exception in current V1; do not broaden the schema just for this song.
 
 Retain source bass first; bass register and same-line source contour are musical preferences ahead of inner-tone density and fret convenience. Plan bass octaveShift is a preferred target, not an authorization to alter melody or force an impossible pitch. Necessary guitar-register folding remains allowed and audited. Held strings/fingers, exact boundaries, physical/profile and specified transition limits remain mandatory. Movement of current actual-song drafts remains uncalibrated.
+
+## Separate independent gate
+
+Validator version is now `independent-guitar-validator-2-role-order-v1`. It independently checks every exact overlapping ordered role pair from the score, with bar/event references and existing `unsatisfied` diagnostics prefixed `[role-order-v1]`; it does not import the generator predicate. Performed expansion is independently validated as before. No domain/schema changes. Old passed envelopes do not establish passage under the new validator version.
+
+The generator's small shared role predicate also rejects conflicting **mandatory locked** roles before search with `reapproval-needed`. No implicit inversion exception or silent lock mutation exists in current V1.
+
+At this gate-only boundary `bun test tests/engine/register.test.ts` reports **3 pass / 2 fail**, intentionally: the independently authored literal crossing is rejected, harmony-first attack is rejected, exact release boundary passes, and backed crossing snapshots still require reapproval. The two retained solver regressions remain red (the old crossing solver now returns `invalid-candidate` rather than laundering it; isolated high bass is still high). Explicit engine/tests/probe typecheck passes. This is the gate, not a claim the solver is fixed yet.
