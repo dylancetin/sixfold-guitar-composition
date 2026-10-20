@@ -1,0 +1,48 @@
+{
+  "scope": "U04 source adapter checks; not arrangement/export/human approval",
+  "checkedAt": "2026-10-20T21:37:46.182Z",
+  "checks": [
+    {
+      "command": "bunx tsc --project tests/source/tsconfig.json",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "bun test tests/source",
+      "exitCode": 0,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "\n 46 pass\n 0 fail\n 403 expect() calls\nRan 46 tests across 1 file. [115.00ms]\n"
+    },
+    {
+      "command": "bun run check",
+      "exitCode": 0,
+      "stdout": "{\n  \"scope\": \"U03 contract/test foundation; not product acceptance\",\n  \"checkedAt\": \"2026-10-20T21:36:32.529Z\",\n  \"status\": \"passed\",\n  \"missing\": [],\n  \"checks\": [\n    {\n      \"command\": \"bun run typecheck\",\n      \"exitCode\": 0,\n      \"stdout\": \"\",\n      \"stderr\": \"$ tsc --noEmit\\n\"\n    },\n    {\n      \"command\": \"bun run test\",\n      \"exitCode\": 0,\n      \"stdout\": \"bun test v1.4.2 (744846f84)\\n\",\n      \"stderr\": \"$ bun test tests/fixtures\\n\\n 32 pass\\n 11 todo\\n 0 fail\\n 302 expect() calls\\nRan 43 tests across 3 files. [68.00ms]\\n\"\n    },\n    {\n      \"command\": \"bun run test:controls\",\n      \"exitCode\": 0,\n      \"stdout\": \"{\\n  \\\"scope\\\": \\\"Test-only literal oracle/mutation examples, NOT production validator or live-song acceptance\\\",\\n  \\\"controls\\\": [\\n    {\\n      \\\"id\\\": \\\"original-melody\\\",\\n      \\\"expected\\\": true,\\n      \\\"actual\\\": true,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"wrong-melody-pitch\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"missing-middle-melody\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"missing-final-melody\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"melody-octave-shift\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"held-string-re-fret\\\",\\n      \\\"expected\\\": \\\"string-collision\\\",\\n      \\\"actual\\\": \\\"string-collision\\\",\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"exact-boundary-release\\\",\\n      \\\"expected\\\": \\\"\\\",\\n      \\\"actual\\\": \\\"\\\",\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"held-finger-move\\\",\\n      \\\"expected\\\": \\\"finger-collision\\\",\\n      \\\"actual\\\": \\\"finger-collision\\\",\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"repeat-entry-restored-seconds\\\",\\n      \\\"expected\\\": 13,\\n      \\\"actual\\\": 13,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"repeat-entry-carried-seconds-negative\\\",\\n      \\\"expected\\\": 12,\\n      \\\"actual\\\": 12,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"requested-form-occurrences-literal-only\\\",\\n      \\\"expected\\\": 64,\\n      \\\"actual\\\": 64,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"capo2-high-E-open-already-sounding\\\",\\n      \\\"expected\\\": 66,\\n      \\\"actual\\\": 66,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"capo2-double-offset-rejected\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"repeat-restore-tick\\\",\\n      \\\"expected\\\": 11520,\\n      \\\"actual\\\": 11520,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"full-original-revision\\\",\\n      \\\"expected\\\": true,\\n      \\\"actual\\\": true,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"capo-mutated-old-revision\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    }\\n  ]\\n}\\n\",\n      \"stderr\": \"$ bun tests/fixtures/check-negative-controls.ts\\n\"\n    },\n    {\n      \"command\": \"bun run build\",\n      \"exitCode\": 0,\n      \"stdout\": \"Bundled 76 modules in 8ms\\n\\n  index.js  140.66 KB  (entry point)\\n\\n\",\n      \"stderr\": \"$ bun build src/domain/index.ts --target=browser --outdir=dist\\n\"\n    }\n  ]\n}\n",
+      "stderr": "$ node scripts/check-foundation.mjs\n"
+    },
+    {
+      "command": "bun scripts/probe-source.ts",
+      "exitCode": 0,
+      "stdout": "No network performed. Opt in: bun scripts/probe-source.ts --live [--compare-reference] [--out tests/source/.local/live]\n",
+      "stderr": ""
+    },
+    {
+      "command": "bun test /home/taytay/workspace/midi-to-readable-notaion/src/server/songsterr.test.ts /home/taytay/workspace/midi-to-readable-notaion/src/audio/timeline.test.ts",
+      "exitCode": 0,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "\n 53 pass\n 6 skip\n 0 fail\n 409 expect() calls\nRan 59 tests across 2 files. [77.00ms]\n"
+    },
+    {
+      "command": "bun test",
+      "exitCode": 1,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "\ntools/export-proof/test/checks.test.mjs:\n\n# Unhandled error between tests\n-------------------------------\nerror: Cannot find package 'midi-file' from '/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7364a0c1/tools/export-proof/checks.mjs'\n-------------------------------\n\n\n 78 pass\n 11 todo\n 1 fail\n 1 error\n 705 expect() calls\nRan 90 tests across 5 files. [158.00ms]\n"
+    },
+    {
+      "command": "bun test tests/fixtures tests/source",
+      "exitCode": 0,
+      "stdout": "bun test v1.4.2 (744846f84)\n",
+      "stderr": "\n 78 pass\n 11 todo\n 0 fail\n 705 expect() calls\nRan 89 tests across 4 files. [148.00ms]\n"
+    }
+  ]
+}

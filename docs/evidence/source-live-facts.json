@@ -1,0 +1,381 @@
+{
+  "scope": "Exact-song U04 live source and proposed melody; not an arrangement or musical approval",
+  "checkedAt": "2026-10-20T21:36:53.375Z",
+  "command": "bun scripts/probe-source.ts --live --compare-reference",
+  "exitCode": 0,
+  "sourcePath": "/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7364a0c1/tests/source/.local/live/source.json",
+  "proposalPath": "/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7364a0c1/tests/source/.local/live/melody-proposal.json",
+  "sourceRevision": {
+    "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+    "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d",
+    "parentId": null
+  },
+  "sourceFileSha256": "554df7017cf8eb5e26714cff74f82c8df6260c92d1f21067df82e0f195afc26b",
+  "sourceFileByteLength": 2124889,
+  "sourceSchemaParsed": true,
+  "sourceDigestVerified": true,
+  "identity": {
+    "kind": "songsterr",
+    "url": "https://www.songsterr.com/a/wsa/beach-boys-you-still-believe-in-me-tab-s692866",
+    "songId": 692866,
+    "upstreamRevisionId": 847990,
+    "formatVersion": 5
+  },
+  "rawArtifacts": [
+    {
+      "id": "song-page",
+      "sha256": "6f1744126792aa33cdbe18277e9de2f023173c1a911b2523dbd745ac5f86dbdd",
+      "byteLength": 46255,
+      "mediaType": "text/html"
+    },
+    {
+      "id": "part-0",
+      "sha256": "9b6afb9d292f5db557ede12bfc5deff0b047cca1a3f6a19b27cd964b74d7e9a3",
+      "byteLength": 15624,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-1",
+      "sha256": "4519a57150e982dbba2172807e549a4225cd272bebf6e50af6bfa58f78cb4a7e",
+      "byteLength": 12389,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-2",
+      "sha256": "dc223dfa13ec997c0214360c2c1d6f725819054bee6b8aa17b3edf2a1398eea7",
+      "byteLength": 14837,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-3",
+      "sha256": "09440494298882618a56a2af855f73cd1c84a4f1049a6ae13a3dcbfc225ec685",
+      "byteLength": 15362,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-4",
+      "sha256": "8dbfbe54d0d4f5cb8dc26a9334641d3e1e4e429cb43b977f2fbc80100a48a97d",
+      "byteLength": 7098,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-5",
+      "sha256": "42851324156c871ceaba311d394f6a5017640efffc5a0eea4d1eae678f465bf4",
+      "byteLength": 6550,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-6",
+      "sha256": "ff7b7606d8bb2f66b13c592b7321e4768c4ef1b11fda2822f6e2e81f6ccbca46",
+      "byteLength": 6549,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-7",
+      "sha256": "839e886bae28a9901eaa1be8ea08b9ec1575619784163d943ca0f85878a729e4",
+      "byteLength": 45186,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-8",
+      "sha256": "76e6661694cf9aa3a34f44a06cf8af5a154307d16197ca74f31095274e23f9d8",
+      "byteLength": 16056,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-9",
+      "sha256": "7dea788d2ab8c6931c36f7d722a133235bbcfe494862eacdfaa3509c50527274",
+      "byteLength": 16030,
+      "mediaType": "application/json"
+    },
+    {
+      "id": "part-10",
+      "sha256": "9c2d076134e71e19ecb336e58c9fbed1dcc7b0e10fb52a76b9b28125c68ed93e",
+      "byteLength": 10713,
+      "mediaType": "application/json"
+    }
+  ],
+  "writtenBars": 46,
+  "writtenQuarters": 184,
+  "partFacts": [
+    {
+      "partId": 0,
+      "rawNoteSlots": 154,
+      "canonicalAttacks": 141,
+      "canonicalRefs": 154,
+      "tripletBars": [
+        6,
+        8,
+        9,
+        18,
+        20,
+        21,
+        29
+      ]
+    },
+    {
+      "partId": 1,
+      "rawNoteSlots": 156,
+      "canonicalAttacks": 146,
+      "canonicalRefs": 156,
+      "tripletBars": []
+    },
+    {
+      "partId": 2,
+      "rawNoteSlots": 143,
+      "canonicalAttacks": 143,
+      "canonicalRefs": 143,
+      "tripletBars": []
+    },
+    {
+      "partId": 3,
+      "rawNoteSlots": 147,
+      "canonicalAttacks": 147,
+      "canonicalRefs": 147,
+      "tripletBars": []
+    },
+    {
+      "partId": 4,
+      "rawNoteSlots": 11,
+      "canonicalAttacks": 10,
+      "canonicalRefs": 11,
+      "tripletBars": []
+    },
+    {
+      "partId": 5,
+      "rawNoteSlots": 8,
+      "canonicalAttacks": 4,
+      "canonicalRefs": 8,
+      "tripletBars": []
+    },
+    {
+      "partId": 6,
+      "rawNoteSlots": 8,
+      "canonicalAttacks": 4,
+      "canonicalRefs": 8,
+      "tripletBars": []
+    },
+    {
+      "partId": 7,
+      "rawNoteSlots": 948,
+      "canonicalAttacks": 496,
+      "canonicalRefs": 948,
+      "tripletBars": []
+    },
+    {
+      "partId": 8,
+      "rawNoteSlots": 174,
+      "canonicalAttacks": 174,
+      "canonicalRefs": 174,
+      "tripletBars": []
+    },
+    {
+      "partId": 9,
+      "rawNoteSlots": 174,
+      "canonicalAttacks": 174,
+      "canonicalRefs": 174,
+      "tripletBars": []
+    },
+    {
+      "partId": 10,
+      "rawNoteSlots": 50,
+      "canonicalAttacks": 50,
+      "canonicalRefs": 50,
+      "tripletBars": []
+    }
+  ],
+  "sectionMap": [
+    {
+      "label": "Written bars 1–4: fallback line (unapproved)",
+      "fromQuarter": {
+        "n": 0,
+        "d": 1
+      },
+      "toQuarter": {
+        "n": 16,
+        "d": 1
+      },
+      "parts": [
+        1
+      ],
+      "eventCount": 17,
+      "intentionalRestCount": 0
+    },
+    {
+      "label": "Written bars 5–16: primary candidate (unapproved)",
+      "fromQuarter": {
+        "n": 16,
+        "d": 1
+      },
+      "toQuarter": {
+        "n": 64,
+        "d": 1
+      },
+      "parts": [
+        0
+      ],
+      "eventCount": 51,
+      "intentionalRestCount": 0
+    },
+    {
+      "label": "Written bars 17–33: primary candidate (unapproved)",
+      "fromQuarter": {
+        "n": 64,
+        "d": 1
+      },
+      "toQuarter": {
+        "n": 132,
+        "d": 1
+      },
+      "parts": [
+        0
+      ],
+      "eventCount": 70,
+      "intentionalRestCount": 0
+    },
+    {
+      "label": "Written bars 34–37: fallback line (unapproved)",
+      "fromQuarter": {
+        "n": 132,
+        "d": 1
+      },
+      "toQuarter": {
+        "n": 148,
+        "d": 1
+      },
+      "parts": [
+        1
+      ],
+      "eventCount": 17,
+      "intentionalRestCount": 0
+    },
+    {
+      "label": "Written bars 38–41: primary candidate (unapproved)",
+      "fromQuarter": {
+        "n": 148,
+        "d": 1
+      },
+      "toQuarter": {
+        "n": 164,
+        "d": 1
+      },
+      "parts": [
+        0
+      ],
+      "eventCount": 17,
+      "intentionalRestCount": 0
+    },
+    {
+      "label": "Written bars 42–42: source silence (unapproved)",
+      "fromQuarter": {
+        "n": 164,
+        "d": 1
+      },
+      "toQuarter": {
+        "n": 168,
+        "d": 1
+      },
+      "parts": [],
+      "eventCount": 0,
+      "intentionalRestCount": 1
+    },
+    {
+      "label": "Written bars 43–46: primary candidate (unapproved)",
+      "fromQuarter": {
+        "n": 168,
+        "d": 1
+      },
+      "toQuarter": {
+        "n": 184,
+        "d": 1
+      },
+      "parts": [
+        0
+      ],
+      "eventCount": 17,
+      "intentionalRestCount": 0
+    }
+  ],
+  "proposalApproval": "unapproved",
+  "proposalIntentionalRestCount": 1,
+  "key": {
+    "status": "unknown",
+    "reason": "Fret-based source supplies no declared key/spelling. Observed pitched classes: 0,1,3,4,6,7,8,9,10,11; these do not distinguish tonic/mode or modulation. Any proposed key (including a user hypothesis) requires review. Sharp spellings are a display convention, not key evidence."
+  },
+  "referenceFacts": [
+    {
+      "partId": 0,
+      "referenceNoteSlots": 154,
+      "bars": 46,
+      "warnings": [],
+      "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+    },
+    {
+      "partId": 1,
+      "referenceNoteSlots": 156,
+      "bars": 46,
+      "warnings": [],
+      "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+    },
+    {
+      "partId": 2,
+      "referenceNoteSlots": 143,
+      "bars": 46,
+      "warnings": [],
+      "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+    },
+    {
+      "partId": 7,
+      "referenceNoteSlots": 948,
+      "bars": 46,
+      "warnings": [],
+      "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+    },
+    {
+      "partId": 8,
+      "referenceNoteSlots": 174,
+      "bars": 46,
+      "warnings": [],
+      "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+    },
+    {
+      "partId": 9,
+      "referenceNoteSlots": 174,
+      "bars": 46,
+      "warnings": [],
+      "comparison": "all beat identities, pitch members, exact fraction durations and attack onsets agree"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "unsupported-construct",
+      "severity": "warning",
+      "message": "Part 2: expressive articulations retained as effects, not reproduced by this source adapter. Nominal pitch/rhythm is preserved."
+    },
+    {
+      "code": "unsupported-construct",
+      "severity": "warning",
+      "message": "Part 7: expressive articulations retained as effects, not reproduced by this source adapter. Nominal pitch/rhythm is preserved."
+    },
+    {
+      "code": "unsupported-construct",
+      "severity": "warning",
+      "message": "Part 10: unpitched-percussion retained and explicitly unsupported for melody selection."
+    },
+    {
+      "code": "selection-needed",
+      "severity": "info",
+      "message": "Valid PROVISIONAL IMPORT document: its schema and digest are internally valid, but its header is not an API-allocated saved source identity. API must allocate project/source revision identity and parent, recompute digest BEFORE saving, then call createDefaultMelodySelection(stampedSource). No source data is corrupted or stale."
+    },
+    {
+      "code": "selection-needed",
+      "severity": "info",
+      "message": "Imported all 11 source part identities. Website default part 2 and URL-linked parts do not define melody; use explicit event/voice selection."
+    },
+    {
+      "code": "unsupported-construct",
+      "severity": "info",
+      "message": "Source access flags were checked: hasPlayer=true, isBlocked=false, isRestricted=false, restriction empty. Raw page/parts retain flags and source metadata. Sharp display spellings are inferred, not source key declarations."
+    }
+  ]
+}
