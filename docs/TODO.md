@@ -20,10 +20,11 @@
 
 ## Phase C: Run the loop
 
-This design run remains documentation-only. The parent approved subsequent reversible implementation. Unit details, dependencies, estimates, and gates are in `docs/WORKFLOW.md`.
+The planning checkpoint was documentation-only. U01 evidence preservation/audit and the bounded synthetic U02 export proof are now integrated; no application or U03 foundation is integrated. Unit details, dependencies, estimates, and gates are in `docs/WORKFLOW.md`.
 
-- [ ] U01. Preserve and audit the completed exact-song source and export evidence. Do not edit the reference project.
-- [ ] U02. Extend the tested alphaTab and PDFKit route to multiple voices and complete-system page breaks. Reopen alternatives only for a failed gate.
+- [x] U01. Preserve and audit existing local exact-song source/probe evidence and access limitations; reference remains read-only. See `docs/evidence/export-review.md` and preserved feasibility/design reports. Actual-song raw retrieval trace and source audition remain open at U04/U06; this is not G1/G2 acceptance.
+- [x] U02. Independently verify and integrate the original synthetic alphaTab/PDFKit multi-voice, tie/tuplet, capo 0/2, whole-system A4/Letter PDF and real MIDI proof. See `docs/evidence/export-review.md` and `tools/export-proof/unit-log.tsv`. No full-song/app/playability claim; cosmetic caption/Letter packing limits remain.
+- [ ] Audition and approve the actual full-song melody section/voice/event selection, and obtain human guitarist review at target tempo. Two MIDI parsers do not satisfy a second-player audition or G5.
 - [ ] U03. Approve contract version 1, establish project checks, and add independent expected-event fixtures before features.
 - [ ] U04. Adapt the existing bounded Songsterr importer with explicit errors, track selection, and source mapping. Do not replace it with speculative extraction.
 - [ ] U05. Project this song into 64 unfolded occurrences with explicit entry tempos and original-bar/pass labels. Support triplets and remove duplicate repeat instructions.
