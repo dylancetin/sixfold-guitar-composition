@@ -35,13 +35,14 @@ async function runCase(name: string, source: Awaited<ReturnType<typeof study>>['
   await writeFile(path.join(dir, 'score.json'), JSON.stringify(score, null, 2));
   await writeFile(path.join(dir, 'validation.json'), JSON.stringify(validation, null, 2));
   assert.equal(validation.status, 'passed', JSON.stringify(validation));
-  assert.equal(validation.validatorVersion, 'independent-guitar-validator-1');
+  assert.equal(validation.validatorVersion, 'independent-guitar-validator-2-role-order-v1');
   if (validation.status !== 'passed') throw new Error('Validator rejected regression');
   let calls = 0;
   const adapter = createScoreAdapter({ validator: { validate: (...args) => { calls++; return validator.validate(...args); } }, getValidationContext: () => ({ approvedRevisions: [] }) });
   const draft = { status: 'validatedDraft' as const, score, validation };
   const before = ticks(score);
   const midi = await adapter.exportArtifact(source, draft, 'midi'), pdf = await adapter.exportArtifact(source, draft, 'pdf');
+  for (const artifact of [midi, pdf]) assert.equal(artifact.manifest.validationVersion, validation.validatorVersion, 'Actual export manifest must retain the current independent validation version');
   await writeFile(path.join(dir, 'score.mid'), midi.bytes); await writeFile(path.join(dir, 'score.pdf'), pdf.bytes);
   await writeFile(path.join(dir, 'midi-manifest.json'), JSON.stringify(midi.manifest, null, 2));
   await writeFile(path.join(dir, 'pdf-manifest.json'), JSON.stringify(pdf.manifest, null, 2));
