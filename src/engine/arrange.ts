@@ -55,7 +55,7 @@ export const guitarEngine:Engine={
         return {status:first.status,diagnostics:failures.flatMap((r)=>r.diagnostics)} as Exclude<ArrangeResult,{status:'candidate'}>;
       }
       const chosen=found[0]!;
-      chosen.result.score.capoComparison={selected:chosen.capo,reason:request.preferences.capo.mode==='chosen'?'User-chosen capo; sounding melody preserved':'Compared capo 0 and 2 with identical concert melody. Prefer retained source bass, then sparse harmony, then lower fretting cost; no key transposition.',alternatives:trials.map(({capo,result})=>({capo,outcome:result.status==='candidate'?'candidate':result.status==='search-exhausted'?'search-exhausted':'unsatisfied',reason:result.status==='candidate'?`Retained ${result.score.sounds.filter((s)=>s.role==='bass').length} bass and ${result.score.sounds.filter((s)=>s.role==='harmony').length} harmony attacks; concert melody unchanged`:result.diagnostics.map((d)=>d.message).join('; ')}))};
+      chosen.result.score.capoComparison={selected:chosen.capo,reason:request.preferences.capo.mode==='chosen'?'User-chosen capo; sounding melody preserved':'Compared capo 0 and 2 with identical concert melody. Prefer retained source bass, source-oriented bass register/contour, then sparse inner harmony and lower fretting cost; role-order-v1, no key transposition.',alternatives:trials.map(({capo,result})=>({capo,outcome:result.status==='candidate'?'candidate':result.status==='search-exhausted'?'search-exhausted':'unsatisfied',reason:result.status==='candidate'?`Retained ${result.score.sounds.filter((s)=>s.role==='bass').length} bass and ${result.score.sounds.filter((s)=>s.role==='harmony').length} harmony attacks; concert melody unchanged; source-oriented bass register/contour penalty ${result.state.bassRegisterCost}`:result.diagnostics.map((d)=>d.message).join('; ')}))};
       chosen.result.score.revision.digest=documentDigest(chosen.result.score);
       const diagnostics:Diagnostic[]=[{...diagnostic('search-budget',`Constraint-based unapproved draft; ${budget.used}/${budget.limit} successor states evaluated${budget.pruned?', bounded beam pruned alternatives':''}. State budget is deterministic; maxElapsedMs is enforced by the outer worker.`),severity:'info'}];
       if (request.ability.transition.status==='uncalibrated') diagnostics.push({...diagnostic('transition-unverified','Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.'),severity:'warning'});
@@ -151,14 +151,14 @@ function plannedSounds(source:SourceScoreV1,request:ArrangementRequest,plan:Plan
       const durations=[sourceNote.duration];
       if (limits[0]&&compare(limits[0],eventEnd(sourceNote))<0) durations.push(subtract(limits[0],sourceNote.start));
       const shifts=c.role==='bass'?[-3,-2,-1,0,1,2,3]:[c.octaveShift];
-      const pitches=shifts.map((shift)=>sourceNote.soundingMidi+request.preferences.transposition.semitones+12*shift).filter((pitch)=>pitch>=0&&pitch<=127&&pitchPositions(pitch,instrument,request.ability).length).sort((a,b)=>a-b);
-      for (const duration of durations) for (const midi of pitches.slice(0,c.role==='bass'?2:1)) {
-        if (melody.some((m)=>overlaps(sourceNote.start,add(sourceNote.start,duration),m.start,eventEnd(m))&&midi>=m.soundingMidi)) continue;
+      const target=sourceNote.soundingMidi+request.preferences.transposition.semitones+12*c.octaveShift;
+      const pitches=shifts.map((shift)=>sourceNote.soundingMidi+request.preferences.transposition.semitones+12*shift).filter((pitch)=>pitch>=0&&pitch<=127&&pitchPositions(pitch,instrument,request.ability).length).sort((a,b)=>Math.abs(a-target)-Math.abs(b-target)||a-b);
+      for (const duration of durations) for (const midi of pitches.filter((pitch)=>!melody.some((m)=>overlaps(sourceNote.start,add(sourceNote.start,duration),m.start,eventEnd(m))&&pitch>=m.soundingMidi)).slice(0,c.role==='bass'?2:1)) {
         const generated=midi!==sourceNote.soundingMidi+request.preferences.transposition.semitones||!same(duration,sourceNote.duration);
-        variants.push({id:soundId,role:c.role,voiceId:c.role==='bass'?'bass':'harmony',start:sourceNote.start,duration,soundingMidi:midi,spelling:midi===sourceNote.soundingMidi?sourceNote.spelling:spell(midi),provenance:generated?{kind:'generated',strategyVersion:'register-sparse-1',evidenceEventIds:[id],reason:'Source pitch class retained with disclosed guitar register/sustain adaptation'}:{kind:'source',eventIds:[id]}});
+        variants.push({id:soundId,role:c.role,voiceId:c.role==='bass'?'bass':'harmony',start:sourceNote.start,duration,soundingMidi:midi,spelling:midi===sourceNote.soundingMidi?sourceNote.spelling:spell(midi),provenance:generated?{kind:'generated',strategyVersion:'register-sparse-2-role-order-v1',evidenceEventIds:[id],reason:'Source pitch class retained with disclosed source-oriented guitar register/sustain adaptation and strict bass/inner/lead role order'}:{kind:'source',eventIds:[id]}});
       }
     }
-    items.push({id:soundId,start:sourceNote.start,role:c.role,required:false,variants});
+    items.push({id:soundId,start:sourceNote.start,role:c.role,required:false,variants,...(c.role==='bass'&&variants.length?{bassReference:{sourceMidi:sourceNote.soundingMidi+request.preferences.transposition.semitones,preferredMidi:variants[0]!.soundingMidi,line:`${sourceNote.partId}/${sourceNote.voiceId}`}}:{})});
   }
   return items;
 }

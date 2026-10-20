@@ -1,5 +1,5 @@
 // Local musical-regression experiment. Never writes author inputs or root.
-import { add, ArrangementRequestSchema, compare, eventEnd, overlaps, PlanSchema, PlannerProvenanceSchema, q, SourceScoreV1Schema, subtract } from '../../src/domain';
+import { add, ArrangementRequestSchema, compare, eventEnd, overlaps, PlanSchema, PlannerProvenanceSchema, q, ScoreV1Schema, SourceScoreV1Schema, subtract } from '../../src/domain';
 import type { ScoreV1, SourceScoreV1 } from '../../src/domain';
 import { guitarEngine, guitarValidator, secondsBetween } from '../../src/engine';
 import { digest } from '../../src/engine/identity';
@@ -60,7 +60,14 @@ function metrics(source:SourceScoreV1,score:ScoreV1) {
     const step=Math.abs(st.position.anchorPhysicalFret-before.position.anchorPhysicalFret),seconds=secondsBetween(before.at,st.at,score.performedTempos);
     return [{step,rate:seconds>0?step/seconds:0}];
   });
-  return {selectedCapo:score.instrument.capo,melody:counts('melody'),bass:counts('bass'),harmony:counts('harmony'),exactSelectedMelody:exactMelody,melodyTimelineDigest:digest(timeline),restsDigest:digest(score.rests),formDigest:digest({bars:score.bars,form:score.form,occurrences:score.occurrences,performedTempos:score.performedTempos}),occurrences:score.occurrences.length,planUnchanged:digest(score.plan)===digest(plan),crossedWrittenIntervals:crossings.length,crossedPerformedIntervals:performedCrossings,crossedPerformedQuarters:crossedQuarters,crossings,largeBassLeaps:leaps.filter((l)=>Math.abs(l.delta)>=12),inflatedSameLineLeaps:leaps.filter((l)=>l.sameSourceLine&&Math.abs(l.delta)>Math.abs(l.sourceDelta)&&Math.abs(l.delta)>=12),totalSameLineContourDistortionSemitones:leaps.filter((l)=>l.sameSourceLine).reduce((sum,l)=>sum+l.addedContourSemitones,0),isolatedHighBass:isolatedHigh.map((s)=>({source:ids(s),pitch:s.soundingMidi})),bassRange:[Math.min(...bass.map((s)=>s.soundingMidi)),Math.max(...bass.map((s)=>s.soundingMidi))],maxPhysicalFret:Math.max(...score.placements.map((p)=>p.fret+score.instrument.capo)),maxStoppedSpan:Math.max(...sweep.map((ps)=>{const f=ps.filter((p)=>p.fret>0).map((p)=>p.fret);return f.length?Math.max(...f)-Math.min(...f):0;})),maxSounding:Math.max(...sweep.map((ps)=>ps.length)),maxStopped:Math.max(...sweep.map((ps)=>ps.filter((p)=>p.fret>0).length)),maxObservedAnchorStep:Math.max(...anchorSteps.map((s)=>s.step),0),maxObservedAnchorFretsPerSecond:Math.max(...anchorSteps.map((s)=>s.rate),0),movementStatus:score.ability.transition.status,movementProxyNotHumanCalibration:true,omissions:score.changes.filter((c)=>c.kind==='omission').map((c)=>({role:c.role,sourceIds:c.sourceEventIds})),shortened:score.changes.filter((c)=>c.kind==='shortened-sustain').map((c)=>({role:c.role,sourceIds:c.sourceEventIds,before:c.before,after:c.after})),registerChangeCount:score.changes.filter((c)=>c.kind==='bass-register').length,m2CandidatePresent:score.plan.candidates.some((c)=>c.id==='harmony-bar35-p7-bt4-n0'),m2CandidateRetained:score.sounds.some((s)=>s.role==='harmony'&&ids(s).includes('p7:b35:v0:bt4:n0')),comparison:score.capoComparison};
+  return {selectedCapo:score.instrument.capo,melody:counts('melody'),bass:counts('bass'),harmony:counts('harmony'),exactSelectedMelody:exactMelody,melodyTimelineDigest:digest(timeline),restsDigest:digest(score.rests),formDigest:digest({bars:score.bars,form:score.form,occurrences:score.occurrences,performedTempos:score.performedTempos}),occurrences:score.occurrences.length,planUnchanged:digest(score.plan)===digest(plan),crossedWrittenIntervals:crossings.length,crossedPerformedIntervals:performedCrossings,crossedPerformedQuarters:crossedQuarters,crossings,largeBassLeaps:leaps.filter((l)=>Math.abs(l.delta)>=12),inflatedSameLineLeaps:leaps.filter((l)=>l.sameSourceLine&&Math.abs(l.delta)>Math.abs(l.sourceDelta)&&Math.abs(l.delta)>=12),changedSameLineContour:leaps.filter((l)=>l.sameSourceLine&&l.delta!==l.sourceDelta),sourceContourReversals:leaps.filter((l)=>l.sameSourceLine&&l.delta*l.sourceDelta<0),totalSameLineContourDistortionSemitones:leaps.filter((l)=>l.sameSourceLine).reduce((sum,l)=>sum+l.addedContourSemitones,0),isolatedHighBass:isolatedHigh.map((s)=>({source:ids(s),pitch:s.soundingMidi})),bassRange:[Math.min(...bass.map((s)=>s.soundingMidi)),Math.max(...bass.map((s)=>s.soundingMidi))],maxPhysicalFret:Math.max(...score.placements.map((p)=>p.fret+score.instrument.capo)),maxStoppedSpan:Math.max(...sweep.map((ps)=>{const f=ps.filter((p)=>p.fret>0).map((p)=>p.fret);return f.length?Math.max(...f)-Math.min(...f):0;})),maxSounding:Math.max(...sweep.map((ps)=>ps.length)),maxStopped:Math.max(...sweep.map((ps)=>ps.filter((p)=>p.fret>0).length)),maxObservedAnchorStep:Math.max(...anchorSteps.map((s)=>s.step),0),maxObservedAnchorFretsPerSecond:Math.max(...anchorSteps.map((s)=>s.rate),0),movementStatus:score.ability.transition.status,movementProxyNotHumanCalibration:true,omissions:score.changes.filter((c)=>c.kind==='omission').map((c)=>({role:c.role,sourceIds:c.sourceEventIds})),shortened:score.changes.filter((c)=>c.kind==='shortened-sustain').map((c)=>({role:c.role,sourceIds:c.sourceEventIds,before:c.before,after:c.after})),registerChangeCount:score.changes.filter((c)=>c.kind==='bass-register').length,m2CandidatePresent:score.plan.candidates.some((c)=>c.id==='harmony-bar35-p7-bt4-n0'),m2CandidateRetained:score.sounds.some((s)=>s.role==='harmony'&&ids(s).includes('p7:b35:v0:bt4:n0')),comparison:score.capoComparison};
+}
+
+function anchorTravel(score:ScoreV1):number {
+  return score.handStates.slice(1).reduce((sum,state,i)=>{
+    const before=score.handStates[i]!.position;
+    return sum+(before.kind==='fretting'&&state.position.kind==='fretting'?Math.abs(state.position.anchorPhysicalFret-before.anchorPhysicalFret):0);
+  },0);
 }
 
 const results=[];
@@ -71,7 +78,10 @@ for(const capo of [0,2,'compare'] as const) {
   const result=guitarEngine.arrange(source,request,plan,planner);
   const elapsedMs=performance.now()-started;
   const entry=result.status==='candidate'?{capo,status:result.status,elapsedMs,...metrics(source,result.score),validation:guitarValidator.validate(source,result.score,{approvedRevisions:[]}),diagnostics:result.diagnostics}:{capo,status:result.status,elapsedMs,diagnostics:result.diagnostics};
-  results.push(entry);
+  const previousPrefix=arg('--previous-scores');
+  const previousScore=previousPrefix?ScoreV1Schema.parse(await Bun.file(`${previousPrefix}-${capo}.json`).json()):null;
+  const previous=previousScore?{previousScoreValidation:guitarValidator.validate(source,previousScore,{approvedRevisions:[]}),previousObservedAnchorTravel:anchorTravel(previousScore)}:{};
+  results.push({...entry,...previous,...(result.status==='candidate'?{observedAnchorTravel:anchorTravel(result.score)}:{})});
   if(result.status==='candidate'&&arg('--scores')) await Bun.write(`${arg('--scores')}-${capo}.json`,JSON.stringify(result.score));
 }
 const original=[];
