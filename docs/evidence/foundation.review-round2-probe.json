@@ -1,0 +1,47 @@
+{
+  "scope": "Independent U03 round-two boundary/helper review; not product acceptance",
+  "checkedAt": "2026-10-20T21:14:36.901Z",
+  "root": "/home/taytay/.t3-nightly/worktrees/guitar-composition/t3-7599a70e",
+  "head": "2319ed87f6177a71bcc96034b44a2e6d8f5a878b",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "create versus existing-head CAS and API-only identity stamping",
+      "rejectedMutations": 32,
+      "result": "passed",
+      "limit": "Schema expressibility only; no store, atomicity or approval-authenticity claim"
+    },
+    {
+      "name": "real export-response schema and WHATWG same-origin resolution",
+      "oldAttacksRejected": [
+        "//example.org/x.mid",
+        "/\\example.org/x.mid",
+        "/\n/example.org/x.mid"
+      ],
+      "controlCases": 195,
+      "corpusSize": 25612,
+      "accepted": 8754,
+      "offOriginAccepted": 0,
+      "result": "passed",
+      "limit": "No HTTP endpoint/redirect server; do not decode or reinterpret paths as new URLs"
+    },
+    {
+      "name": "overlaps including empty/reversed half-open intervals",
+      "intervalCases": 28561,
+      "result": "passed"
+    }
+  ],
+  "pendingGates": [
+    "U04/F4: bounded importer, restrictions, unsupported effects, exact source identity and revision drift",
+    "U05: actual 46->64 expansion, repeat-jump tie rejection and meter/tempo restoration",
+    "U06/G2: auditioned full-song monophonic intro/vocal/outro event selectors and approvals",
+    "U08/F3: independent production sustain/finger/transition validator and search outcomes",
+    "U10/F7: real provider call, invalid IDs/output, timeout/refusal and fallback integration",
+    "U11/F5: 60-second audio-clock/cursor fixture and twenty-loop drift measurement",
+    "U12/F2: canonical adapter integration of the separate U02 original 16-written/24-occurrence export fixture and artifact audit",
+    "U12/G9: persistence/CAS, dependency invalidation and stale-export endpoint behavior",
+    "U13/F1: original 8-bar integration fixture with shorter triplets and adapter display-octave proof",
+    "U13/F6/F8: fresh requested-song live runner, complete melody at capo 0/2 and no double MIDI transposition",
+    "G5: guitarist transition and complete-song musical review"
+  ]
+}

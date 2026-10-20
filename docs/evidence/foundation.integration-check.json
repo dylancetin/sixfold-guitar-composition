@@ -1,0 +1,262 @@
+{
+  "scope": "U03 combined root integration; U02 predicate rerun and exact preservation, no artifact regeneration or product acceptance",
+  "checkedAt": "2026-10-20T21:15:25.784Z",
+  "root": "/home/taytay/.t3-nightly/projects/guitar-composition",
+  "rootHead": "68b358fad99237adc02bf30bab32574cff3e8748",
+  "status": "passed",
+  "patchIds": [
+    {
+      "original": "21b0c40e35e06b656e983117df48969beed28063",
+      "integrated": "1790577a89883d6a236f4bcd6bbe0c959df7824d",
+      "patchId": "27a0f18a270997545906f306cee3615fb0e8d045",
+      "equal": true
+    },
+    {
+      "original": "2319ed87f6177a71bcc96034b44a2e6d8f5a878b",
+      "integrated": "68b358fad99237adc02bf30bab32574cff3e8748",
+      "patchId": "618bdf890a75e3158403d7941d6c469ea73acc15",
+      "equal": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "integrated root identity",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "68b358fad99237adc02bf30bab32574cff3e8748\n",
+      "stderr": ""
+    },
+    {
+      "name": "pinned root install",
+      "command": [
+        "bun",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "exitCode": 0,
+      "stdout": "bun install v1.4.2 (744846f84)\n\n+ @types/bun@1.3.1\n+ typescript@5.9.3\n+ zod@4.1.12\n\n8 packages installed [8.00ms]\n",
+      "stderr": ""
+    },
+    {
+      "name": "root foundation typecheck, fixtures, controls and browser-target domain build",
+      "command": [
+        "bun",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"scope\": \"U03 contract/test foundation; not product acceptance\",\n  \"checkedAt\": \"2026-10-20T21:15:23.994Z\",\n  \"status\": \"passed\",\n  \"missing\": [],\n  \"checks\": [\n    {\n      \"command\": \"bun run typecheck\",\n      \"exitCode\": 0,\n      \"stdout\": \"\",\n      \"stderr\": \"$ tsc --noEmit\\n\"\n    },\n    {\n      \"command\": \"bun run test\",\n      \"exitCode\": 0,\n      \"stdout\": \"bun test v1.4.2 (744846f84)\\n\",\n      \"stderr\": \"$ bun test tests/fixtures\\n\\n 32 pass\\n 11 todo\\n 0 fail\\n 302 expect() calls\\nRan 43 tests across 3 files. [84.00ms]\\n\"\n    },\n    {\n      \"command\": \"bun run test:controls\",\n      \"exitCode\": 0,\n      \"stdout\": \"{\\n  \\\"scope\\\": \\\"Test-only literal oracle/mutation examples, NOT production validator or live-song acceptance\\\",\\n  \\\"controls\\\": [\\n    {\\n      \\\"id\\\": \\\"original-melody\\\",\\n      \\\"expected\\\": true,\\n      \\\"actual\\\": true,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"wrong-melody-pitch\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"missing-middle-melody\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"missing-final-melody\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"melody-octave-shift\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"held-string-re-fret\\\",\\n      \\\"expected\\\": \\\"string-collision\\\",\\n      \\\"actual\\\": \\\"string-collision\\\",\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"exact-boundary-release\\\",\\n      \\\"expected\\\": \\\"\\\",\\n      \\\"actual\\\": \\\"\\\",\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"held-finger-move\\\",\\n      \\\"expected\\\": \\\"finger-collision\\\",\\n      \\\"actual\\\": \\\"finger-collision\\\",\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"repeat-entry-restored-seconds\\\",\\n      \\\"expected\\\": 13,\\n      \\\"actual\\\": 13,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"repeat-entry-carried-seconds-negative\\\",\\n      \\\"expected\\\": 12,\\n      \\\"actual\\\": 12,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"requested-form-occurrences-literal-only\\\",\\n      \\\"expected\\\": 64,\\n      \\\"actual\\\": 64,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"capo2-high-E-open-already-sounding\\\",\\n      \\\"expected\\\": 66,\\n      \\\"actual\\\": 66,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"capo2-double-offset-rejected\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"repeat-restore-tick\\\",\\n      \\\"expected\\\": 11520,\\n      \\\"actual\\\": 11520,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"full-original-revision\\\",\\n      \\\"expected\\\": true,\\n      \\\"actual\\\": true,\\n      \\\"matched\\\": true\\n    },\\n    {\\n      \\\"id\\\": \\\"capo-mutated-old-revision\\\",\\n      \\\"expected\\\": false,\\n      \\\"actual\\\": false,\\n      \\\"matched\\\": true\\n    }\\n  ]\\n}\\n\",\n      \"stderr\": \"$ bun tests/fixtures/check-negative-controls.ts\\n\"\n    },\n    {\n      \"command\": \"bun run build\",\n      \"exitCode\": 0,\n      \"stdout\": \"Bundled 76 modules in 9ms\\n\\n  index.js  140.66 KB  (entry point)\\n\\n\",\n      \"stderr\": \"$ bun build src/domain/index.ts --target=browser --outdir=dist\\n\"\n    }\n  ]\n}\n",
+      "stderr": "$ node scripts/check-foundation.mjs\n"
+    },
+    {
+      "name": "independent boundary/helper probe on integrated root",
+      "command": [
+        "bun",
+        "/tmp/opencode/guitar-foundation-round2-probe.mjs",
+        "/home/taytay/.t3-nightly/projects/guitar-composition"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"scope\": \"Independent U03 round-two boundary/helper review; not product acceptance\",\n  \"checkedAt\": \"2026-10-20T21:15:25.509Z\",\n  \"root\": \"/home/taytay/.t3-nightly/projects/guitar-composition\",\n  \"head\": \"68b358fad99237adc02bf30bab32574cff3e8748\",\n  \"status\": \"passed\",\n  \"checks\": [\n    {\n      \"name\": \"create versus existing-head CAS and API-only identity stamping\",\n      \"rejectedMutations\": 32,\n      \"result\": \"passed\",\n      \"limit\": \"Schema expressibility only; no store, atomicity or approval-authenticity claim\"\n    },\n    {\n      \"name\": \"real export-response schema and WHATWG same-origin resolution\",\n      \"oldAttacksRejected\": [\n        \"//example.org/x.mid\",\n        \"/\\\\example.org/x.mid\",\n        \"/\\n/example.org/x.mid\"\n      ],\n      \"controlCases\": 195,\n      \"corpusSize\": 25612,\n      \"accepted\": 8754,\n      \"offOriginAccepted\": 0,\n      \"result\": \"passed\",\n      \"limit\": \"No HTTP endpoint/redirect server; do not decode or reinterpret paths as new URLs\"\n    },\n    {\n      \"name\": \"overlaps including empty/reversed half-open intervals\",\n      \"intervalCases\": 28561,\n      \"result\": \"passed\"\n    }\n  ],\n  \"pendingGates\": [\n    \"U04/F4: bounded importer, restrictions, unsupported effects, exact source identity and revision drift\",\n    \"U05: actual 46->64 expansion, repeat-jump tie rejection and meter/tempo restoration\",\n    \"U06/G2: auditioned full-song monophonic intro/vocal/outro event selectors and approvals\",\n    \"U08/F3: independent production sustain/finger/transition validator and search outcomes\",\n    \"U10/F7: real provider call, invalid IDs/output, timeout/refusal and fallback integration\",\n    \"U11/F5: 60-second audio-clock/cursor fixture and twenty-loop drift measurement\",\n    \"U12/F2: canonical adapter integration of the separate U02 original 16-written/24-occurrence export fixture and artifact audit\",\n    \"U12/G9: persistence/CAS, dependency invalidation and stale-export endpoint behavior\",\n    \"U13/F1: original 8-bar integration fixture with shorter triplets and adapter display-octave proof\",\n    \"U13/F6/F8: fresh requested-song live runner, complete melody at capo 0/2 and no double MIDI transposition\",\n    \"G5: guitarist transition and complete-song musical review\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "unchanged U02 lightweight predicate tests only",
+      "command": [
+        "npm",
+        "--prefix",
+        "tools/export-proof",
+        "test"
+      ],
+      "exitCode": 0,
+      "stdout": "\n> guitar-export-proof-u02@0.1.0 test\n> node --test test/*.test.mjs\n\n✔ literal oracle baseline and endpoint (3.061187ms)\n✔ negative: missing middle melody (3.502373ms)\n✔ negative: missing final melody (1.900266ms)\n✔ negative: octave +12 (5.097566ms)\n✔ negative: double capo +2 (4.573309ms)\n✔ negative: omitted triplet (1.117254ms)\n✔ negative: tie retrigger (1.229462ms)\n✔ negative: written form only (1.622742ms)\n✔ negative: missing harmony (2.405458ms)\n✔ negative: truncated sustain (1.521268ms)\n✔ PDF predicate baseline (synthetic predicate test, not artifact evidence) (0.363568ms)\n✔ PDF negative: font missing (0.22439ms)\n✔ PDF negative: glyphs absent (0.124694ms)\n✔ PDF negative: staff only (0.084364ms)\n✔ PDF negative: last page missing (0.185142ms)\n✔ PDF negative: system clipped (0.119008ms)\n✔ PDF negative: wrong revision (0.093825ms)\n✔ PDF negative: capo label missing (0.090459ms)\nℹ tests 18\nℹ suites 0\nℹ pass 18\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 91.574422\n",
+      "stderr": ""
+    },
+    {
+      "name": "integrated commit order",
+      "command": [
+        "git",
+        "rev-list",
+        "--reverse",
+        "e96fcd260bf719d2ef5570b68225ded36ff27b1c..HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "1790577a89883d6a236f4bcd6bbe0c959df7824d\n68b358fad99237adc02bf30bab32574cff3e8748\n",
+      "stderr": ""
+    },
+    {
+      "name": "read patch 21b0c40e35e06b656e983117df48969beed28063",
+      "command": [
+        "git",
+        "show",
+        "--format=",
+        "--patch",
+        "21b0c40e35e06b656e983117df48969beed28063"
+      ],
+      "exitCode": 0,
+      "stdout": "[Patch passed directly to git patch-id --stable]",
+      "stderr": ""
+    },
+    {
+      "name": "stable patch identity 21b0c40e35e06b656e983117df48969beed28063",
+      "command": [
+        "git",
+        "patch-id",
+        "--stable"
+      ],
+      "exitCode": 0,
+      "stdout": "27a0f18a270997545906f306cee3615fb0e8d045 0000000000000000000000000000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "name": "read patch 1790577a89883d6a236f4bcd6bbe0c959df7824d",
+      "command": [
+        "git",
+        "show",
+        "--format=",
+        "--patch",
+        "1790577a89883d6a236f4bcd6bbe0c959df7824d"
+      ],
+      "exitCode": 0,
+      "stdout": "[Patch passed directly to git patch-id --stable]",
+      "stderr": ""
+    },
+    {
+      "name": "stable patch identity 1790577a89883d6a236f4bcd6bbe0c959df7824d",
+      "command": [
+        "git",
+        "patch-id",
+        "--stable"
+      ],
+      "exitCode": 0,
+      "stdout": "27a0f18a270997545906f306cee3615fb0e8d045 0000000000000000000000000000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "name": "read patch 2319ed87f6177a71bcc96034b44a2e6d8f5a878b",
+      "command": [
+        "git",
+        "show",
+        "--format=",
+        "--patch",
+        "2319ed87f6177a71bcc96034b44a2e6d8f5a878b"
+      ],
+      "exitCode": 0,
+      "stdout": "[Patch passed directly to git patch-id --stable]",
+      "stderr": ""
+    },
+    {
+      "name": "stable patch identity 2319ed87f6177a71bcc96034b44a2e6d8f5a878b",
+      "command": [
+        "git",
+        "patch-id",
+        "--stable"
+      ],
+      "exitCode": 0,
+      "stdout": "618bdf890a75e3158403d7941d6c469ea73acc15 0000000000000000000000000000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "name": "read patch 68b358fad99237adc02bf30bab32574cff3e8748",
+      "command": [
+        "git",
+        "show",
+        "--format=",
+        "--patch",
+        "68b358fad99237adc02bf30bab32574cff3e8748"
+      ],
+      "exitCode": 0,
+      "stdout": "[Patch passed directly to git patch-id --stable]",
+      "stderr": ""
+    },
+    {
+      "name": "stable patch identity 68b358fad99237adc02bf30bab32574cff3e8748",
+      "command": [
+        "git",
+        "patch-id",
+        "--stable"
+      ],
+      "exitCode": 0,
+      "stdout": "618bdf890a75e3158403d7941d6c469ea73acc15 0000000000000000000000000000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "name": "pre-U03 tracked path inventory",
+      "command": [
+        "git",
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "e96fcd260bf719d2ef5570b68225ded36ff27b1c"
+      ],
+      "exitCode": 0,
+      "stdout": "README.md\nassets/icon.svg\ndocs/BASELINE.md\ndocs/TODO.md\ndocs/WORKFLOW.md\ndocs/decisions.tsv\ndocs/evidence/export-proof.md\ndocs/evidence/export-review.md\ndocs/evidence/guitar-design-review.md\ndocs/evidence/guitar-feasibility.md\ntools/export-proof/.gitignore\ntools/export-proof/README.md\ntools/export-proof/adapter.mjs\ntools/export-proof/checks.mjs\ntools/export-proof/fixtures/engraving.tsv\ntools/export-proof/fixtures/expected.json\ntools/export-proof/fixtures/oracle.tsv\ntools/export-proof/package-lock.json\ntools/export-proof/package.json\ntools/export-proof/pdf-check.mjs\ntools/export-proof/run.mjs\ntools/export-proof/test/checks.test.mjs\ntools/export-proof/unit-log.tsv\ntools/export-proof/verify-artifacts.mjs\n",
+      "stderr": ""
+    },
+    {
+      "name": "all pre-U03 tracked content unchanged, including U02 code and artifact evidence",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "e96fcd260bf719d2ef5570b68225ded36ff27b1c",
+        "HEAD",
+        "--",
+        "README.md",
+        "assets/icon.svg",
+        "docs/BASELINE.md",
+        "docs/TODO.md",
+        "docs/WORKFLOW.md",
+        "docs/decisions.tsv",
+        "docs/evidence/export-proof.md",
+        "docs/evidence/export-review.md",
+        "docs/evidence/guitar-design-review.md",
+        "docs/evidence/guitar-feasibility.md",
+        "tools/export-proof/.gitignore",
+        "tools/export-proof/README.md",
+        "tools/export-proof/adapter.mjs",
+        "tools/export-proof/checks.mjs",
+        "tools/export-proof/fixtures/engraving.tsv",
+        "tools/export-proof/fixtures/expected.json",
+        "tools/export-proof/fixtures/oracle.tsv",
+        "tools/export-proof/package-lock.json",
+        "tools/export-proof/package.json",
+        "tools/export-proof/pdf-check.mjs",
+        "tools/export-proof/run.mjs",
+        "tools/export-proof/test/checks.test.mjs",
+        "tools/export-proof/unit-log.tsv",
+        "tools/export-proof/verify-artifacts.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "integration whitespace check",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "e96fcd260bf719d2ef5570b68225ded36ff27b1c..HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "root tracked and untracked status",
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}
