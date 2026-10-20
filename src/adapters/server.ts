@@ -8,7 +8,7 @@ import { encodePdf } from './pdf';
 import type { PdfPageSize } from './pdf';
 import { compileTimeline } from './timeline';
 
-export const ADAPTER_VERSION = 'canonical-guitar-1.0.0';
+export const ADAPTER_VERSION = 'canonical-guitar-1.0.1';
 export type ScoreAdapterOptions = {
   validator: Validator;
   /** Server-owned loader, never a context supplied in the download request body. */

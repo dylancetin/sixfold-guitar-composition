@@ -1,5 +1,9 @@
 # U11/U12 B1 — effective canonical tempo correction
 
+Subsequent gap correction: [adapters-gap-correction.md](adapters-gap-correction.md).
+The actual-song blocker recorded below was the separate finding at this tempo
+commit; it is now corrected above this commit, with local full-song byte checks.
+
 This is the narrow correction above `043b1fc`, not full-song/root integration.
 Independent round-1 review `/tmp/opencode/guitar-adapters-review-r1.md` correctly
 marked that commit **NOT VERIFIED** for double-applying revision tempo scale.

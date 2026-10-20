@@ -104,6 +104,10 @@ ties/rests/passes, not just the written segment array. PDF packs whole systems
 with one global scale on A4/Letter, refuses oversized units, embeds Bravura and
 checks complete coverage. Native duplicate capo effect captions are disabled;
 the single subtitle and page header explicitly identify capo-relative frets.
+Generated voice gaps use only supported 0/1/2-dot exact rhythms, preferring ordinary
+rests before tuplets and splitting silence losslessly (e.g. 5/2 = 2 + 1/2).
+These synthetic rests do not add canonical event IDs, audio attacks or persisted
+music; canonical segment mappings and rendered beat geometry are still available.
 
 Validation and musical review are separate. A hard-valid but pending arrangement
 exports with `unreviewed-draft` in filename, manifest and PDF. Browser projection

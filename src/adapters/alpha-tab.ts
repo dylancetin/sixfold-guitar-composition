@@ -20,13 +20,16 @@ export type NotationOptions = { title?: string; barsPerRow?: number };
 function rhythmCandidates(): Rhythm[] {
   const result: Rhythm[] = [];
   for (const actual of [1, 3, 5, 7, 9, 11, 13, 15]) for (const normal of actual === 1 ? [1] : [2, 4, 8]) {
-    for (const baseDenominator of [1, 2, 4, 8, 16, 32, 64] as const) for (const dots of [0, 1, 2, 3]) {
+    // alphaTab 1.8.4 ignores dots===3. Only generate rhythms its duration calculation supports.
+    for (const baseDenominator of [1, 2, 4, 8, 16, 32, 64] as const) for (const dots of [0, 1, 2]) {
       const duration = q(4 * (2 ** (dots + 1) - 1) * normal, baseDenominator * 2 ** dots * actual);
       try { exactTicks(duration, PPQ); } catch { continue; }
       result.push({ baseDenominator, dots, tuplet: actual === 1 ? null : { groupId: 'adapter-gap', actual, normal, index: 0 }, duration });
     }
   }
-  return result.sort((a, b) => compare(b.duration, a.duration) || Number(!!a.tuplet) - Number(!!b.tuplet) || a.dots - b.dots);
+  // Prefer ordinary rests before introducing tuplets: e.g. 5/2 = half + eighth,
+  // not an exotic single tuplet/dotted value. Every candidate is exact at native PPQ.
+  return result.sort((a, b) => Number(!!a.tuplet) - Number(!!b.tuplet) || compare(b.duration, a.duration) || a.dots - b.dots);
 }
 const gapRhythms = rhythmCandidates();
 function gap(duration: Q): Rhythm[] {
