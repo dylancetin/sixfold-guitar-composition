@@ -16,7 +16,8 @@ export const guitarValidator: Validator = {
       diagnostics.push({ code, severity: 'error', message, eventIds, barIds, occurrenceIds });
     };
     const report = (): ValidationReport => {
-      const base = { scoreRevision: { id: score.revision.id, digest: score.revision.digest }, sourceRevision: { id: source.revision.id, digest: source.revision.digest }, validatorVersion: version, diagnostics };
+      const ref=(document:ScoreV1|SourceScoreV1,label:string)=>({id:typeof document?.revision?.id==='string'&&document.revision.id?document.revision.id:`invalid-${label}`,digest:typeof document?.revision?.digest==='string'&&/^[a-f0-9]{64}$/.test(document.revision.digest)?document.revision.digest:'0'.repeat(64)});
+      const base = { scoreRevision:ref(score,'score'), sourceRevision:ref(source,'source'), validatorVersion: version, diagnostics };
       return diagnostics.some((d) => d.severity === 'error') ? { status: 'failed', ...base } : {
         status: 'passed', ...base, checks: ['source-identity','melody','form-tempo','physical','approval-locks'],
         transitions: score.ability.transition.status === 'uncalibrated' ? 'uncalibrated' : 'specified-limits-passed',
@@ -36,6 +37,7 @@ export const guitarValidator: Validator = {
       if (!same(source.key, score.key)) error('source-mismatch', 'Source key uncertainty or identity was changed');
       const unique = (values: string[], name: string) => { if (new Set(values).size !== values.length) error('invalid-input', `Duplicate ${name} IDs`); };
       for (const [name, list] of Object.entries({ sourceEvents: source.events, bars: source.bars, tempos: source.tempos, sounds: score.sounds, rests: score.rests, notation: score.notation, placements: score.placements, performedSounds: score.performedSounds, contacts: score.contacts, occurrences: score.occurrences, changes: score.changes, candidates: score.plan.candidates })) unique(list.map((e) => e.id), name);
+      unique(source.form.repeats.map((r)=>r.id),'repeat');
       unique([...score.sounds, ...score.rests].map((e) => e.id), 'combined event');
       unique(source.parts.map((p) => String(p.id)), 'part');
       const writtenEnd = eventEnd({ start: source.bars.at(-1)!.start, duration: source.bars.at(-1)!.length });
@@ -99,6 +101,7 @@ function validateSelection(source: SourceScoreV1, score: ScoreV1, events: Map<st
     const a = matches[0]!;
     if (!same(a.start,e.start) || !same(a.duration,e.duration) || (e.kind === 'note') !== ('soundingMidi' in a)) error('melody-mismatch','Melody attack, sustain, or rest changed',[e.id]);
     if (e.kind === 'note' && 'soundingMidi' in a && a.soundingMidi !== e.soundingMidi + score.preferences.transposition.semitones) error('melody-mismatch','Melody sounding pitch changed without the exact explicit transposition',[e.id]);
+    if (e.kind === 'note' && 'soundingMidi' in a && score.preferences.transposition.semitones===0 && !same(a.spelling,e.spelling)) error('melody-mismatch','Melody source spelling was silently changed',[e.id]);
   }
   for (const a of actual) {
     if (a.provenance.kind === 'source') {
@@ -149,7 +152,7 @@ function recomputeForm(source: SourceScoreV1, score: ScoreV1, error: ErrorSink):
     if (i>0 && o.entry==='repeat-jump') {
       const outgoing = source.bars[positions[i-1]!]!;
       const edge = add(outgoing.start,outgoing.length);
-      for (const e of [...score.sounds,...score.rests]) if ((compare(e.start,edge)<0&&compare(eventEnd(e),edge)>0)||(compare(e.start,bar.start)<0&&compare(eventEnd(e),bar.start)>0)) error('unsupported-construct','Jump-crossing sound or orphan continuation',[e.id]);
+      for (const e of score.sounds) if ((compare(e.start,edge)<0&&compare(eventEnd(e),edge)>0)||(compare(e.start,bar.start)<0&&compare(eventEnd(e),bar.start)>0)) error('unsupported-construct','Jump-crossing sound or orphan continuation',[e.id]);
     }
     cursor=add(cursor,bar.length);
   }
@@ -221,6 +224,7 @@ function validatePhysical(score: ScoreV1, tempos: PerformedTempo[],error: ErrorS
   const boundaries=[...new Map(score.performedSounds.flatMap((ps)=>[ps.start,eventEnd(ps)]).map((t)=>[`${t.n}/${t.d}`,t])).values()].sort(compare);
   if (boundaries.length!==score.handStates.length) error('finger-collision','Hand states must include every attack and release boundary exactly once');
   const lastFinger=new Map<number,{ stringIndex:number;fret:number;release:Q }>();
+  let lastAnchor:{at:Q;physical:number}|null=null;
   for (const [i,at] of boundaries.entries()) {
     const active=score.performedSounds.filter((ps)=>inside(at,ps.start,eventEnd(ps)));
     const contacts=active.flatMap((ps)=>contactsBySound.get(ps.id)??[]);
@@ -234,6 +238,12 @@ function validatePhysical(score: ScoreV1, tempos: PerformedTempo[],error: ErrorS
     const frets=stopped.map((p)=>p.fret);
     if (ps.length>a.maxSoundingNotes||stopped.length>a.maxFrettedContacts||(frets.length&&Math.max(...frets)-Math.min(...frets)>a.maxStoppedFretSpan)) error('profile-limit','Sounding/fretted contact count or stopped-fret span exceeds profile',active.map((s)=>s.soundId));
     if (state && (frets.length ? state.position.kind!=='fretting'||state.position.anchorPhysicalFret!==Math.min(...frets)+g.capo : state.position.kind!=='released')) error('finger-collision','Hand anchor must describe the active stopped contacts');
+    const newStopped=active.some((sound)=>same(sound.start,at)&&(placements.get(sound.placementId)?.fret??0)>0);
+    if (newStopped&&frets.length) {
+      const physical=Math.min(...frets)+g.capo;
+      if (lastAnchor&&a.transition.status==='specified'&&Math.abs(physical-lastAnchor.physical)>elapsedSeconds(lastAnchor.at,at,tempos)*a.transition.maxPhysicalFretsPerSecond+1e-9) error('profile-limit','Hand-position movement exceeds specified speed at effective tempo',active.map((s)=>s.soundId));
+      lastAnchor={at,physical};
+    }
     for (const sound of active.filter((s)=>same(s.start,at))) {
       const pl=placements.get(sound.placementId); if (!pl||pl.finger===0) continue;
       const last=lastFinger.get(pl.finger);
@@ -259,6 +269,8 @@ function elapsedSeconds(from: Q,to: Q,tempos: PerformedTempo[]): number {
 
 function validateEvidence(source: SourceScoreV1,score: ScoreV1,events: Map<string,SourceEvent>,error: ErrorSink) {
   for (const c of score.plan.candidates) for (const id of c.sourceEventIds) if (events.get(id)?.kind!=='note') error('source-mismatch','Plan references a nonexistent/non-note source event',[id]);
+  const bass=score.sounds.filter((s)=>s.role==='bass').sort((a,b)=>compare(a.start,b.start));
+  for (let i=1;i<bass.length;i++) if (overlaps(bass[i-1]!.start,eventEnd(bass[i-1]!),bass[i]!.start,eventEnd(bass[i]!))) error('profile-limit','Bass is monophonic, even on different strings',[bass[i-1]!.id,bass[i]!.id]);
   if (score.planner.mode==='configured-llm'&&score.planner.acceptedCandidateIds.some((id)=>!score.plan.candidates.some((c)=>c.id===id))) error('source-mismatch','Planner acceptance references absent candidate');
   for (const s of score.sounds.filter((s)=>s.role!=='melody')) {
     const ids=s.provenance.kind==='source'?s.provenance.eventIds:s.provenance.evidenceEventIds;
@@ -272,11 +284,24 @@ function validateEvidence(source: SourceScoreV1,score: ScoreV1,events: Map<strin
     }
     const shifted=s.soundingMidi!==exact.soundingMidi+score.preferences.transposition.semitones;
     const shortened=!same(s.duration,exact.duration);
+    if ((shifted||shortened)&&s.provenance.kind!=='generated') error('source-mismatch','Adapted accompaniment must disclose generated strategy/evidence provenance',[s.id]);
     for (const [needed,kind] of [[shifted,'bass-register'],[shortened,'shortened-sustain']] as const) if (needed&&!score.changes.some((c)=>c.kind===kind&&c.role===s.role&&c.sourceEventIds.includes(exact.id)&&c.soundIds.includes(s.id)&&c.before.soundingMidi===exact.soundingMidi&&same(c.before.duration,exact.duration)&&c.after?.soundingMidi===s.soundingMidi&&same(c.after.duration,s.duration))) error('source-mismatch',`Undisclosed accompaniment ${kind}`,[s.id]);
   }
   for (const c of score.changes) {
     if (c.sourceEventIds.some((id)=>!events.has(id))||c.soundIds.some((id)=>!score.sounds.some((s)=>s.id===id))) error('source-mismatch','Change references absent source/sound',c.sourceEventIds);
     if (c.kind==='omission'&&(c.after!==null||c.soundIds.length)) error('source-mismatch','Omission must have no after/sounds',c.sourceEventIds);
+    const e=events.get(c.sourceEventIds[0]!);
+    if (!e||e.kind!=='note'||c.before.soundingMidi!==e.soundingMidi||!same(c.before.duration,e.duration)) error('source-mismatch','Change before-state differs from source',c.sourceEventIds);
+    if (c.role==='melody'&&c.kind!=='explicit-transposition') error('melody-mismatch','Melody cannot be omitted, register-edited or shortened by a change record',c.sourceEventIds);
+    for (const id of c.soundIds) {
+      const s=score.sounds.find((s)=>s.id===id);
+      if (s&&(s.role!==c.role||!c.after||c.after.soundingMidi!==s.soundingMidi||!same(c.after.duration,s.duration))) error('source-mismatch','Change after-state differs from arranged sound',[id]);
+    }
+  }
+  for (const c of score.plan.candidates) for (const id of c.sourceEventIds) {
+    const kept=score.sounds.some((s)=>s.role===c.role&&(s.provenance.kind==='source'?s.provenance.eventIds:s.provenance.evidenceEventIds).includes(id));
+    const omitted=score.changes.some((change)=>change.kind==='omission'&&change.role===c.role&&change.sourceEventIds.includes(id));
+    if (kept===omitted) error('source-mismatch','Each source accompaniment proposal must be retained or visibly omitted, not both',[id]);
   }
   void source;
 }

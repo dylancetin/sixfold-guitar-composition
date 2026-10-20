@@ -1,0 +1,288 @@
+{
+  "scope": "Local canonical source experiment; no copyrighted musical document embedded",
+  "identity": {
+    "kind": "songsterr",
+    "url": "https://www.songsterr.com/a/wsa/beach-boys-you-still-believe-in-me-tab-s692866",
+    "songId": 692866,
+    "upstreamRevisionId": 847990,
+    "formatVersion": 5
+  },
+  "sourceRevision": {
+    "id": "provisional-source-d0abf0e2fba3f651f2f3d83375d25e7d",
+    "digest": "853b28dbd5898318df37c0355dc256303ca598022e43e359d987f0315fd7149d",
+    "parentId": null
+  },
+  "sourceDigestVerified": true,
+  "difficulty": "intermediate",
+  "profile": {
+    "id": "conservative-intermediate-no-barre",
+    "version": "1",
+    "difficulty": "intermediate",
+    "calibration": "provisional",
+    "maxPhysicalFret": 12,
+    "maxStoppedFretSpan": 4,
+    "maxSoundingNotes": 4,
+    "maxFrettedContacts": 4,
+    "barre": "unsupported",
+    "transition": {
+      "status": "uncalibrated",
+      "reason": "Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim"
+    }
+  },
+  "maxStates": 10000,
+  "planner": {
+    "mode": "deterministic-fallback",
+    "label": "deterministic fallback",
+    "plannerVersion": "source-sparse-1",
+    "reason": "not-configured",
+    "detail": "Local source-grounded sparse bass and inner-tone proposals; no configured model or network call"
+  },
+  "planCandidates": 86,
+  "results": [
+    {
+      "capo": 0,
+      "status": "candidate",
+      "elapsedMs": 1960.573128,
+      "selectedCapo": 0,
+      "validation": "passed",
+      "sourceMelodyMismatches": [],
+      "melodyTimelineDigest": "320c63841f31fee1da83c039de4b8f5930f3613ef06c032c83d581445d57534b",
+      "selectedSourceAttacks": 173,
+      "part0SelectedAttacks": 141,
+      "writtenBars": 46,
+      "occurrences": 64,
+      "performedQuarters": {
+        "n": 256,
+        "d": 1
+      },
+      "seconds": 172.4056795131845,
+      "lastSoundRelease": {
+        "n": 255,
+        "d": 1
+      },
+      "melody": {
+        "written": 173,
+        "performed": 245
+      },
+      "bass": {
+        "written": 40,
+        "performed": 58
+      },
+      "harmony": {
+        "written": 37,
+        "performed": 51
+      },
+      "notationSegments": 276,
+      "contacts": 354,
+      "handStates": 334,
+      "changes": {
+        "omissions": 9,
+        "bassRegister": 40,
+        "harmonyRegister": 37,
+        "shortened": 7
+      },
+      "capoComparison": {
+        "selected": 0,
+        "reason": "User-chosen capo; sounding melody preserved",
+        "alternatives": [
+          {
+            "capo": 0,
+            "outcome": "candidate",
+            "reason": "Retained 40 bass and 37 harmony attacks; concert melody unchanged"
+          }
+        ]
+      },
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 3787/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+          "eventIds": [],
+          "barIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "capo": 2,
+      "status": "candidate",
+      "elapsedMs": 1659.3558270000003,
+      "selectedCapo": 2,
+      "validation": "passed",
+      "sourceMelodyMismatches": [],
+      "melodyTimelineDigest": "320c63841f31fee1da83c039de4b8f5930f3613ef06c032c83d581445d57534b",
+      "selectedSourceAttacks": 173,
+      "part0SelectedAttacks": 141,
+      "writtenBars": 46,
+      "occurrences": 64,
+      "performedQuarters": {
+        "n": 256,
+        "d": 1
+      },
+      "seconds": 172.4056795131845,
+      "lastSoundRelease": {
+        "n": 255,
+        "d": 1
+      },
+      "melody": {
+        "written": 173,
+        "performed": 245
+      },
+      "bass": {
+        "written": 40,
+        "performed": 58
+      },
+      "harmony": {
+        "written": 40,
+        "performed": 58
+      },
+      "notationSegments": 280,
+      "contacts": 361,
+      "handStates": 338,
+      "changes": {
+        "omissions": 6,
+        "bassRegister": 40,
+        "harmonyRegister": 40,
+        "shortened": 6
+      },
+      "capoComparison": {
+        "selected": 2,
+        "reason": "User-chosen capo; sounding melody preserved",
+        "alternatives": [
+          {
+            "capo": 2,
+            "outcome": "candidate",
+            "reason": "Retained 40 bass and 40 harmony attacks; concert melody unchanged"
+          }
+        ]
+      },
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 2869/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+          "eventIds": [],
+          "barIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    },
+    {
+      "capo": "recommend",
+      "status": "candidate",
+      "elapsedMs": 3398.952185,
+      "selectedCapo": 2,
+      "validation": "passed",
+      "sourceMelodyMismatches": [],
+      "melodyTimelineDigest": "320c63841f31fee1da83c039de4b8f5930f3613ef06c032c83d581445d57534b",
+      "selectedSourceAttacks": 173,
+      "part0SelectedAttacks": 141,
+      "writtenBars": 46,
+      "occurrences": 64,
+      "performedQuarters": {
+        "n": 256,
+        "d": 1
+      },
+      "seconds": 172.4056795131845,
+      "lastSoundRelease": {
+        "n": 255,
+        "d": 1
+      },
+      "melody": {
+        "written": 173,
+        "performed": 245
+      },
+      "bass": {
+        "written": 40,
+        "performed": 58
+      },
+      "harmony": {
+        "written": 40,
+        "performed": 58
+      },
+      "notationSegments": 280,
+      "contacts": 361,
+      "handStates": 338,
+      "changes": {
+        "omissions": 6,
+        "bassRegister": 40,
+        "harmonyRegister": 40,
+        "shortened": 6
+      },
+      "capoComparison": {
+        "selected": 2,
+        "reason": "Compared capo 0 and 2 with identical concert melody. Prefer retained source bass, then sparse harmony, then lower fretting cost; no key transposition.",
+        "alternatives": [
+          {
+            "capo": 0,
+            "outcome": "candidate",
+            "reason": "Retained 40 bass and 36 harmony attacks; concert melody unchanged"
+          },
+          {
+            "capo": 2,
+            "outcome": "candidate",
+            "reason": "Retained 40 bass and 40 harmony attacks; concert melody unchanged"
+          }
+        ]
+      },
+      "diagnostics": [
+        {
+          "code": "search-budget",
+          "severity": "info",
+          "message": "Constraint-based unapproved draft; 4749/10000 successor states evaluated, bounded beam pruned alternatives. State budget is deterministic; maxElapsedMs is enforced by the outer worker.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.",
+          "barIds": [],
+          "eventIds": [],
+          "occurrenceIds": []
+        },
+        {
+          "code": "transition-unverified",
+          "severity": "warning",
+          "message": "Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim.",
+          "eventIds": [],
+          "barIds": [],
+          "occurrenceIds": []
+        }
+      ]
+    }
+  ]
+}

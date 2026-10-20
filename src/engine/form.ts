@@ -1,7 +1,7 @@
 import { add, compare, q, subtract } from '../domain';
 import type { Diagnostic, Form, Occurrence, PerformedTempo, Q, SourceEvent, TempoPoint, WrittenBar } from '../domain';
 
-export type FormInput = { bars: WrittenBar[]; tempos: TempoPoint[]; form: Form; events?: SourceEvent[] };
+export type FormInput = { bars: WrittenBar[]; tempos: TempoPoint[]; form: Form; events?: Pick<SourceEvent, 'id'|'kind'|'start'|'duration'>[] };
 export type FormExpansion =
   | { status: 'expanded'; occurrences: Occurrence[]; performedTempos: PerformedTempo[]; length: Q }
   | { status: 'unsupported' | 'invalid-input'; diagnostics: Diagnostic[] };
@@ -39,9 +39,10 @@ export function expandForm(input: FormInput, tempoScale = 1): FormExpansion {
     const from = bars[r.from]!.start;
     const to = add(bars[r.to]!.start, bars[r.to]!.length);
     for (const e of input.events ?? []) {
+      if (e.kind === 'rest') continue; // Silence has no held attack/orphan tie.
       const release = add(e.start, e.duration);
       if ((compare(e.start, from) < 0 && compare(release, from) > 0) || (compare(e.start, to) < 0 && compare(release, to) > 0)) {
-        return { status: 'unsupported', diagnostics: [diagnostic('unsupported-construct', 'Sound/rest crosses a repeat jump or becomes an orphan continuation; explicit source interpretation required', [e.id], [r.fromBarId, r.toBarId])] };
+        return { status: 'unsupported', diagnostics: [diagnostic('unsupported-construct', 'Sound crosses a repeat jump or becomes an orphan continuation; explicit source interpretation required', [e.id], [r.fromBarId, r.toBarId])] };
       }
     }
   }

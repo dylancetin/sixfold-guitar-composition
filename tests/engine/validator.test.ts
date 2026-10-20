@@ -5,6 +5,8 @@ import { digest, documentDigest } from '../../src/engine/identity';
 import { scopeDigest } from '../../src/engine/scopes';
 import { guitarValidator } from '../../src/engine/validator';
 import { score, source } from '../fixtures/original';
+import { guitarEngine } from '../../src/engine';
+import { literalPlanner, oneBarStudy } from './studies';
 
 export function stamped(s: ScoreV1): ScoreV1 { s.revision.digest=documentDigest(s);return s; }
 const codes=(s: ScoreV1)=>guitarValidator.validate(source,stamped(s),{approvedRevisions:[]}).diagnostics.filter((d)=>d.severity==='error').map((d)=>d.code);
@@ -57,4 +59,26 @@ test('approvals require real context revision and whole scoped snapshots; copied
   expect(guitarValidator.validate(source,stamped(s),{approvedRevisions:[approved]}).status).toBe('passed');
   s.locks[0]!.sounds[0]!.duration=q(2);
   expect(guitarValidator.validate(source,stamped(s),{approvedRevisions:[approved]}).diagnostics.map((d)=>d.code)).toContain('approval-stale');
+});
+
+test('five stopped contacts with no barre fail production sweep, independently of fret span',()=>{
+  const fixture=oneBarStudy([['mel',0,0,4,64],['a',2,0,1,41],['b',2,0,1,47],['c',2,0,1,53],['d',2,0,1,59],['e',2,0,1,60]]);
+  fixture.request.ability.maxSoundingNotes=6;
+  const result=guitarEngine.arrange(fixture.source,fixture.request,{version:'no-accompaniment',candidates:[]},literalPlanner);
+  if(result.status!=='candidate') throw new Error(JSON.stringify(result));
+  const s=result.score;
+  for(const [index,e] of fixture.source.events.filter((e)=>e.partId===2).entries()) {
+    if(e.kind!=='note') continue;
+    const id=`extra${index}`,pl=`extra-pl${index}`,ps=`${id}@o1`,contact=`extra-contact${index}`;
+    s.sounds.push({id,role:'harmony',voiceId:id,start:e.start,duration:e.duration,soundingMidi:e.soundingMidi,spelling:e.spelling,provenance:{kind:'source',eventIds:[e.id]}});
+    s.notation.push({id:`extra-n${index}`,eventId:id,kind:'note',barId:'b1',voiceId:id,start:q(0),duration:q(1),baseDenominator:4,dots:0,tuplet:null,tie:'none'});
+    s.placements.push({id:pl,soundId:id,stringIndex:index,fret:[1,2,3,4,1][index]!,finger:[1,2,3,4,1][index]!});
+    s.performedSounds.push({id:ps,soundId:id,attackOccurrenceId:'o1',occurrenceIds:['o1'],start:q(0),duration:q(1),placementId:pl});
+    s.contacts.push({id:contact,performedSoundId:ps,soundId:id,placementId:pl,start:q(0),release:q(1)});
+  }
+  const originalContact=s.contacts[0]!.id;
+  s.handStates=[{at:q(0),activeContactIds:s.contacts.map((c)=>c.id),position:{kind:'fretting',anchorPhysicalFret:1}},{at:q(1),activeContactIds:[originalContact],position:{kind:'released'}},{at:q(4),activeContactIds:[],position:{kind:'released'}}];
+  const report=guitarValidator.validate(fixture.source,stamped(s),{approvedRevisions:[]});
+  expect(report.status).toBe('failed');
+  expect([...new Set(report.diagnostics.filter((d)=>d.severity==='error').map((d)=>d.code))].sort()).toEqual(['finger-collision','profile-limit']);
 });
