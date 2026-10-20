@@ -1,0 +1,18 @@
+
+tests/agent/workflow.test.ts:
+33 | }): Promise<{ plan: Plan; provenance: PlannerProvenance; delegation: AgentDelegation }> {
+34 |   const delegation = AgentDelegationSchema.parse(options.delegation);
+35 |   if (delegation.responseDigest !== sha256(options.bytes)) throw new Error('Delegation responseDigest must hash the exact raw plan-file bytes');
+36 |   if (delegation.sourceRevision.id !== options.source.revision.id || delegation.sourceRevision.digest !== options.source.revision.digest || delegation.requestDigest !== options.requestDigest) throw new Error('Delegation is bound to a different source/request');
+37 |   const plan = validatePlan(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(options.bytes)), options.source);
+38 |   if (await contentDigest(musicalChoices(plan)) === await contentDigest(musicalChoices(options.baseline))) throw new Error('Baseline-equivalent choices cannot be relabeled AI-authored; publish the deterministic fallback or author a substantive source-grounded plan');
+                                                                                                                          ^
+error: Baseline-equivalent choices cannot be relabeled AI-authored; publish the deterministic fallback or author a substantive source-grounded plan
+      at acceptAgentPlan (/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/old/src/agent/plan.ts:38:118)
+      at async <anonymous> (/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/old/tests/agent/workflow.test.ts:90:26)
+(fail) baseline agreement accepts a bound task receipt, but never infers model involvement without one [21.53ms]
+
+ 0 pass
+ 13 filtered out
+ 1 fail
+Ran 1 test across 1 file. [155.00ms]

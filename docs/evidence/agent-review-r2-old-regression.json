@@ -1,0 +1,18 @@
+{
+  "command": [
+    "bun",
+    "test",
+    "tests/agent",
+    "--test-name-pattern",
+    "baseline agreement accepts"
+  ],
+  "cwd": "/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/old",
+  "expectedExit": 1,
+  "exitCode": 1,
+  "startedAt": "2026-10-20T22:41:28.960789+00:00",
+  "finishedAt": "2026-10-20T22:41:29.123313+00:00",
+  "stdout": "/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/old-regression.stdout",
+  "stderr": "/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/old-regression.stderr",
+  "stdoutSha256": "6043908c8d26d62698476b88f737f39d5d3e91008d4155a81730902f5a37479c",
+  "stderrSha256": "e117c6741349802b1de9ce3caa32461a172b4a260cf76f72cc08c7023da10180"
+}

@@ -1,0 +1,72 @@
+{
+  "oldObservationCount": 63,
+  "newObservationCount": 77,
+  "retainedOldObservationIds": 61,
+  "replacedOldObservationIds": [
+    "BLOCKER-baseline-equivalent-reviewed-choices-rejected",
+    "one-density-token-bypasses-novelty-guard-with-same-synthetic-attestation"
+  ],
+  "addedNewObservationIds": [
+    "FIXED-baseline-equivalent-reviewed-choices-accepted-with-bound-synthetic-receipt",
+    "end-to-end-retained-baseline-model-file-publication-synthetic-only",
+    "exact-unchanged-baseline-accepted-with-bound-synthetic-receipt",
+    "no-model-claim-with-empty-receipt-density-changed",
+    "no-model-claim-with-empty-receipt-exact-baseline",
+    "no-model-claim-with-empty-receipt-renamed-equivalent",
+    "no-model-claim-with-null-receipt-density-changed",
+    "no-model-claim-with-null-receipt-exact-baseline",
+    "no-model-claim-with-null-receipt-renamed-equivalent",
+    "no-model-claim-with-undefined-receipt-density-changed",
+    "no-model-claim-with-undefined-receipt-exact-baseline",
+    "no-model-claim-with-undefined-receipt-renamed-equivalent",
+    "one-density-token-no-longer-has-special-authorship-significance",
+    "publish-explicit-baseline-with-plan-never-mixes-provenance",
+    "publish-neither-baseline-nor-plan-never-infers-model-involvement",
+    "publish-plan-without-delegation-never-infers-model-involvement"
+  ],
+  "identicalRegressionTestSha256": "f0e00c0aaf14f81d28b2a11c70ade988005c9e846005925554e0b0bb12322a16",
+  "r1ReportUnchangedSha256": "2ce9417b437a1a949910b62be7788951b439122d62dd9ebf77974c35bcab568a",
+  "aggregateStatus": "passed",
+  "aggregateChecks": [
+    {
+      "command": "bun run typecheck",
+      "exitCode": 0,
+      "testSummary": ""
+    },
+    {
+      "command": "bun run check:source",
+      "exitCode": 0,
+      "testSummary": " 46 pass\n 0 fail\n 403 expect() calls"
+    },
+    {
+      "command": "bun run test",
+      "exitCode": 0,
+      "testSummary": " 58 pass\n 1 skip\n 11 todo\n 0 fail\n 413 expect() calls"
+    },
+    {
+      "command": "bun run test:controls",
+      "exitCode": 0,
+      "testSummary": ""
+    },
+    {
+      "command": "bun run build",
+      "exitCode": 0,
+      "testSummary": ""
+    },
+    {
+      "command": "bun run build:engine",
+      "exitCode": 0,
+      "testSummary": ""
+    }
+  ],
+  "rootAtFinish": "665d98d750852daaaf1a6d5d09b17790a31dc413",
+  "workerAtFinish": "fa60798622215e917445e217c7d9dac3dd3a8625",
+  "rootStatusAtFinish": " M scripts/check-foundation.mjs\n",
+  "workerStatusAtFinish": "",
+  "evidenceHashes": {
+    "/tmp/opencode/guitar-a02-independent-r1.ts": "9a35d5c24358cec3dc5d68e9cc795c5aa1e68ee17804b09485576bcbe8c72ea7",
+    "/tmp/opencode/guitar-a02-independent-r1.json": "2c18b3d41f01167eb074cf8a26fb3fe35d55be67a81bc58e59cdaf6e98c665b4",
+    "/tmp/opencode/guitar-a02-independent-r2.ts": "30a8b3350e951428642d6f4dcb492fa15575cc206342b711f678212247da6b8b",
+    "/tmp/opencode/guitar-a02-independent-r2.json": "a0ae47ee218246671be826ee012805434aa2b53b00966d5ad2c18a598cbfcab1"
+  }
+}

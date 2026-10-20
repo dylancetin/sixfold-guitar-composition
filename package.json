@@ -16,7 +16,10 @@
     "test:adapters:tempo": "bun tests/adapters/effective-tempo.ts",
     "typecheck:adapters": "tsc --noEmit -p tests/adapters/tsconfig.json",
     "probe:adapters": "bun scripts/probe-adapters.ts",
-    "build:adapters": "bun build src/adapters/index.ts --target=browser --outdir=dist/adapters"
+    "build:adapters": "bun build src/adapters/index.ts --target=browser --outdir=dist/adapters",
+    "typecheck:agent": "tsc --noEmit -p tests/agent/tsconfig.json",
+    "test:agent": "bun test tests/agent",
+    "build:publication": "bun build src/publication/index.ts --target=browser --outdir=dist/publication"
   },
   "dependencies": {
     "@coderline/alphatab": "1.8.4",

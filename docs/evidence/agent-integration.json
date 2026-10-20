@@ -1,0 +1,186 @@
+{
+  "status": "VERIFIED integration of separately reviewed A02 infrastructure",
+  "checkedAt": "2026-10-20T22:47:00.536Z",
+  "before": "9e6b8077f8b96e35809e27e9380ff3488c2e61dc",
+  "afterImplementationPicks": "82f929c39a22ec4bfcb782e4d2d2878771e73fb3",
+  "picks": [
+    {
+      "worker": "4a039f301fbf76f45c255b7afaebeb32754d4ae1",
+      "root": "a33cbf013665feda79b7d6896515adae1541ca8e",
+      "scope": "All files except additively reconciled docs/TODO.md",
+      "workerPatchId": "d168441e639bc96719fd4fc04d801192430ec62b",
+      "rootPatchId": "d168441e639bc96719fd4fc04d801192430ec62b",
+      "equal": true
+    },
+    {
+      "worker": "fa60798622215e917445e217c7d9dac3dd3a8625",
+      "root": "82f929c39a22ec4bfcb782e4d2d2878771e73fb3",
+      "scope": "Full commit",
+      "workerPatchId": "6d230954907fd46944dfddcd411dc851bbc548fc",
+      "rootPatchId": "6d230954907fd46944dfddcd411dc851bbc548fc",
+      "equal": true
+    }
+  ],
+  "untouched": {
+    "src/domain": {
+      "before": "f969b9e325a9bd707eee6bb58d3e52bc14e884ef",
+      "after": "f969b9e325a9bd707eee6bb58d3e52bc14e884ef",
+      "equal": true
+    },
+    "src/source": {
+      "before": "8b523b25eef09d234c3ff95c9726ffac29145162",
+      "after": "8b523b25eef09d234c3ff95c9726ffac29145162",
+      "equal": true
+    },
+    "src/engine": {
+      "before": "1ae829f9c81e0420202b5b018e492f3b1bb1c220",
+      "after": "1ae829f9c81e0420202b5b018e492f3b1bb1c220",
+      "equal": true
+    },
+    "src/adapters": {
+      "before": "e933890d5d407fc428921230031f3d8c09e84645",
+      "after": "e933890d5d407fc428921230031f3d8c09e84645",
+      "equal": true
+    },
+    "tests/fixtures": {
+      "before": "cacef26c5dca83729cf71af8c46bae3fca2a0ced",
+      "after": "cacef26c5dca83729cf71af8c46bae3fca2a0ced",
+      "equal": true
+    },
+    "tests/source": {
+      "before": "a3546bc350c7ad0efe4ea679ee328134d2999963",
+      "after": "a3546bc350c7ad0efe4ea679ee328134d2999963",
+      "equal": true
+    },
+    "tests/engine": {
+      "before": "62cb67658f97e00f5b7ecb27e8e3b74872ca9391",
+      "after": "62cb67658f97e00f5b7ecb27e8e3b74872ca9391",
+      "equal": true
+    },
+    "tests/adapters": {
+      "before": "74f8d4cac5f15294e32cb98ea031b63d9ddbdf69",
+      "after": "74f8d4cac5f15294e32cb98ea031b63d9ddbdf69",
+      "equal": true
+    },
+    "tools/export-proof": {
+      "before": "5c1fe1dde77f5a71488687c881bad543b33a94ee",
+      "after": "5c1fe1dde77f5a71488687c881bad543b33a94ee",
+      "equal": true
+    },
+    "docs/CONTRACT.md": {
+      "before": "d004aa8995919b347b41fa2ccb2e216cc7bc66d4",
+      "after": "d004aa8995919b347b41fa2ccb2e216cc7bc66d4",
+      "equal": true
+    },
+    "tsconfig.json": {
+      "before": "6c11208f119bb3ffde02d1324880a23424cf379f",
+      "after": "6c11208f119bb3ffde02d1324880a23424cf379f",
+      "equal": true
+    },
+    "bun.lock": {
+      "before": "8e5bcc9302f65865692fbf81326844506c3d112f",
+      "after": "8e5bcc9302f65865692fbf81326844506c3d112f",
+      "equal": true
+    },
+    "docs/evidence/agent-review-r1.md": {
+      "before": "9c2d0b1e7e2fea4e2ab715e6e94d563d5c39c4cc",
+      "after": "9c2d0b1e7e2fea4e2ab715e6e94d563d5c39c4cc",
+      "equal": true
+    },
+    "docs/evidence/adapters-review-round2.md": {
+      "before": "9de5d20fdf624830eecbbdea532aeeb3cf86780e",
+      "after": "9de5d20fdf624830eecbbdea532aeeb3cf86780e",
+      "equal": true
+    }
+  },
+  "canonicalAgentPublicationContentMatches": true,
+  "priorPackageScriptsAndDependenciesPreserved": true,
+  "addedAggregateHooks": [
+    "typecheck:agent",
+    "test:agent",
+    "build:publication"
+  ],
+  "rootAggregate": {
+    "status": "passed",
+    "hooks": 13,
+    "source": 46,
+    "fixtureEngine": {
+      "pass": 58,
+      "skip": 1,
+      "todo": 11
+    },
+    "adapters": {
+      "pass": 14,
+      "assertions": 112
+    },
+    "agentPublication": {
+      "pass": 14,
+      "assertions": 78
+    }
+  },
+  "independentR2": {
+    "verdict": "VERIFIED",
+    "observations": 77,
+    "retainedR1ObservationIds": 61
+  },
+  "copiedEvidence": [
+    {
+      "from": "/tmp/opencode/guitar-agent-review-r2.md",
+      "to": "docs/evidence/agent-review-r2.md",
+      "sha256": "9050ffd7e6bd75e0cb95b86bacea5cce02a71b6658630b88b6e5fa20e054cf4d",
+      "bytes": 10020
+    },
+    {
+      "from": "/tmp/opencode/guitar-a02-independent-r2.ts",
+      "to": "docs/evidence/agent-review-r2-probe.ts",
+      "sha256": "30a8b3350e951428642d6f4dcb492fa15575cc206342b711f678212247da6b8b",
+      "bytes": 22480
+    },
+    {
+      "from": "/tmp/opencode/guitar-a02-independent-r2.json",
+      "to": "docs/evidence/agent-review-r2-probe.json",
+      "sha256": "a0ae47ee218246671be826ee012805434aa2b53b00966d5ad2c18a598cbfcab1",
+      "bytes": 24161
+    },
+    {
+      "from": "/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/verification-summary.json",
+      "to": "docs/evidence/agent-review-r2-summary.json",
+      "sha256": "ae23f29996c964305af583bf100a2de2fe037ea383e07cd3b46ece23f1321a9a",
+      "bytes": 2996
+    },
+    {
+      "from": "/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/old-regression.json",
+      "to": "docs/evidence/agent-review-r2-old-regression.json",
+      "sha256": "df78c452276de739348344e85e038fdf3411e051d72490b9b7c37ab376b1bbbe",
+      "bytes": 666
+    },
+    {
+      "from": "/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/old-regression.stderr",
+      "to": "docs/evidence/agent-review-r2-old-regression.stderr",
+      "sha256": "e117c6741349802b1de9ce3caa32461a172b4a260cf76f72cc08c7023da10180",
+      "bytes": 1690
+    },
+    {
+      "from": "/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/new-regression.json",
+      "to": "docs/evidence/agent-review-r2-new-regression.json",
+      "sha256": "e37aa1f33d3ded8912c6f833b43adf10f1b97dff3d33c6602ad693074906b795",
+      "bytes": 666
+    },
+    {
+      "from": "/tmp/opencode/guitar-agent-review-r2-0rcwv0jd/new-regression.stderr",
+      "to": "docs/evidence/agent-review-r2-new-regression.stderr",
+      "sha256": "c7c8f4d9740e11e76151c1e461a269c7466191dec5267cfb1bc04e3301c6eeed",
+      "bytes": 89
+    },
+    {
+      "from": "/tmp/opencode/guitar-agent-integration-root-check.json",
+      "to": "docs/evidence/agent-integration-root-check.json",
+      "sha256": "0c50230cb1b73b82685751965d69c15fee7f76620a5340f172cf449dcc651f70",
+      "bytes": 12705
+    }
+  ],
+  "actualMusicianReceipt": "Not created or attested here; handled separately by parent",
+  "actualPublication": "Not run or duplicated here",
+  "websiteHttp": "Not verified here",
+  "humanApproval": "Not claimed"
+}

@@ -1,0 +1,393 @@
+{
+  "checkedAt": "2026-10-20T22:41:30.307Z",
+  "reviewedCommits": [
+    "4a039f301fbf76f45c255b7afaebeb32754d4ae1",
+    "fa60798622215e917445e217c7d9dac3dd3a8625"
+  ],
+  "rootAtStart": "665d98d750852daaaf1a6d5d09b17790a31dc413",
+  "directory": "/tmp/opencode/guitar-a02-independent-r2-nvE4Xe",
+  "scope": "Independent R2 boundary review using original fixture, real engine/validator/worker; export doubles explicitly NOT renderer proof. No actual musician-task receipt generated. Historical R1 script/output preserved.",
+  "knownBlocker": null,
+  "controls": 77,
+  "results": [
+    {
+      "id": "canonical-source-stamped-before-selection-provider-identity-unchanged",
+      "outcome": "passed"
+    },
+    {
+      "id": "corrupt-run-source-reference",
+      "outcome": "rejected",
+      "detail": "Error: Prepared source revision/digest mismatch"
+    },
+    {
+      "id": "corrupt-run-request-digest",
+      "outcome": "rejected",
+      "detail": "Error: Prepared request/selection mismatch; prepare again after changing preferences or melody"
+    },
+    {
+      "id": "corrupt-run-structural",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"datetime\",\n    \"pattern\": \"/^(?:(?:\\\\d\\\\d[2468][048]|\\\\d\\\\d[13579][26]|\\\\d\\\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\\\d|30)|(?:02)-(?:0[1-9]|1\\\\d|2[0-8])))T(?:(?:[01]\\\\d|2[0-3]):[0-5]\\\\d(?::[0-5]\\\\d(?:\\\\.\\\\d+)?)?(?:Z))$/\",\n    \"path\": [\n      \"createdAt\"\n    ],\n    \"message\": \"Invalid ISO datetime\"\n  }\n]"
+    },
+    {
+      "id": "corrupt-source-not-restamped",
+      "outcome": "rejected",
+      "detail": "Error: Prepared source revision/digest mismatch"
+    },
+    {
+      "id": "corrupt-request-preferences",
+      "outcome": "rejected",
+      "detail": "Error: Prepared request/selection mismatch; prepare again after changing preferences or melody"
+    },
+    {
+      "id": "corrupt-request-locks",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"locks\",\n      0,\n      \"approvedFrom\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"locks\",\n      0,\n      \"scopeDigest\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"locks\",\n      0,\n      \"sounds\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"locks\",\n      0,\n      \"rests\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  }\n]"
+    },
+    {
+      "id": "corrupt-selection-binding",
+      "outcome": "rejected",
+      "detail": "Error: Prepared request/selection mismatch; prepare again after changing preferences or melody"
+    },
+    {
+      "id": "corrupt-baseline-plan",
+      "outcome": "rejected",
+      "detail": "Error: Prepared baseline/brief mismatch"
+    },
+    {
+      "id": "corrupt-baseline-provenance",
+      "outcome": "rejected",
+      "detail": "Error: Deterministic baseline provenance/content mismatch"
+    },
+    {
+      "id": "unknown-source-id",
+      "outcome": "rejected",
+      "detail": "Error: Unknown/non-note source event: no-such-note"
+    },
+    {
+      "id": "rest-source-id",
+      "outcome": "rejected",
+      "detail": "Error: Unknown/non-note source event: src-rest"
+    },
+    {
+      "id": "duplicate-candidate-id",
+      "outcome": "rejected",
+      "detail": "Error: Duplicate candidate ID: review-e-bass"
+    },
+    {
+      "id": "duplicate-source-ref",
+      "outcome": "rejected",
+      "detail": "Error: Repeated source references in candidate"
+    },
+    {
+      "id": "illegal-octave",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_big\",\n    \"maximum\": 3,\n    \"inclusive\": true,\n    \"path\": [\n      \"candidates\",\n      0,\n      \"octaveShift\"\n    ],\n    \"message\": \"Too big: expected number to be <=3\"\n  }\n]"
+    },
+    {
+      "id": "melody-role",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"bass\",\n      \"harmony\"\n    ],\n    \"path\": [\n      \"candidates\",\n      0,\n      \"role\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"bass\\\"|\\\"harmony\\\"\"\n  }\n]"
+    },
+    {
+      "id": "plan-melody-edit-field",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"transposition\"\n    ],\n    \"path\": [],\n    \"message\": \"Unrecognized key: \\\"transposition\\\"\"\n  }\n]"
+    },
+    {
+      "id": "receipt-wrong-plan-digest",
+      "outcome": "rejected",
+      "detail": "Error: Delegation responseDigest must hash the exact raw plan-file bytes"
+    },
+    {
+      "id": "receipt-wrong-source-id",
+      "outcome": "rejected",
+      "detail": "Error: Delegation is bound to a different source/request"
+    },
+    {
+      "id": "receipt-wrong-source-digest",
+      "outcome": "rejected",
+      "detail": "Error: Delegation is bound to a different source/request"
+    },
+    {
+      "id": "receipt-wrong-request",
+      "outcome": "rejected",
+      "detail": "Error: Delegation is bound to a different source/request"
+    },
+    {
+      "id": "receipt-missing-task",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"taskId\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]"
+    },
+    {
+      "id": "receipt-extra-http-field",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"httpRequestId\"\n    ],\n    \"path\": [],\n    \"message\": \"Unrecognized key: \\\"httpRequestId\\\"\"\n  }\n]"
+    },
+    {
+      "id": "exact-raw-response-whitespace",
+      "outcome": "rejected",
+      "detail": "Error: Delegation responseDigest must hash the exact raw plan-file bytes"
+    },
+    {
+      "id": "FIXED-baseline-equivalent-reviewed-choices-accepted-with-bound-synthetic-receipt",
+      "outcome": "passed",
+      "detail": "Synthetic boundary fixture only, not actual task evidence or newly composed material."
+    },
+    {
+      "id": "exact-unchanged-baseline-accepted-with-bound-synthetic-receipt",
+      "outcome": "passed"
+    },
+    {
+      "id": "one-density-token-no-longer-has-special-authorship-significance",
+      "outcome": "passed",
+      "detail": "Receipt remains necessary; note-choice inequality is not evidence of a model task."
+    },
+    {
+      "id": "no-model-claim-with-undefined-receipt-exact-baseline",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  }\n]"
+    },
+    {
+      "id": "no-model-claim-with-null-receipt-exact-baseline",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received null\"\n  }\n]"
+    },
+    {
+      "id": "no-model-claim-with-empty-receipt-exact-baseline",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      1\n    ],\n    \"path\": [\n      \"schemaVersion\"\n    ],\n    \"message\": \"Invalid input: expected 1\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"project-subagent\"\n    ],\n    \"path\": [\n      \"transport\"\n    ],\n    \"message\": \"Invalid input: expected \\\"project-subagent\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"provider\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"model\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"taskId\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"callId\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"calledAt\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"responseDigest\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sourceRevision\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"requestDigest\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]"
+    },
+    {
+      "id": "no-model-claim-with-undefined-receipt-renamed-equivalent",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  }\n]"
+    },
+    {
+      "id": "no-model-claim-with-null-receipt-renamed-equivalent",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received null\"\n  }\n]"
+    },
+    {
+      "id": "no-model-claim-with-empty-receipt-renamed-equivalent",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      1\n    ],\n    \"path\": [\n      \"schemaVersion\"\n    ],\n    \"message\": \"Invalid input: expected 1\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"project-subagent\"\n    ],\n    \"path\": [\n      \"transport\"\n    ],\n    \"message\": \"Invalid input: expected \\\"project-subagent\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"provider\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"model\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"taskId\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"callId\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"calledAt\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"responseDigest\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sourceRevision\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"requestDigest\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]"
+    },
+    {
+      "id": "no-model-claim-with-undefined-receipt-density-changed",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  }\n]"
+    },
+    {
+      "id": "no-model-claim-with-null-receipt-density-changed",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received null\"\n  }\n]"
+    },
+    {
+      "id": "no-model-claim-with-empty-receipt-density-changed",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      1\n    ],\n    \"path\": [\n      \"schemaVersion\"\n    ],\n    \"message\": \"Invalid input: expected 1\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"project-subagent\"\n    ],\n    \"path\": [\n      \"transport\"\n    ],\n    \"message\": \"Invalid input: expected \\\"project-subagent\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"provider\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"model\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"taskId\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"callId\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"calledAt\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"responseDigest\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"sourceRevision\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"requestDigest\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]"
+    },
+    {
+      "id": "worker-real-elapsed-time-budget",
+      "outcome": "rejected",
+      "detail": "Error: search-exhausted: engine exceeded 1ms; no publication installed"
+    },
+    {
+      "id": "worker-inflight-cancellation",
+      "outcome": "rejected",
+      "detail": "Error: independent-midflight-abort"
+    },
+    {
+      "id": "real-engine-worker-candidate",
+      "outcome": "passed"
+    },
+    {
+      "id": "idempotent-original-byte-reuse-no-rerender",
+      "outcome": "passed"
+    },
+    {
+      "id": "publish-plan-without-delegation-never-infers-model-involvement",
+      "outcome": "rejected",
+      "detail": "Error: Choose --baseline OR both --plan and --delegation (never inferred AI authorship)"
+    },
+    {
+      "id": "publish-neither-baseline-nor-plan-never-infers-model-involvement",
+      "outcome": "rejected",
+      "detail": "Error: Choose --baseline OR both --plan and --delegation (never inferred AI authorship)"
+    },
+    {
+      "id": "publish-explicit-baseline-with-plan-never-mixes-provenance",
+      "outcome": "rejected",
+      "detail": "Error: Choose --baseline OR both --plan and --delegation (never inferred AI authorship)"
+    },
+    {
+      "id": "end-to-end-retained-baseline-model-file-publication-synthetic-only",
+      "outcome": "passed",
+      "detail": "Real engine/validator/worker and five-file storage, but synthetic receipt and export doubles: no actual musician attestation or real exports."
+    },
+    {
+      "id": "manifest-wrong-revision-id",
+      "outcome": "rejected",
+      "detail": "Error: Publication score revision/digest mismatch"
+    },
+    {
+      "id": "manifest-wrong-id",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"custom\",\n    \"path\": [],\n    \"message\": \"Publication ID must bind the complete score digest\"\n  }\n]"
+    },
+    {
+      "id": "manifest-escape-path",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"score.json\"\n    ],\n    \"path\": [\n      \"files\",\n      \"score\"\n    ],\n    \"message\": \"Invalid input: expected \\\"score.json\\\"\"\n  }\n]"
+    },
+    {
+      "id": "manifest-extra-source-file",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"raw\"\n    ],\n    \"path\": [\n      \"files\"\n    ],\n    \"message\": \"Unrecognized key: \\\"raw\\\"\"\n  }\n]"
+    },
+    {
+      "id": "manifest-fake-model",
+      "outcome": "rejected",
+      "detail": "Error: Publication agent provenance mismatch"
+    },
+    {
+      "id": "manifest-fake-review",
+      "outcome": "rejected",
+      "detail": "Error: Publication cannot claim musical review"
+    },
+    {
+      "id": "manifest-missing-integrity",
+      "outcome": "rejected",
+      "detail": "Error: Publisher bundles require integrity and artifact manifests"
+    },
+    {
+      "id": "manifest-artifact-wrong-source",
+      "outcome": "rejected",
+      "detail": "Error: Artifact references wrong score/source revision"
+    },
+    {
+      "id": "manifest-artifact-wrong-capo",
+      "outcome": "rejected",
+      "detail": "Error: Artifact settings/counts mismatch"
+    },
+    {
+      "id": "manifest-artifact-wrong-attacks",
+      "outcome": "rejected",
+      "detail": "Error: Artifact settings/counts mismatch"
+    },
+    {
+      "id": "manifest-artifact-different-adapter",
+      "outcome": "rejected",
+      "detail": "Error: Publication exports came from inconsistent adapter/validation projections"
+    },
+    {
+      "id": "manifest-artifact-different-validation",
+      "outcome": "rejected",
+      "detail": "Error: Publication exports came from inconsistent adapter/validation projections"
+    },
+    {
+      "id": "manifest-artifact-wrong-digest",
+      "outcome": "rejected",
+      "detail": "Error: Artifact bytes/digest/length mismatch"
+    },
+    {
+      "id": "corrupt-artifact-bytes",
+      "outcome": "rejected",
+      "detail": "Error: Publication midi integrity mismatch"
+    },
+    {
+      "id": "immutable-metadata-replacement",
+      "outcome": "rejected",
+      "detail": "Error: Immutable publication already exists with different metadata/content"
+    },
+    {
+      "id": "interrupt-after-durable-stage-before-atomic-visibility",
+      "outcome": "rejected",
+      "detail": "Error: independent-stage-interruption"
+    },
+    {
+      "id": "interrupted-stage-cleanup-old-bytes-preserved",
+      "outcome": "passed"
+    },
+    {
+      "id": "leftover-lock-fails-closed",
+      "outcome": "rejected",
+      "detail": "Error: Publication busy or interrupted lock remains; existing publications were not changed"
+    },
+    {
+      "id": "directory-manifest-id-disagreement",
+      "outcome": "rejected",
+      "detail": "Error: Publication path/manifest ID mismatch"
+    },
+    {
+      "id": "unexpected-source-file-in-publication",
+      "outcome": "rejected",
+      "detail": "Error: Incomplete/unexpected publication files"
+    },
+    {
+      "id": "partial-publication-not-treated-as-absent",
+      "outcome": "rejected",
+      "detail": "Error: Incomplete/unexpected publication files"
+    },
+    {
+      "id": "publication-file-symlink",
+      "outcome": "rejected",
+      "detail": "Error: Unsafe publication file"
+    },
+    {
+      "id": "unsafe-id-\"../x\"",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^arr-[a-f0-9]{64}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^arr-[a-f0-9]{64}$/\"\n  }\n]"
+    },
+    {
+      "id": "unsafe-id-\"arr-../../x\"",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^arr-[a-f0-9]{64}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^arr-[a-f0-9]{64}$/\"\n  }\n]"
+    },
+    {
+      "id": "unsafe-id-\"%2e%2e\"",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^arr-[a-f0-9]{64}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^arr-[a-f0-9]{64}$/\"\n  }\n]"
+    },
+    {
+      "id": "unsafe-id-\"%61rr-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^arr-[a-f0-9]{64}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^arr-[a-f0-9]{64}$/\"\n  }\n]"
+    },
+    {
+      "id": "unsafe-id-\"arr-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/score.json\"",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^arr-[a-f0-9]{64}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^arr-[a-f0-9]{64}$/\"\n  }\n]"
+    },
+    {
+      "id": "unsafe-id-\"arr-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^arr-[a-f0-9]{64}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^arr-[a-f0-9]{64}$/\"\n  }\n]"
+    },
+    {
+      "id": "unsafe-id-\"arr-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\u0000\"",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^arr-[a-f0-9]{64}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^arr-[a-f0-9]{64}$/\"\n  }\n]"
+    },
+    {
+      "id": "unsafe-id-\"manifest.json\"",
+      "outcome": "rejected",
+      "detail": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^arr-[a-f0-9]{64}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^arr-[a-f0-9]{64}$/\"\n  }\n]"
+    },
+    {
+      "id": "schema-valid-restamped-physical-corruption",
+      "outcome": "rejected",
+      "detail": "Error: Independent validation failed: Pitch must equal sounding tuning + capo + relative fret; Hand anchor must describe the active stopped contacts; Static occupancy checks only; movement limits uncalibrated: Conservative product defaults, not calibrated to an individual guitarist; audition movement before a playable-release claim. Not a human-playability claim."
+    },
+    {
+      "id": "private-root-must-not-overwrite-user-ignore",
+      "outcome": "rejected",
+      "detail": "Error: Choose a dedicated local data root with its own ignore-all .gitignore; existing files were not changed"
+    },
+    {
+      "id": "local-root-user-ignore-preserved",
+      "outcome": "passed"
+    }
+  ]
+}
