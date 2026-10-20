@@ -11,13 +11,27 @@
     "test": "bun test tests/fixtures tests/engine",
     "test:controls": "bun tests/fixtures/check-negative-controls.ts",
     "build": "bun build src/domain/index.ts --target=browser --outdir=dist",
-    "build:engine": "bun build src/engine/index.ts --target=browser --outdir=dist/engine"
+    "build:engine": "bun build src/engine/index.ts --target=browser --outdir=dist/engine",
+    "test:adapters": "bun test tests/adapters",
+    "typecheck:adapters": "tsc --noEmit -p tests/adapters/tsconfig.json",
+    "probe:adapters": "bun scripts/probe-adapters.ts",
+    "build:adapters": "bun build src/adapters/index.ts --target=browser --outdir=dist/adapters"
   },
   "dependencies": {
+    "@coderline/alphatab": "1.8.4",
+    "pdfkit": "0.20.2",
+    "svg-to-pdfkit": "0.1.8",
     "zod": "4.1.12"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "1.0.12",
+    "@tonejs/midi": "2.0.28",
     "@types/bun": "1.3.1",
+    "@types/pdfkit": "0.17.3",
+    "@types/svg-to-pdfkit": "0.1.3",
+    "midi-file": "1.2.4",
+    "pdfjs-dist": "6.4.299",
+    "playwright-core": "1.58.2",
     "typescript": "5.9.3"
   }
 }

@@ -1,0 +1,71 @@
+{
+  "scope": "U11/U12 production adapter boundaries and original synthetic canonical fixtures; not full-song/product acceptance",
+  "checkedAt": "2026-10-20T21:43:17Z",
+  "artifactRoot": "/tmp/opencode/guitar-adapters-u11-u12",
+  "baseCommit": "ce201e0",
+  "checks": {
+    "frozenInstall": "passed",
+    "foundation": { "passed": 32, "todo": 11, "failed": 0 },
+    "adapterTypecheck": "passed",
+    "adapterTests": { "passed": 13, "failed": 0, "expectAssertions": 99 },
+    "browserBundle": "passed; 83 modules; no Node/PDFKit imports",
+    "artifactProbe": "passed; independent MIDI/PDF readers; eight actual corrupted-file rejections"
+  },
+  "fixture": {
+    "description": "Authored +2-semitone source variant of original two-bar held-voice study, repeated 12 times, same source at capos 0/2",
+    "notClaimed": ["U02 Copper Steps 16-written/24-occurrence equivalence", "complete requested song", "human-reviewed fingering"],
+    "sourceRevision": { "id": "adapter-source-p12-shift2", "digest": "a84f96819383c1d69b9398d51f0bc83be4e53da20d92e442744202dad9a8eb22" },
+    "scoreDigests": { "capo0": "057ba9d759e90d2ccae23f294b4671a8afe7869d24e163fb46fce51753e03299", "capo2": "2d710684e2bb229d1e75e35f42eeeb6019056e6ada77d7d2ce31509d8e520bbb" },
+    "occurrences": 24,
+    "quarters": 96,
+    "soundingAttacks": 108,
+    "notationMappings": 132,
+    "notePlacementsIncludingTies": 120,
+    "midiFinalTick": 92160,
+    "seconds": 72,
+    "roleAttacks": { "melody": 60, "bass": 24, "harmony": 24 },
+    "pdfPagesEachCapo": { "A4": 4, "LETTER": 5 },
+    "pdfPagesInspected": 18,
+    "minimumSampledRasterLineCoverage": 1
+  },
+  "artifacts": [
+    { "file": "capo-0/A4.pdf", "byteLength": 31690, "sha256": "c208e2c9133d17aa1dc37fb3cfef08d3682dfe20a60b92dc783c448b967dceea" },
+    { "file": "capo-0/LETTER.pdf", "byteLength": 32235, "sha256": "0f4ab73456c5828b2e2ece73258c6bb4004c081bf072281e3d56c36cf2a2831d" },
+    { "file": "capo-0/fixture.mid", "byteLength": 1969, "sha256": "ecc40ec0fbd7568c1f64cabfd9d10eee814d8e1618fbdc5732abd8a1780cfb73" },
+    { "file": "capo-2/A4.pdf", "byteLength": 31663, "sha256": "7a753e7a02c0279ba5e79efd002cae23853d9cb86f2e40df09f68bb8acdbeda4" },
+    { "file": "capo-2/LETTER.pdf", "byteLength": 32206, "sha256": "bc868a996eb471108054dbde182cdf2fb69c11253fee80ae4898237f54733fdb" },
+    { "file": "capo-2/fixture.mid", "byteLength": 1969, "sha256": "207dd8a25f15b39b85f76fccf5a0c3646dc8f65dec037dee0b1b654749bd5bab" },
+    { "file": "browser-notation.png", "byteLength": 87284, "sha256": "1eedbc4df0b48e87a2bc9146b852a7c8e2c455200661b1e03ef53c4b8a8a9a27" }
+  ],
+  "browserAudio": {
+    "kind": "Real headless Chromium DSP plus AudioContext cursor consistency; no hardware/human audition claim",
+    "browser": "Chromium 156.0.8078.4",
+    "device": "Linux x64 headless local process; muted hardware output",
+    "samplePeriodMs": 25,
+    "cursorSamples": 2402,
+    "elapsedAudioSeconds": 60.0497052154195,
+    "tempoScale": 1.25,
+    "loopQuarters": [0, 4],
+    "loopCount": 25,
+    "maxCursorDriftMs": 1.1191048088221578e-11,
+    "maxScheduleLatenessMs": 0,
+    "missedNotes": 0,
+    "peakRms": 0.1064303832445029,
+    "pauseRms": 0,
+    "mutedBassRms": 0,
+    "soloExcludedHarmonyRms": 0,
+    "soloMelodyRms": 0.051896637250765223,
+    "pauseSources": 0,
+    "stopSources": 0,
+    "pauseQuarterDrift": 0,
+    "gestureReadiness": "needs-gesture -> ready",
+    "heldSeek": "quarter 4.5, same m4 performed ID; elapsed tone age 2.25s at tempoScale 0.5",
+    "detailFile": "browser-audio.json"
+  },
+  "imageEvidence": {
+    "imageUrl": "https://nextcloud.tail750ac6.ts.net/public.php/dav/files/7BA6X6G972PLAqs/Lnu1JeebyjLvkGK_.png",
+    "shareUrl": "https://nextcloud.tail750ac6.ts.net/s/7BA6X6G972PLAqs",
+    "verifiedAnonymous": true
+  },
+  "open": ["actual-song integration", "trusted production validator and API head/store wiring", "studio UI controls", "second MIDI player", "human audible and guitarist review"]
+}
