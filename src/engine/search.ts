@@ -25,7 +25,8 @@ export function compareSolutions(a:SearchState,b:SearchState):number { return ra
 
 /** Bounded sequence beam: every branch retains entire held string/finger intervals.
  * Optional source bass/harmony participates before equivalent melody choices are frozen.
- * Finger labels are symmetry-reduced only when movement is explicitly uncalibrated.
+ * Provisional finger labels are reduced only for uncalibrated occupancy search;
+ * the final labels are chosen from the complete solved contact intervals.
  */
 export function searchSequence(items:SearchItem[],instrument:Instrument,ability:AbilityProfile,tempos:PerformedTempo[],budget:Budget):SearchResult {
   const width=Math.max(2,Math.min(12,Math.floor((budget.limit-budget.used)/Math.max(items.length*5,1))));

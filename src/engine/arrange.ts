@@ -9,6 +9,7 @@ import { selectMelody, spell } from './selection';
 import { guitarValidator } from './validator';
 import { scopeDigest } from './scopes';
 import { roleOrderConflict } from './roles';
+import { labelUncalibratedFingers } from './fingering';
 
 type Note=Extract<SourceEvent,{kind:'note'}>;
 type Trial={status:'candidate';score:ScoreV1;state:SearchState}|Exclude<ArrangeResult,{status:'candidate'}>;
@@ -103,7 +104,7 @@ function arrangeCapo(source:SourceScoreV1,request:ArrangementRequest,plan:Plan,p
     const barIds=source.bars.filter((b)=>failed.some((e)=>overlaps(e.start,eventEnd(e),b.start,add(b.start,b.length)))).map((b)=>b.id);
     return {status:'unsupported',diagnostics:[diagnostic('unsupported-construct','Exact source duration cannot be represented by supported notation values; no quantization performed',failed.map((e)=>e.id),barIds)]};
   }
-  let placements=state.placements;
+  let placements=request.ability.transition.status==='uncalibrated'?labelUncalibratedFingers(sounds,state.placements):state.placements;
   const performedSounds=unfoldSounds(sounds,expansion.occurrences,source.bars,placements);
   if (request.ability.transition.status==='specified') {
     const performedItems:SearchItem[]=performedSounds.map((ps)=>{const s=sounds.find((s)=>s.id===ps.soundId)!;return {id:ps.id,start:ps.start,role:s.role,required:true,variants:[{...s,id:ps.id,start:ps.start}]};});
