@@ -1,6 +1,8 @@
 // Actual-byte oracle adapted from the independent round-1 artifact checker.
 // No production renderer/engine/projection imports. Inputs/results stay private.
 // RUN_DIR, REVIEW_DIR, PUBLISH_RESULT required; VERIFY_ORIGIN optionally adds HTTP.
+// EXPECTED_ROLE_COUNTS may specify independently reviewed revision counts as JSON;
+// default retains round-2's literal expectation (not inferred from the score).
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
@@ -17,6 +19,9 @@ const publication = await json(process.env.PUBLISH_RESULT!), dir = publication.d
 const source = await json(`${run}/source.json`), score = await json(`${dir}/score.json`), manifest = await json(`${dir}/manifest.json`), receipt = await json(`${run}/delegation.json`);
 const hash = (b: any) => createHash('sha256').update(b).digest('hex');
 const roles = ['melody', 'bass', 'harmony'];
+const expectedRoleCounts = process.env.EXPECTED_ROLE_COUNTS ? JSON.parse(process.env.EXPECTED_ROLE_COUNTS) : {melody:245,bass:146,harmony:98};
+assert.deepEqual(Object.keys(expectedRoleCounts).sort(), [...roles].sort());
+assert(Object.values(expectedRoleCounts).every(n=>Number.isSafeInteger(n)&&Number(n)>0));
 const ticks = (r: any) => { const n = BigInt(r.n)*960n, d = BigInt(r.d); assert.equal(n%d, 0n); return Number(n/d); };
 const writtenForm = [1,2,3,4,5,6,7,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,43,44,45,46,43,44,45,46,43,44,45,46];
 function expected(s: any) {
@@ -49,7 +54,7 @@ function inspectMidi(bytes: Uint8Array, s: any) {
   assert.deepEqual(keys.sort(),e.keys,'exact complete canonical role/pitch/on/off union');assert.deepEqual(tempos,e.tempos);assert.equal(programs.length,3);
   const tone=new Midi(bytes);assert.deepEqual(tone.tracks.flatMap((t: any)=>t.notes.map((n: any)=>`${t.name}/${n.midi}/${n.ticks}/${n.ticks+n.durationTicks}`)).sort(),e.keys);assert(Math.abs(tone.duration-e.seconds(e.lastOff))<1e-7);
   const roleCounts=Object.fromEntries(roles.map(role=>[role,e.notes.filter((n: any)=>n.role===role).length]));
-  assert.deepEqual(roleCounts,{melody:245,bass:146,harmony:98});assert.equal(keys.length,489);assert.equal(tempos.length,64);
+  assert.deepEqual(roleCounts,expectedRoleCounts);assert.equal(keys.length,Object.values(expectedRoleCounts).reduce((sum:number,n)=>sum+Number(n),0));assert.equal(tempos.length,64);
   return {attacks:keys.length,roleCounts,tempoEntries:tempos.length,tempoChanges:tempos.filter((t: any,i: number)=>i===0||t.micros!==tempos[i-1].micros),lastNoteOffTick:e.lastOff,allTrackEnds:ends,secondsToLastNoteOff:tone.duration,velocities:[...velocities],balancedPairs:true,twoParserUnion:true};
 }
 type Matrix=[number,number,number,number,number,number];type Line={x:number;y:number;w:number};
