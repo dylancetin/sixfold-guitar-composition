@@ -19,10 +19,13 @@ export default defineConfig({
     generateBundle() {
       const licenses = [
         '@coderline/alphatab/LICENSE', '@coderline/alphatab/dist/font/Bravura-OFL.txt',
+        '@coderline/alphatab/dist/soundfont/LICENSE',
         '@fontsource/dm-sans/LICENSE', '@fontsource/literata/LICENSE',
         'react/LICENSE', 'react-dom/LICENSE', 'zod/LICENSE', 'react-markdown/license',
+        '@breezystack/lamejs/LICENSE',
       ];
-      this.emitFile({ type: 'asset', fileName: 'assets/THIRD-PARTY-NOTICES.txt', source: licenses.map(file => `${file}\n\n${readFileSync(resolve('node_modules', file), 'utf8')}`).join('\n\n') });
+      this.emitFile({ type: 'asset', fileName: 'assets/THIRD-PARTY-NOTICES.txt', source: licenses.map(file => `${file}\n\n${readFileSync(resolve('node_modules', file), 'utf8')}`).join('\n\n') + '\n\nMP3 encoder: @breezystack/lamejs 1.2.7 (LGPL-3.0), unmodified. https://github.com/shijinyu/lamejs and https://lame.sourceforge.net/\nThe unmodified encoder module is included at /assets/lamejs-source.js.\n' });
+      this.emitFile({ type: 'asset', fileName: 'assets/lamejs-source.js', source: readFileSync(resolve('node_modules/@breezystack/lamejs/dist/lamejs.js'), 'utf8') });
     },
   }],
   resolve: { dedupe: ['zod', '@coderline/alphatab', 'react', 'react-dom'] },
@@ -34,5 +37,5 @@ export default defineConfig({
       output: { entryFileNames: chunk => chunk.name === 'canonical' ? 'integrations/canonical.js' : 'assets/[name]-[hash].js' },
     },
   },
-  server: { host: '0.0.0.0', strictPort: true, proxy: { '/api': 'http://127.0.0.1:3000' } },
+  server: { host: '0.0.0.0', strictPort: true, proxy: { '/api': 'http://127.0.0.1:4590' } },
 });

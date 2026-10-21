@@ -2,12 +2,13 @@ import type { ScoreV1 } from '../domain';
 import { requireAdapter } from './errors';
 import { compileTimeline, createTempoClock, ROLES } from './timeline';
 import type { Role } from './timeline';
+import { createPluckedVoice } from './plucked';
 
 export type PlaybackState = 'idle' | 'ready' | 'playing' | 'paused' | 'ended' | 'error' | 'disposed';
 export type PlaybackLoop = { startQuarter: number; endQuarter: number };
 export type PlaybackSnapshot = {
   state: PlaybackState; readiness: 'needs-gesture' | 'ready' | 'unavailable'; audioState: string;
-  tone: 'synthetic-plucked'; positionQuarter: number; positionSeconds: number; durationSeconds: number;
+  tone: 'sampled-acoustic-guitar'; positionQuarter: number; positionSeconds: number; durationSeconds: number;
   tempoScale: number; loop: PlaybackLoop | null; occurrenceId: string | null;
   activePerformedSoundIds: string[]; audiblePerformedSoundIds: string[];
   activeSegments: { eventId: string; segmentId: string; occurrenceId: string; performedSoundId: string | null }[];
@@ -30,7 +31,7 @@ export function createPlaybackController(input: ScoreV1, options: PlaybackOption
   const roleGains = new Map<Role, GainNode>();
   const muted = new Set<Role>(), solo = new Set<Role>();
   const listeners = new Set<(snapshot: PlaybackSnapshot) => void>();
-  const sources = new Map<string, { oscillator: OscillatorNode; gain: GainNode; filter: BiquadFilterNode }>();
+  const sources = new Map<string, { source: AudioBufferSourceNode; gain: GainNode; filter: BiquadFilterNode }>();
   const scheduled = new Map<string, number>();
   const log: ScheduleRecord[] = [];
   let scheduledCount = 0, cancelledCount = 0, missedCount = 0, maxScheduleLatenessMs = 0;
@@ -57,7 +58,7 @@ export function createPlaybackController(input: ScoreV1, options: PlaybackOption
     const occurrence = timeline.score.occurrences.find(o => number(o.start) <= quarter + 1e-9 && quarter < number(o.start) + number(o.length) - 1e-9);
     const active = timeline.notes.filter(n => number(n.start) <= quarter + 1e-9 && quarter < number(n.start) + number(n.duration) - 1e-9);
     return {
-      state, readiness: state === 'error' || state === 'disposed' ? 'unavailable' : context?.state === 'running' ? 'ready' : 'needs-gesture', audioState: context?.state ?? 'not-created', tone: 'synthetic-plucked',
+      state, readiness: state === 'error' || state === 'disposed' ? 'unavailable' : context?.state === 'running' ? 'ready' : 'needs-gesture', audioState: context?.state ?? 'not-created', tone: 'sampled-acoustic-guitar',
       positionQuarter: quarter, positionSeconds: seconds, durationSeconds: clock.durationSeconds, tempoScale: scale, loop: loop ? { ...loop } : null,
       occurrenceId: occurrence?.id ?? null, activePerformedSoundIds: active.map(n => n.performedSoundId), audiblePerformedSoundIds: state === 'playing' ? active.filter(n => enabled(n.role)).map(n => n.performedSoundId) : [],
       activeSegments: timeline.segments.filter(s => number(s.at) <= quarter + 1e-9 && quarter < number(s.at) + number(s.segment.duration) - 1e-9).map(s => ({ eventId: s.segment.eventId, segmentId: s.segment.id, occurrenceId: s.occurrence.id, performedSoundId: s.performed?.performedSoundId ?? null })),
@@ -71,8 +72,8 @@ export function createPlaybackController(input: ScoreV1, options: PlaybackOption
     for (const source of sources.values()) {
       source.gain.gain.cancelScheduledValues(context!.currentTime);
       source.gain.gain.setValueAtTime(0, context!.currentTime);
-      try { source.oscillator.stop(context!.currentTime); } catch { /* already ended */ }
-      source.oscillator.disconnect(); source.gain.disconnect(); source.filter.disconnect(); cancelledCount++;
+      try { source.source.stop(context!.currentTime); } catch { /* already ended */ }
+      source.source.disconnect(); source.gain.disconnect(); source.filter.disconnect(); cancelledCount++;
     }
     sources.clear(); scheduled.clear();
   };
@@ -84,22 +85,14 @@ export function createPlaybackController(input: ScoreV1, options: PlaybackOption
     }
   };
   const synthesize = (id: string, record: ScheduleRecord, midi: number, role: Role) => {
-    const ctx = context!, oscillator = ctx.createOscillator(), filter = ctx.createBiquadFilter(), gain = ctx.createGain();
-    const frequency = 440 * 2 ** ((midi - 69) / 12);
-    oscillator.type = 'triangle'; oscillator.frequency.setValueAtTime(frequency, record.audioTime);
-    filter.type = 'lowpass'; filter.frequency.setValueAtTime(Math.min(12000, frequency * 7), record.audioTime); filter.Q.value = 0.5;
-    const amplitude = 0.16 * Math.exp(-record.elapsedSeconds / 1.8);
-    gain.gain.setValueAtTime(0.00001, record.audioTime);
-    const attackEnd = Math.min(record.audioTime + 0.004, record.offAudioTime);
-    gain.gain.linearRampToValueAtTime(amplitude, attackEnd);
-    gain.gain.exponentialRampToValueAtTime(Math.max(0.00001, amplitude * Math.exp(-(record.offAudioTime - attackEnd) / 1.8)), record.offAudioTime);
-    oscillator.connect(filter); filter.connect(gain); gain.connect(roleGains.get(role)!);
-    sources.set(id, { oscillator, filter, gain });
-    oscillator.onended = () => {
-      if (sources.get(id)?.oscillator !== oscillator) return;
-      sources.delete(id); oscillator.disconnect(); filter.disconnect(); gain.disconnect();
+    const ctx = context!;
+    const { source, filter, gain, offset } = createPluckedVoice(ctx, roleGains.get(role)!, midi, record.audioTime, record.offAudioTime, record.elapsedSeconds);
+    sources.set(id, { source, filter, gain });
+    source.onended = () => {
+      if (sources.get(id)?.source !== source) return;
+      sources.delete(id); source.disconnect(); filter.disconnect(); gain.disconnect();
     };
-    oscillator.start(record.audioTime); oscillator.stop(record.offAudioTime);
+    source.start(record.audioTime, offset); source.stop(record.offAudioTime);
   };
   const tick = () => {
     if (state !== 'playing' || !context) return;

@@ -23,8 +23,11 @@ source, engine, adapters, agent/publication and viewer scopes. The independent
 
 ## Run the published viewer
 
+For development, run `bun run dev`. The saved default port is **4590**
+(`http://beelinkk:4590/`); set `PORT` to override it.
+
 ```sh
-ARRANGEMENTS_DIR=/absolute/path/to/.arrangements PORT=3000 bun run start
+ARRANGEMENTS_DIR=/absolute/path/to/.arrangements bun run start
 ```
 
 Bun serves built frontend assets and read-only published files on the same port. The
@@ -54,6 +57,15 @@ The browser uses only the canonical `src/adapters/index.ts` notation/playback fa
 with bundled Bravura. It never starts alphaTab native playback. Practice speed, seek,
 loop, mute/solo, zoom and note inspection change listening/view state only, not the
 published score or its downloads. Rationale in `notes.md` renders without raw HTML.
+
+Live playback and **Download MP3** use a bundled, sampled acoustic guitar voice rather
+than a basic synth tone. MP3 includes every part at the published tempo, not a recorded
+or musician-approved performance. The browser
+renders the canonical performed timeline offline and encodes 128 kbps mono MP3 in a
+worker, with progress and retry errors. No server mutation, credentials or external
+audio service is used; existing publication bundles stay immutable. Previews are limited
+to 10 minutes to bound browser memory. LAME attribution and its unmodified module ship
+with the frontend's third-party notices.
 
 ## Browser verification
 

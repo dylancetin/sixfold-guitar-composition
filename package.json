@@ -17,6 +17,7 @@
     "build:client": "vite build",
     "test:viewer": "bun test tests/studio/*.test.ts",
     "test:browser": "playwright test -c tests/studio/playwright.config.ts",
+    "dev": "bun run preview:viewer",
     "preview:viewer": "bun run build:client && bun --hot src/server/start.ts",
     "start": "bun src/server/start.ts",
     "test:adapters": "bun test tests/adapters",
@@ -29,6 +30,7 @@
     "build:publication": "bun build src/publication/index.ts --target=browser --outdir=dist/publication"
   },
   "dependencies": {
+    "@breezystack/lamejs": "1.2.7",
     "@coderline/alphatab": "1.8.4",
     "@fontsource/dm-sans": "5.2.8",
     "@fontsource/literata": "5.2.8",

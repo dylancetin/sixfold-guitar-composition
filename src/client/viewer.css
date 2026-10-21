@@ -34,7 +34,11 @@ button svg { flex-shrink: 0; }
 .song-topline { display: flex; align-items: center; gap: 18px; font-size: 11px; color: #777765; margin-bottom: 11px; }
 .song-heading h1 { font-family: Literata, serif; font-weight: 400; font-size: clamp(28px, 3vw, 43px); line-height: 1.3; letter-spacing: -1.3px; max-width: 950px; }
 .song-description { color: #78806f; font-size: 12px; margin-top: 14px; }
-.download-actions { display: flex; gap: 9px; flex-shrink: 0; }
+.download-group { flex-shrink: 0; max-width: 420px; }
+.download-actions { display: flex; gap: 9px; }
+.download-note, .download-status, .download-error { max-width: 48ch; font-size: 10px; line-height: 1.7; text-align: right; margin-top: 9px; color: #72776c; }
+.download-status:empty { display: none; }
+.download-error { color: #8c4a35; }
 .score-facts { display: flex; flex-wrap: wrap; gap: 13px 25px; align-items: center; padding: 19px 0 21px; margin-top: 18px; border-bottom: 1px solid #c9cdbf; color: #67765b; font-size: 11px; }
 .score-facts .difficulty { text-transform: capitalize; color: #3c5a46; font-weight: 600; }
 .score-facts strong { font-size: 10px; letter-spacing: 2px; margin-left: 7px; font-weight: 500; }
@@ -188,6 +192,7 @@ summary { cursor: pointer; }
   .song-heading { align-items: flex-start; }
   .song-heading h1 { font-size: 33px; }
   .download-actions { flex-direction: column; }
+  .download-group { max-width: 210px; }
   .listening-workspace { grid-template-columns: minmax(0, 1fr) 230px; gap: 23px; }
   .audio-tone { display: none; }
   .loop-row { gap: 7px; flex-wrap: wrap; }
@@ -231,6 +236,9 @@ summary { cursor: pointer; }
   .song-heading h1 { font-size: 29px; line-height: 1.4; letter-spacing: -.9px; }
   .song-description { font-size: 11px; line-height: 1.8; margin-top: 11px; max-width: 35ch; }
   .download-actions { flex-direction: row; margin-top: 19px; gap: 8px; }
+  .download-group { max-width: none; }
+  .download-actions { flex-wrap: wrap; }
+  .download-note, .download-status, .download-error { text-align: left; }
   .download-actions .button { flex: 1; min-height: 43px; font-size: 12px; padding: 10px; }
   .score-facts { gap: 11px 17px; font-size: 10px; margin-top: 4px; padding: 19px 0; }
   .score-facts strong { font-size: 9px; letter-spacing: 1.5px; margin-left: 4px; }

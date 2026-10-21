@@ -144,7 +144,7 @@ describe('canonical notation and runtime export boundary', () => {
   }, 30000);
 });
 
-describe('canonical audio clock / synthetic plucked controller', () => {
+describe('canonical audio clock / sampled acoustic guitar controller', () => {
   test('60 seconds and 20 loops use audio time; no accumulated loop/cursor drift or duplicate tie attack', async () => {
     const { score } = await study(); const ctx = new FakeAudioContext();
     const audio = createPlaybackController(score, ctx.options());
@@ -170,7 +170,8 @@ describe('canonical audio clock / synthetic plucked controller', () => {
 
   test('role mute/solo acts on one audio union, seek resumes sustain; tempo preserves quarter; pause/stop cancel queue', async () => {
     const { score } = await study(); const ctx = new FakeAudioContext(); const audio = createPlaybackController(score, ctx.options());
-    await audio.play(); expect(ctx.oscillators).toHaveLength(3);
+    await audio.play(); expect(ctx.bufferSources).toHaveLength(3); expect(ctx.oscillators).toHaveLength(0);
+    expect(audio.getSnapshot().tone).toBe('sampled-acoustic-guitar');
     audio.setMuted('bass', true); expect(audio.getSnapshot().audiblePerformedSoundIds).not.toContain('bass0@o1-p1'); expect(ctx.gains[1]!.gain.value).toBe(0);
     audio.setSolo('melody', true); expect(audio.getSnapshot().audiblePerformedSoundIds).toEqual(['m0@o1-p1']); expect(ctx.gains[2]!.gain.value).toBe(0);
     ctx.advance(1); const quarter = audio.getSnapshot().positionQuarter;
@@ -179,7 +180,7 @@ describe('canonical audio clock / synthetic plucked controller', () => {
     audio.seek(4.5); const records = audio.getMetrics().scheduleLog.filter(r => r.performedSoundId === 'm4@o1-p1');
     expect(records.at(-1)!.elapsedSeconds).toBeCloseTo(2.25, 8);
     audio.pause(); const paused = audio.getSnapshot().positionQuarter; expect(audio.getMetrics().activeSourceCount).toBe(0);
-    expect(ctx.oscillators.every(n => n.disconnected)).toBe(true);
+    expect(ctx.bufferSources.every(n => n.disconnected)).toBe(true);
     ctx.advance(2); expect(audio.getSnapshot().positionQuarter).toBe(paused);
     await audio.play(); audio.stop(); expect(audio.getSnapshot().positionQuarter).toBe(0); expect(audio.getMetrics().activeSourceCount).toBe(0);
     await audio.play(); audio.seek(8); expect(audio.getSnapshot().state).toBe('ended'); expect(audio.getSnapshot().positionQuarter).toBe(8);
@@ -191,7 +192,7 @@ describe('canonical audio clock / synthetic plucked controller', () => {
     ctx.resumePromise = new Promise<void>(resolve => { release = resolve; });
     const audio = createPlaybackController(score, ctx.options());
     const pending = audio.play(); audio.stop(); release(); await pending;
-    expect(audio.getSnapshot().state).not.toBe('playing'); expect(ctx.oscillators).toHaveLength(0);
+    expect(audio.getSnapshot().state).not.toBe('playing'); expect(ctx.bufferSources).toHaveLength(0);
     await audio.dispose();
   });
 
