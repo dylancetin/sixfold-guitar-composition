@@ -28,7 +28,7 @@ const halfSpeed = async (score: ScoreV1) => {
   for (const tempo of score.performedTempos) tempo.quarterBpm *= 0.5;
   await stamp(score);
 };
-async function runCase(name: string, source: Awaited<ReturnType<typeof study>>['source'], score: ScoreV1, expectedBpms: number[], expectedSeconds: number, runtimeSeconds: number) {
+async function runCase(name: string, source: Awaited<ReturnType<typeof study>>['source'], score: ScoreV1, expectedBpms: number[], expectedSeconds: number, runtimeSeconds: number, expectedPrintedBpms: number[]) {
   const dir = path.join(root, name); await mkdir(dir, { recursive: true });
   const validation = validator.validate(source, score, { approvedRevisions: [] });
   await writeFile(path.join(dir, 'source.json'), JSON.stringify(source, null, 2));
@@ -60,7 +60,7 @@ async function runCase(name: string, source: Awaited<ReturnType<typeof study>>['
   const initial = audio.getSnapshot(); await audio.play();
   audioContext.advance(2.25); const position = audio.getSnapshot().positionQuarter;
   audio.setTempoScale(0.75); const changed = audio.getSnapshot(); const metrics = audio.getMetrics();
-  const observation = { name, validatorVersion: validation.validatorVersion, validatorCalls: calls, revisionScale: 0.5, canonicalBpms: score.performedTempos.map(t => t.quarterBpm), expectedBpms, expectedSeconds, actualMidiSeconds: tone.duration, actualAudioSeconds: initial.durationSeconds, runtimeRequestedScale: 0.75, expectedRuntimeSeconds: runtimeSeconds, actualRuntimeSeconds: changed.durationSeconds, quarterBeforeRuntimeChange: position, quarterAfterRuntimeChange: changed.positionQuarter, tempos, expectedTempos, pdfTempoCaptions: captions, scheduledEvents: metrics.scheduleLog, unchangedCanonicalTicks: JSON.stringify(before) === JSON.stringify(ticks(score)) };
+  const observation = { name, validatorVersion: validation.validatorVersion, validatorCalls: calls, revisionScale: 0.5, canonicalBpms: score.performedTempos.map(t => t.quarterBpm), expectedBpms, expectedPrintedBpms, expectedSeconds, actualMidiSeconds: tone.duration, actualAudioSeconds: initial.durationSeconds, runtimeRequestedScale: 0.75, expectedRuntimeSeconds: runtimeSeconds, actualRuntimeSeconds: changed.durationSeconds, quarterBeforeRuntimeChange: position, quarterAfterRuntimeChange: changed.positionQuarter, tempos, expectedTempos, pdfTempoCaptions: captions, scheduledEvents: metrics.scheduleLog, unchangedCanonicalTicks: JSON.stringify(before) === JSON.stringify(ticks(score)) };
   observations.push(observation);
   await writeFile(path.join(dir, 'observation.json'), JSON.stringify(observation, null, 2));
   await audio.dispose();
@@ -69,7 +69,7 @@ async function runCase(name: string, source: Awaited<ReturnType<typeof study>>['
   assert.equal(initial.durationSeconds, expectedSeconds, 'Initial WebAudio consumes canonical effective BPM directly');
   assert(Math.abs(changed.durationSeconds - runtimeSeconds) < 0.00001, 'Absolute runtime scale must use requested/revision ratio');
   assert.equal(position, changed.positionQuarter, 'Tempo change preserves quarter');
-  assert.deepEqual(captions, expectedBpms, 'Actual PDF metronome captions must equal effective canonical BPM');
+  assert.deepEqual(captions, expectedPrintedBpms, 'Actual PDF shows opening/change tempos without duplicating identical entries or performed passes');
   assert.deepEqual(ticks(score), before, 'Canonical note ticks unchanged');
   assert.equal(calls, 2, 'Each actual artifact request reruns real validation');
   const expectedIntervals = score.performedSounds.map(p => { const sound = score.sounds.find(s => s.id === p.soundId)!; return `${sound.role}/${sound.soundingMidi}/${p.start.n * 960 / p.start.d}/${p.duration.n * 960 / p.duration.d}`; }).sort();
@@ -85,7 +85,7 @@ try {
   assert.equal(invalidReport.status, 'failed', 'Old preference-only scaled fixture was NOT a valid canonical revision');
   await writeFile(path.join(root, 'old-invalid-scaled-fixture-report.json'), JSON.stringify(invalidReport, null, 2));
   await halfSpeed(fixture.score);
-  await runCase('constant-80-at-half', fixture.source, fixture.score, [40, 40], 12, 8);
+  await runCase('constant-80-at-half', fixture.source, fixture.score, [40, 40], 12, 8, [40]);
 
   const repeat = await study(2);
   repeat.source.tempos.push({ id: 'tempo-120', barId: 'b2', offset: { n: 0, d: 1 }, quarterBpm: 120 });
@@ -100,7 +100,7 @@ try {
   }
   await halfSpeed(repeat.score);
   await writeFile(path.join(root, 'repeat-source-raw.json'), raw);
-  await runCase('repeat-entry-restoration', repeat.source, repeat.score, [40, 60, 40, 60], 20, 40 / 3);
+  await runCase('repeat-entry-restoration', repeat.source, repeat.score, [40, 60, 40, 60], 20, 40 / 3, [40, 60]);
   const clock = createTempoClock(compileTimeline(repeat.score));
   assert.equal(clock.toSeconds(8), 10); assert.equal(clock.toSeconds(12), 16, 'Jump restores 40, not carried 60 BPM');
   await writeFile(path.join(root, 'result.json'), JSON.stringify({ status: 'passed', validatorPath, observations }, null, 2));

@@ -12,9 +12,15 @@ const Role = z.enum(['melody', 'bass', 'harmony']);
 export const RevisionRefSchema = z.strictObject({ id: IdSchema, digest: DigestSchema });
 export const RevisionSchema = RevisionRefSchema.extend({ parentId: IdSchema.nullable() });
 
+const SongsterrIdentitySchema = z.strictObject({ kind: z.literal('songsterr'), url: z.url(), songId: PositiveInt, upstreamRevisionId: PositiveInt, formatVersion: PositiveInt });
 export const SourceManifestSchema = z.strictObject({
-  identity: z.discriminatedUnion('kind', [
-    z.strictObject({ kind: z.literal('songsterr'), url: z.url(), songId: PositiveInt, upstreamRevisionId: PositiveInt, formatVersion: PositiveInt }),
+  identity: z.union([
+    SongsterrIdentitySchema,
+    SongsterrIdentitySchema.extend({
+      // The declared version applies only to versioned parts. These exceptions
+      // were parsed structurally, without assigning them an upstream version.
+      unversionedPartIds: z.array(NonnegativeInt).min(1).max(32).refine((ids) => new Set(ids).size === ids.length, 'Duplicate unversioned part IDs'),
+    }),
     z.strictObject({ kind: z.literal('upload'), filename: z.string().min(1).max(200), format: z.enum(['musicxml', 'guitar-pro', 'midi']) }),
     z.strictObject({ kind: z.literal('original-fixture'), name: z.string().min(1), author: z.string().min(1) }),
   ]),

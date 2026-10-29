@@ -56,7 +56,7 @@ export const guitarEngine:Engine={
         return {status:first.status,diagnostics:failures.flatMap((r)=>r.diagnostics)} as Exclude<ArrangeResult,{status:'candidate'}>;
       }
       const chosen=found[0]!;
-      chosen.result.score.capoComparison={selected:chosen.capo,reason:request.preferences.capo.mode==='chosen'?'User-chosen capo; sounding melody preserved':'Compared capo 0 and 2 with identical concert melody. Prefer retained source bass, source-oriented bass register/contour, then sparse inner harmony and lower fretting cost; role-order-v1, no key transposition.',alternatives:trials.map(({capo,result})=>({capo,outcome:result.status==='candidate'?'candidate':result.status==='search-exhausted'?'search-exhausted':'unsatisfied',reason:result.status==='candidate'?`Retained ${result.score.sounds.filter((s)=>s.role==='bass').length} bass and ${result.score.sounds.filter((s)=>s.role==='harmony').length} harmony attacks; concert melody unchanged; source-oriented bass register/contour penalty ${result.state.bassRegisterCost}`:result.diagnostics.map((d)=>d.message).join('; ')}))};
+      chosen.result.score.capoComparison={selected:chosen.capo,reason:request.preferences.capo.mode==='chosen'?'User-chosen capo; sounding melody preserved; hand positions prioritize feasible sustained bass':'Compared capo 0 and 2 with identical concert melody. Prefer source-grounded bass coverage and longer uninterrupted holds, then source-oriented register/contour, retained attacks, sparse inner harmony and lower fretting cost; sustained-bass-v1, role-order-v1, no key transposition.',alternatives:trials.map(({capo,result})=>({capo,outcome:result.status==='candidate'?'candidate':result.status==='search-exhausted'?'search-exhausted':'unsatisfied',reason:result.status==='candidate'?`Retained ${result.score.sounds.filter((s)=>s.role==='bass').length} bass and ${result.score.sounds.filter((s)=>s.role==='harmony').length} harmony attacks; written bass sustain ${result.state.bassSustain.n}/${result.state.bassSustain.d} quarters; continuity ${result.state.bassContinuity.n}/${result.state.bassContinuity.d} squared quarters; concert melody unchanged; source-oriented bass register/contour penalty ${result.state.bassRegisterCost}`:result.diagnostics.map((d)=>d.message).join('; ')}))};
       chosen.result.score.revision.digest=documentDigest(chosen.result.score);
       const diagnostics:Diagnostic[]=[{...diagnostic('search-budget',`Constraint-based unapproved draft; ${budget.used}/${budget.limit} successor states evaluated${budget.pruned?', bounded beam pruned alternatives':''}. State budget is deterministic; maxElapsedMs is enforced by the outer worker.`),severity:'info'}];
       if (request.ability.transition.status==='uncalibrated') diagnostics.push({...diagnostic('transition-unverified','Movement is uncalibrated; hard-checked draft is available, not a human-playability claim.'),severity:'warning'});
@@ -139,15 +139,28 @@ function arrangeCapo(source:SourceScoreV1,request:ArrangementRequest,plan:Plan,p
 function plannedSounds(source:SourceScoreV1,request:ArrangementRequest,plan:Plan,melody:Sound[],instrument:Instrument):SearchItem[] {
   const items:SearchItem[]=[];
   const seen=new Set<string>();
+  const notesById=new Map(source.events.filter((e):e is Note=>e.kind==='note').map((e)=>[e.id,e]));
+  const followingByPart=new Map<number,SourceEvent[]>();
+  for (const event of source.events) {
+    const events=followingByPart.get(event.partId)??[];
+    events.push(event);followingByPart.set(event.partId,events);
+  }
+  for (const events of followingByPart.values()) events.sort((a,b)=>compare(a.start,b.start));
+  const melodyByTime=[...melody].sort((a,b)=>compare(a.start,b.start));
+  const nextStart=(events:{start:Sound['start']}[],at:Sound['start'])=>{
+    let lo=0,hi=events.length;
+    while(lo<hi){const mid=Math.floor((lo+hi)/2);if(compare(events[mid]!.start,at)<=0)lo=mid+1;else hi=mid;}
+    return events[lo]?.start;
+  };
   for (const c of plan.candidates) for (const id of c.sourceEventIds) {
-    const sourceNote=source.events.find((e):e is Note=>e.id===id&&e.kind==='note')!;
+    const sourceNote=notesById.get(id)!;
     const key=`${c.role}:${id}`;if (seen.has(key)) continue;seen.add(key);
     const soundId=`${c.role==='bass'?'b':'h'}${items.length+1}`;
     const variants:Sound[]=[];
     const density=c.role==='bass'?request.preferences.bassDensity:request.preferences.harmonyDensity;
     if (density!=='none'&&!sourceNote.effects.some((fx)=>fx.affectsMelody)) {
-      const following=source.events.filter((e)=>e.partId===sourceNote.partId&&compare(e.start,sourceNote.start)>0).sort((a,b)=>compare(a.start,b.start))[0]?.start;
-      const nextMelody=melody.filter((m)=>compare(m.start,sourceNote.start)>0).sort((a,b)=>compare(a.start,b.start))[0]?.start;
+      const following=nextStart(followingByPart.get(sourceNote.partId)!,sourceNote.start);
+      const nextMelody=nextStart(melodyByTime,sourceNote.start);
       const limits=[eventEnd(sourceNote),add(sourceNote.start,q(1)),...(following?[following]:[]),...(nextMelody?[nextMelody]:[])].filter((at)=>compare(at,sourceNote.start)>0&&compare(at,eventEnd(sourceNote))<=0).sort(compare);
       const durations=[sourceNote.duration];
       if (limits[0]&&compare(limits[0],eventEnd(sourceNote))<0) durations.push(subtract(limits[0],sourceNote.start));

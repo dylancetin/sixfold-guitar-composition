@@ -21,11 +21,16 @@ export const MetadataSchema = z.looseObject({
 const Whole = z.tuple([z.number().int().positive().max(1_000_000_000), z.number().int().positive().max(1_000_000_000)]);
 export const RawNoteSchema = z.looseObject({
   string: z.number().int().min(-1).max(31).optional(), fret: midi.optional(), rest: flag, tie: flag,
+  hp: flag, staccato: flag,
+  slide: z.string().max(64).optional(),
 });
 export const RawBeatSchema = z.looseObject({
   duration: Whole, type: z.union([z.literal(1), z.literal(2), z.literal(4), z.literal(8), z.literal(16), z.literal(32), z.literal(64)]).optional(),
   dots: z.number().int().min(0).max(3).optional(), dotted: flag,
   tuplet: z.number().int().min(2).max(16).optional(), tupletStart: flag, tupletStop: flag,
+  graceNote: z.enum(['beforeBeat', 'onBeat']).nullable().optional(),
+  // Printed label/layout metadata only; never a replacement for explicit notes.
+  chord: z.strictObject({ text: z.string().max(1024), width: z.number().finite().nonnegative().max(10000).optional() }).optional(),
   rest: flag, notes: z.array(RawNoteSchema).min(1).max(128),
 });
 const VoiceSchema = z.looseObject({ rest: flag, beats: z.array(RawBeatSchema).max(4096) });
@@ -40,8 +45,10 @@ export const RawMeasureSchema = z.looseObject({
 });
 export const RawPartSchema = z.looseObject({
   songId: positiveId, revisionId: positiveId, partId,
-  version: z.union([z.literal(5), z.literal(8)]), name: z.string().max(1024).optional(),
-  instrumentId: z.number().int().min(0).max(4095).optional(), tuning: tuning.optional(), capo: z.number().int().nonnegative().max(24).optional(),
+  version: z.union([z.literal(5), z.literal(8)]).optional(), name: z.string().max(1024).optional(), title: z.string().max(1024).optional(),
+  instrumentId: z.number().int().min(0).max(4095).optional(), tuning: tuning.optional(), tuningFlat: flag,
+  capo: z.number().int().nonnegative().max(24).nullable().optional(),
+  grandStaffGroup: z.number().int().nonnegative().max(4095).optional(),
   measures: z.array(RawMeasureSchema).min(1).max(1000),
   automations: z.looseObject({ tempo: z.array(TempoSchema).min(1).max(1000) }),
 });

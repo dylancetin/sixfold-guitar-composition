@@ -19,6 +19,7 @@ export type PreparedRun = z.infer<typeof PreparedRunSchema>;
 export type PrepareOptions = {
   sourceUrl: string; difficulty: Preferences['difficulty']; capo: Preferences['capo'];
   title?: string; runsRoot?: string; signal?: AbortSignal;
+  simplifyBends?: boolean;
 };
 export type PrepareDependencies = { sourceAdapter?: SourceAdapter; now?: () => Date };
 
@@ -32,6 +33,7 @@ export async function prepareArrangement(options: PrepareOptions, dependencies: 
   try {
     await mkdir(join(staging, 'raw'), { mode: 0o700 });
     const adapter = dependencies.sourceAdapter ?? createSongsterrSourceAdapter({
+      ...(options.simplifyBends !== undefined ? { simplifyBends: options.simplifyBends } : {}),
       saveArtifact: async ({ descriptor, bytes }) => {
         if (sha256(bytes) !== descriptor.sha256 || bytes.byteLength !== descriptor.byteLength) throw new Error('Raw artifact digest/length mismatch');
         const path = join(staging, 'raw', DigestSchema.parse(descriptor.sha256));

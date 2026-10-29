@@ -12,5 +12,8 @@ export function createDefaultPreferences(ability = createDefaultAbilityProfile()
 
 export function createDefaultRequest(source: SourceScoreV1, selection: MelodySelection, difficulty: Preferences['difficulty'] = 'intermediate'): ArrangementRequest {
   const ability=createDefaultAbilityProfile(difficulty);
-  return { sourceRevision: { id:source.revision.id,digest:source.revision.digest },selection,ability,preferences:createDefaultPreferences(ability),maxPhysicalFret:ability.maxPhysicalFret,locks:[],budget:{maxStates:10000,maxElapsedMs:5000} };
+  // Full orchestral sources also pay schema/digest/independent-validation costs.
+  // Keep the hard worker deadline, but do not give 6,000 events a tiny-fixture budget.
+  const maxElapsedMs=Math.min(30000,Math.max(5000,source.events.length*4));
+  return { sourceRevision: { id:source.revision.id,digest:source.revision.digest },selection,ability,preferences:createDefaultPreferences(ability),maxPhysicalFret:ability.maxPhysicalFret,locks:[],budget:{maxStates:10000,maxElapsedMs} };
 }

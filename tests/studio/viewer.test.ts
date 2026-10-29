@@ -8,11 +8,14 @@ import { createPublishedHandler } from '../../src/server/published-http';
 
 const directories: string[] = [];
 afterEach(async () => { for (const directory of directories.splice(0)) await rm(directory, { recursive: true, force: true }); });
-async function setup() {
+async function setup(options: { published?: string; revisionId?: string; projectId?: string; createdAt?: string } = {}) {
   const root = await mkdtemp('/tmp/opencode/viewer-test-'); directories.push(root);
   const frontend = join(root, 'frontend'); await mkdir(frontend); await writeFile(join(frontend, 'index.html'), '<!doctype html><title>Viewer test</title>');
-  const published = join(root, 'published'); await mkdir(published);
-  const score = structuredClone(original); score.revision.digest = await revisionDigest(score);
+  const published = options.published ?? join(root, 'published'); await mkdir(published, { recursive: true });
+  const score = structuredClone(original);
+  if (options.revisionId) score.revision.id = options.revisionId;
+  if (options.projectId) score.projectId = options.projectId;
+  score.revision.digest = await revisionDigest(score);
   const id = `arr-${score.revision.digest}`;
   const directory = join(published, id); await mkdir(directory);
   // Header/transport fixtures only; no claim that these are musical artifact oracles.
@@ -23,6 +26,7 @@ async function setup() {
   const sha = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
   const artifact = (format: 'pdf' | 'midi', bytes: Uint8Array) => ArtifactManifestSchema.parse({ schemaVersion: 1, scoreRevision: { id: score.revision.id, digest: score.revision.digest }, sourceRevision: score.source.revision, ability: score.preferences.ability, adapter: { name: 'TEST-ONLY-TRANSPORT', version: '1' }, format, artifactDigest: sha(bytes), byteLength: bytes.length, occurrenceCount: 2, soundingAttackCount: 9, notationSegmentCount: 11, review: 'unreviewed-draft', validationVersion: 'TEST-ONLY', tuning: score.instrument.tuning, capo: 0, midiPitchPolicy: 'already-sounding-no-capo-offset' });
   const manifest = { schemaVersion: 1, id, title: 'Original TEST-ONLY publication', sourceUrl: 'https://www.songsterr.com/a/wsa/test-s1', createdAt: '2026-10-20T00:00:00Z', revision: { id: score.revision.id, digest: score.revision.digest }, files: { score: 'score.json', pdf: 'arrangement.pdf', midi: 'arrangement.mid', notes: 'notes.md' }, status: 'unreviewed-draft', agent: null, integrity: { score: sha(scoreBytes), pdf: sha(pdf), midi: sha(midi), notes: sha(notes) }, artifacts: { pdf: artifact('pdf', pdf), midi: artifact('midi', midi) } };
+  if (options.createdAt) manifest.createdAt = options.createdAt;
   for (const [name, value] of Object.entries({ 'manifest.json': JSON.stringify(manifest), 'score.json': scoreBytes, 'notes.md': notes, 'arrangement.pdf': pdf, 'arrangement.mid': midi })) await writeFile(join(directory, name), value);
   const handle = createPublishedHandler({ arrangementsDirectory: published, frontendDirectory: frontend });
   return { root, published, directory, id, manifest, score, handle, pdf, midi };
@@ -50,6 +54,18 @@ test('all mutation methods and obsolete studio routes are unavailable', async ()
     expect(response.status).toBe(405); expect(response.headers.get('allow')).toBe('GET, HEAD');
   }
   expect((await handle(new Request('http://localhost/api/session'))).status).toBe(404);
+});
+test('library shows newest project edition while previous exact downloads and separate projects survive', async () => {
+  const previous = await setup();
+  const revised = await setup({ published: previous.published, revisionId: 'revised-study', createdAt: '2026-10-27T00:00:00Z' });
+  const separate = await setup({ published: previous.published, projectId: 'separate-study', revisionId: 'separate-revision' });
+  const get = (path: string) => previous.handle(new Request(`http://localhost${path}`));
+  const library = await (await get('/api/arrangements')).json();
+  expect(library.unavailableCount).toBe(0);
+  expect(library.arrangements.map((entry: { manifest: { id: string } }) => entry.manifest.id)).toEqual([revised.id, separate.id]);
+  expect(await (await get(`/arrangements/${previous.id}/score.json`)).json()).toEqual(previous.score);
+  expect(new Uint8Array(await (await get(`/arrangements/${previous.id}/arrangement.pdf`)).arrayBuffer())).toEqual(previous.pdf);
+  expect(new Uint8Array(await (await get(`/arrangements/${previous.id}/arrangement.mid`)).arrayBuffer())).toEqual(previous.midi);
 });
 test('empty publication root stays empty and HEAD has no response body', async () => {
   const { handle, directory, id } = await setup();

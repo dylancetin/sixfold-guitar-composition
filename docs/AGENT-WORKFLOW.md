@@ -30,6 +30,12 @@ Directories create their own local `.gitignore` (`*`) before any source writes, 
 
 The parent delegates to the requested GPT-6.1-Sol xhigh, then uses a separate independent judge. Resolve actual IDs/options in the live T3 catalog. Implementation workers do not secretly delegate. The musician must read the prepared source/brief/selection/request, reason about actual melody/phrase/bass/harmony evidence, and write a UTF-8 **PlanSchema-only** JSON file, conventionally `<run>/plan.json`.
 
+### Sustained bass and harmonic continuity
+
+Try to include longer, ringing bass notes rather than short percussive punches, so the accompaniment feels like a connected chord progression underneath the melody. Prefer source-grounded sustained roots, fifths or inversion tones that make the harmonic changes audible; use fewer bass reattacks when a held note better supports the phrase. Respect actual harmonic changes and intentional rests rather than sustaining indiscriminately.
+
+Evaluate capo selections and hand positions with that sustain goal: compare how long each bass can remain held while the melody moves, available open strings, occupied strings/fingers, chord-shape continuity and transitions. Favor feasible sustained bass over extra inner fills or marginally cheaper fingering. Preserve the sounding melody/key, source evidence and difficulty limits. Inspect actual output durations and early-release/omission audits, not just candidate reasons or attack counts; disclose where the source or physical constraints still require short bass notes.
+
 ```json
 {
   "version": "agent-source-phrase-plan-1",
@@ -47,6 +53,8 @@ The parent delegates to the requested GPT-6.1-Sol xhigh, then uses a separate in
 ```
 
 The placeholder above is documentation, **not a valid song plan or evidence of a call**. Candidates may only reference existing source notes; IDs must be unique; role is bass/harmony, octaveShift -3…3 and density sparse/regular. The plan cannot change protected melody/selection/key, directly prescribe arbitrary new rhythms/chords or guarantee candidate retention. Bass register is independently explored by the engine; harmony uses the proposed octave. The engine audits actual register moves, shortened accompaniment and omissions. Ask for source-specific review and reasons. A real musician task may independently retain good baseline choices; describe that as model-reviewed/selected baseline, not newly composed material. Do not force musical differences for provenance.
+
+Review the repeat ranges in `source.form`. `totalPasses` includes the first playthrough. Propose each written accompaniment event once. The engine expands the form into performed occurrences. The notation adapter supplies repeat barlines for identical passes, while playback and MIDI retain every performed occurrence. Repeat notation is an adapter responsibility, not an extra field for the musician to invent in `plan.json`.
 
 ### Factual delegation receipt
 
@@ -109,6 +117,14 @@ Optional V1 extensions are documented here: `integrity` hashes the exact bytes o
 - `/arrangements/<id>/score.json`, `/arrangements/<id>/notes.md`
 
 The generated URLs are **not automatically HTTP-verified**: start the existing read-only viewer with its store root set correctly, use Project Shelf for retained previews, and test viewer/download HTTP status, MIME and downloaded bytes from the actual reachable origin before returning links in chat. Do not return localhost links to a remote user. Capture changed UI through `nextcloud-images` when the viewer worker changes it.
+
+The library lists the newest valid published edition per canonical score `projectId`, ordered by publication creation time. Earlier immutable editions remain available at their exact viewer/download URLs. Keep the same project identity when revising an existing arrangement; separate projects with the same song title remain separate entries. Explicit user-requested removals can be moved into the private ignored run archive outside the publication store.
+
+### Layout-aware PDF downloads
+
+The score page's **PDF score** button uses `GET /arrangements/<id>/preview.pdf` with bounded spacing, bars-per-row, notation-size, TAB-numbering, finger-number and measure-label query settings. **Measure details** is off by default: occurrence/source-bar/pass identifiers (`o…/S…/P…`) are retained for inspection and can be enabled for visible audits with `showMeasureLabels=true`. Tempo marks appear at the opening and actual BPM changes, including repeat-entry restoration; hiding redundant marks does not remove canonical tempo events or alter playback. This is a layout-only export of the complete immutable arrangement, not a song generator or musical edit. The canonical alphaTab/PDFKit adapter still checks the exact source/score digests and independently revalidates music before producing real, font-embedded PDF bytes. Size changes the physical notation size on A4; complete rows are never clipped or split across pages. Practice tempo, loop, mute and solo have no effect on downloads.
+
+The server privately locates the matching source in `ARRANGEMENT_SOURCES_DIR` (default `.agent-runs`), accepting only real UUID run directories and regular source files. It never serves that directory or accepts source paths, source documents or validation reports from the browser. Missing/corrupt sources or failed exports return an error with no PDF bytes. The UI remains retryable and offers **Original PDF**. Layout PDFs are uncached responses and are not installed into the publication store; `/arrangement.pdf`, library PDF links, score/MIDI bytes and publication manifests remain immutable and unchanged.
 
 ## Checks and remaining acceptance
 

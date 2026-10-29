@@ -1,4 +1,4 @@
-import { compare, eventEnd } from '../domain';
+import { add, compare, eventEnd, multiply, q } from '../domain';
 import type { AbilityProfile, Instrument, PerformedTempo, Placement, Q, Sound } from '../domain';
 import { secondsBetween } from './form';
 import { roleOrderConflict } from './roles';
@@ -8,7 +8,7 @@ export type SearchItem={id:string;start:Q;role:Sound['role'];required:boolean;va
 export type Budget={used:number;limit:number;pruned:boolean};
 type Held={sound:Sound;placement:Placement};
 type History={fret:number;stringIndex:number;release:Q};
-export type SearchState={sounds:Sound[];placements:Placement[];held:Held[];history:Map<number,History>;bass:number;harmony:number;bassRegisterCost:number;lastBass:{sourceMidi:number;soundingMidi:number;line:string}|null;cost:number;lastFret:number;anchor:number|null;anchorAt:Q|null};
+export type SearchState={sounds:Sound[];placements:Placement[];held:Held[];history:Map<number,History>;bass:number;bassSustain:Q;bassContinuity:Q;harmony:number;bassRegisterCost:number;lastBass:{sourceMidi:number;soundingMidi:number;line:string}|null;cost:number;lastFret:number;anchor:number|null;anchorAt:Q|null};
 export type SearchResult={status:'found';state:SearchState}|{status:'search-exhausted';reason:string};
 
 export function pitchPositions(pitch:number,instrument:Instrument,ability:AbilityProfile):{stringIndex:number;fret:number}[] {
@@ -18,9 +18,11 @@ export function pitchPositions(pitch:number,instrument:Instrument,ability:Abilit
   });
 }
 // A bass foundation is not interchangeable with an upper inner/fill voice.
-// Preserve bass evidence, then its source-oriented register/contour, before
-// optimizing inner-tone density or cheap/open-string fingering.
-const rank=(a:SearchState,b:SearchState)=>b.bass-a.bass||a.bassRegisterCost-b.bassRegisterCost||b.harmony-a.harmony||a.cost-b.cost;
+// Prefer actual bass coverage, then longer uninterrupted holds (sum of squared
+// durations), before register/contour, attacks, inner fills or cheap fingering.
+// Bass is monophonic, so summed duration is coverage, not overlapping-note credit.
+// The same rank chooses hand positions within a capo and compares capo trials.
+const rank=(a:SearchState,b:SearchState)=>compare(b.bassSustain,a.bassSustain)||compare(b.bassContinuity,a.bassContinuity)||a.bassRegisterCost-b.bassRegisterCost||b.bass-a.bass||b.harmony-a.harmony||a.cost-b.cost;
 export function compareSolutions(a:SearchState,b:SearchState):number { return rank(a,b); }
 
 /** Bounded sequence beam: every branch retains entire held string/finger intervals.
@@ -30,7 +32,7 @@ export function compareSolutions(a:SearchState,b:SearchState):number { return ra
  */
 export function searchSequence(items:SearchItem[],instrument:Instrument,ability:AbilityProfile,tempos:PerformedTempo[],budget:Budget):SearchResult {
   const width=Math.max(2,Math.min(12,Math.floor((budget.limit-budget.used)/Math.max(items.length*5,1))));
-  let states:SearchState[]=[{sounds:[],placements:[],held:[],history:new Map(),bass:0,harmony:0,bassRegisterCost:0,lastBass:null,cost:0,lastFret:0,anchor:null,anchorAt:null}];
+  let states:SearchState[]=[{sounds:[],placements:[],held:[],history:new Map(),bass:0,bassSustain:q(0),bassContinuity:q(0),harmony:0,bassRegisterCost:0,lastBass:null,cost:0,lastFret:0,anchor:null,anchorAt:null}];
   const sorted=[...items].sort((a,b)=>compare(a.start,b.start)||Number(b.required)-Number(a.required)||({melody:0,bass:1,harmony:2}[a.role]-{melody:0,bass:1,harmony:2}[b.role])||a.id.localeCompare(b.id));
   for (const item of sorted) {
     const next:SearchState[]=[];
@@ -78,6 +80,8 @@ export function searchSequence(items:SearchItem[],instrument:Instrument,ability:
           const contourPenalty=reference&&sameLine?Math.abs((sound.soundingMidi-state.lastBass!.soundingMidi)-(reference.sourceMidi-state.lastBass!.sourceMidi))/12:0;
           next.push({sounds:[...state.sounds,sound],placements:[...state.placements,placement],held:[...held,{sound,placement}],history,
             bass:state.bass+(sound.role==='bass'?weight:0),harmony:state.harmony+(sound.role==='harmony'?weight:0),
+            bassSustain:sound.role==='bass'?add(state.bassSustain,sound.duration):state.bassSustain,
+            bassContinuity:sound.role==='bass'?add(state.bassContinuity,multiply(sound.duration,sound.duration)):state.bassContinuity,
             bassRegisterCost:state.bassRegisterCost+registerPenalty+contourPenalty,lastBass:reference?{sourceMidi:reference.sourceMidi,soundingMidi:sound.soundingMidi,line:reference.line}:state.lastBass,
             cost:state.cost+(pos.fret===0?0:pos.fret*0.08+Math.abs(pos.fret-state.lastFret)*0.1),lastFret:pos.fret||state.lastFret,anchor:pos.fret>0?anchor:state.anchor,anchorAt:pos.fret>0?sound.start:state.anchorAt});
         }

@@ -6,6 +6,7 @@ import { parseMidi, writeMidi } from 'midi-file';
 import { createAlphaTabScore, createPlaybackController } from '../src/adapters';
 import { encodePdf } from '../src/adapters/pdf';
 import { createScoreAdapter } from '../src/adapters/server';
+import { PdfLayoutSettingsSchema } from '../src/adapters/pdf-settings';
 import { checkMidi, checkPdf } from '../tests/adapters/artifact-oracle';
 import { envelope, fixtureFingerprint, oracleValidator, study } from '../tests/adapters/fixture';
 import { FakeAudioContext } from '../tests/adapters/fake-audio';
@@ -23,11 +24,11 @@ for (const capo of [0, 2] as const) {
   const dir = path.join(root, `capo-${capo}`); await mkdir(dir, { recursive: true });
   await json(`capo-${capo}/score.json`, fixture.score); await json(`capo-${capo}/source.json`, fixture.source);
   await writeFile(path.join(dir, 'source-raw.json'), fixture.rawArtifact);
-  const notation = createAlphaTabScore(fixture.score), layout = await notation.renderSvg();
+  const notation = createAlphaTabScore(fixture.score, { notationMode: 'unfolded', showMeasureLabels: true }), layout = await notation.renderSvg();
   await json(`capo-${capo}/projection.json`, notation.projection); await json(`capo-${capo}/placements.json`, notation.placements);
   await json(`capo-${capo}/layout.json`, layout);
   for (const pdfPageSize of ['A4', 'LETTER'] as const) {
-    const adapter = createScoreAdapter({ validator, getValidationContext: () => ({ approvedRevisions: [] }), pdfPageSize });
+    const adapter = createScoreAdapter({ validator, getValidationContext: () => ({ approvedRevisions: [] }), pdfPageSize, notationMode: 'unfolded', pdfLayout: PdfLayoutSettingsSchema.parse({ showMeasureLabels: true }) });
     const pdf = await adapter.exportArtifact(fixture.source, draft, 'pdf');
     await writeFile(path.join(dir, `${pdfPageSize}.pdf`), pdf.bytes); await json(`capo-${capo}/${pdfPageSize}-manifest.json`, pdf.manifest);
     const rasterDir = path.join(dir, `${pdfPageSize}-rasters`); await mkdir(rasterDir, { recursive: true });
@@ -49,7 +50,7 @@ const rejected = async (name: string, file: string, bytes: Uint8Array, check: ()
   try { await check(); } catch (error) { message = error instanceof Error ? error.message : String(error); }
   assert(message, `Negative ${name} was accepted`); negatives.push({ name, file: path.join(root, file), rejected: true, message });
 };
-const notation = createAlphaTabScore(fixture.score), layout = await notation.renderSvg();
+const notation = createAlphaTabScore(fixture.score, { notationMode: 'unfolded', showMeasureLabels: true }), layout = await notation.renderSvg();
 const last = layout.systems.at(-1)!.index;
 const mutations = [
   { name: 'missing-last-system', layout: { ...layout, systems: layout.systems.slice(0, -1), fragments: layout.fragments.filter(f => f.system !== last) }, capo: 2 },

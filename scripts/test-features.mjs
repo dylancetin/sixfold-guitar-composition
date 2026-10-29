@@ -8,7 +8,7 @@ function tests(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
     const path = join(directory, entry.name);
     if (entry.isDirectory()) return entry.name.startsWith('.') ? [] : tests(path);
-    return /\.(test|spec)\.tsx?$/.test(entry.name) && !path.endsWith('studio/workflow.spec.ts') ? [path] : [];
+    return /\.test\.tsx?$/.test(entry.name) ? [path] : [];
   });
 }
 const files = tests('tests').sort();

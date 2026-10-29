@@ -11,6 +11,8 @@ export type SongsterrSourceOptions = {
   /** Persist hash-addressed immutable bytes before API source persistence. No URLs/tokens are passed. */
   saveArtifact?: ArtifactSink;
   now?: () => Date;
+  /** Explicitly requested simplified draft: retain notated pitch, disclose omitted bend motion. Default rejects selected bends. */
+  simplifyBends?: boolean;
 };
 export const songsterrRawArtifacts = new SourceArtifactStore();
 
@@ -33,6 +35,7 @@ export function createSongsterrSourceAdapter(options: SongsterrSourceOptions = {
         const diagnostics: Diagnostic[] = [];
         let structure: ReturnType<typeof normalizeStructure> | undefined;
         let version: number | undefined;
+        const unversionedPartIds: number[] = [];
         // Sequential acquisition stops immediately on any denial, including an irrelevant part's 403.
         for (const track of metadata.tracks) {
           abort.throwIfAborted();
@@ -40,8 +43,9 @@ export function createSongsterrSourceAdapter(options: SongsterrSourceOptions = {
           const text = await transport.text(url, [CDN_HOST], `part-${track.partId}`, 'application/json');
           const json = parseJson(text);
           checkRestrictions(json);
-          const header = json as { songId?: unknown; revisionId?: unknown; partId?: unknown } | null;
+          const header = json as { songId?: unknown; revisionId?: unknown; partId?: unknown; version?: unknown } | null;
           if (!header || header.songId !== metadata.songId || header.revisionId !== metadata.revisionId || header.partId !== track.partId) fail(`Part ${track.partId} has mismatched song/revision/part identity.`, 'unsupported', 'source-mismatch');
+          if (header.version === undefined) unversionedPartIds.push(track.partId);
           const decoded = RawPartSchema.safeParse(json);
           if (!decoded.success && track.isDrums) {
             parts.push({ id: track.partId, name: track.name?.trim() || track.title || `Part ${track.partId}`, program: null, voices: ['p' + track.partId + ':v0'], sourceTuning: null });
@@ -50,13 +54,15 @@ export function createSongsterrSourceAdapter(options: SongsterrSourceOptions = {
           }
           const raw = parseBoundary(RawPartSchema, json, `Part ${track.partId}`);
           if (raw.songId !== metadata.songId || raw.revisionId !== metadata.revisionId || raw.partId !== track.partId) fail(`Part ${track.partId} has mismatched song/revision/part identity.`, 'unsupported', 'source-mismatch');
-          if (version !== undefined && version !== raw.version) fail('Inconsistent part format versions; no mixed-version score accepted.');
-          version = raw.version;
+          if (raw.version !== undefined) {
+            if (version !== undefined && version !== raw.version) fail('Inconsistent part format versions; no mixed-version score accepted.');
+            version = raw.version;
+          }
           try {
             const nextStructure = normalizeStructure(raw);
             if (structure && !await sameStructure(structure, nextStructure)) fail(`Part ${track.partId} disagrees on written bars/meter/tempo/repeats.`, 'unsupported', 'form-mismatch');
             structure = nextStructure;
-            const normalized = normalizePart(track, raw, structure.bars);
+            const normalized = normalizePart(track, raw, structure.bars, options.simplifyBends === true ? { simplifyBends: true } : {});
             parts.push(normalized.part); events.push(...normalized.events); diagnostics.push(...normalized.diagnostics);
           } catch (error) {
             if (!(error instanceof SourceFailure) || !(track.isDrums || raw.instrumentId === 1024)) throw error;
@@ -65,13 +71,15 @@ export function createSongsterrSourceAdapter(options: SongsterrSourceOptions = {
             diagnostics.push(diagnostic('unsupported-construct', `Percussion part ${track.partId} is raw-only: ${error.message} Pitched parts remain intact; do not select this percussion as melody.`));
           }
         }
-        if (!structure || !version) fail('No source parts were acquired.');
+        if (!structure) fail('No source parts were acquired.');
+        if (!version) fail('No declared supported format version exists in the acquired parts; no version is invented for an entirely unversioned source.');
+        if (unversionedPartIds.length) diagnostics.push(diagnostic('unsupported-construct', `Parts ${unversionedPartIds.join(', ')} omit upstream format-version metadata. Their complete musical structure was validated without a version default; manifest unversionedPartIds explicitly excludes them from the declared formatVersion ${version}. Exact raw bytes are retained.`, 'warning'));
         events.sort((a, b) => compareEvents(a, b));
         const provisionalHash = await contentDigest({ songId: metadata.songId, upstreamRevisionId: metadata.revisionId, artifacts: transport.artifacts });
         const source = SourceScoreV1Schema.parse({
           schemaVersion: 1, revision: { id: `provisional-source-${provisionalHash.slice(0, 32)}`, parentId: null, digest: '0'.repeat(64) },
-          manifest: { identity: { kind: 'songsterr', url: parsed.url.href, songId: metadata.songId, upstreamRevisionId: metadata.revisionId, formatVersion: version }, retrievedAt: (options.now?.() ?? new Date()).toISOString(), parser: { name: 'songsterr-source-adapter', version: PARSER_VERSION }, artifacts: transport.artifacts },
-          key: deriveUncertainKey(events), parts, events, ...structure,
+          manifest: { identity: { kind: 'songsterr', url: parsed.url.href, songId: metadata.songId, upstreamRevisionId: metadata.revisionId, formatVersion: version, ...(unversionedPartIds.length ? { unversionedPartIds } : {}) }, retrievedAt: (options.now?.() ?? new Date()).toISOString(), parser: { name: 'songsterr-source-adapter', version: PARSER_VERSION }, artifacts: transport.artifacts },
+          key: deriveUncertainKey(events), parts, events, bars: structure.bars, tempos: structure.tempos, form: structure.form,
         });
         source.revision.digest = await revisionDigest(source);
         diagnostics.push(diagnostic('selection-needed', 'Valid PROVISIONAL IMPORT document: its schema and digest are internally valid, but its header is not an API-allocated saved source identity. API must allocate project/source revision identity and parent, recompute digest BEFORE saving, then call createDefaultMelodySelection(stampedSource). No source data is corrupted or stale.', 'info'));

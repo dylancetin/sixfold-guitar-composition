@@ -59,8 +59,16 @@ export function createDefaultMelodySelection(input: SourceScoreV1): DefaultMelod
         return true;
       };
       // Prefer a locally monophonic line over a busy accompaniment with more total notes.
-      const fallback = candidates.filter((v) => v !== primary && v.score > 0 && hasNotes(v, start, end)).sort((a, b) => Number(localMonophonic(b)) - Number(localMonophonic(a)) || b.score - a.score)[0];
-      if (fallback) for (let b = i; b < j; b++) barAssignments[b] = { voice: fallback, silent: !hasNotes(fallback, source.bars[b]!.start, add(source.bars[b]!.start, source.bars[b]!.length)), reason: `Fallback during a whole-bar primary-silent run. Explicit highest-onset whole-event line from part ${fallback.partId}/${fallback.voiceId}; lower overlapping notes are disclosed omissions from the proposal, not removed source data.` };
+      // Among alternatives, prefer a fully understood line; never strip effects
+      // from the primary voice or from any note once selected.
+       const supported = (v: Voice) => v.notes.filter((n) => compare(n.start, end) < 0 && compare(eventEnd(n), start) > 0).every((n) => !n.effects.some((effect) => effect.affectsMelody));
+       const guitarRegister = (v: Voice) => v.notes.filter((n) => compare(n.start, end) < 0 && compare(eventEnd(n), start) > 0).every((n) => n.soundingMidi >= 40 && n.soundingMidi <= 76);
+       // A fallback must fit as whole source events. A held alternative already
+       // sounding before a primary-rest run cannot become a new attack at its
+       // boundary. Keep the actual primary silence if no intact alternative fits.
+       const wholeEvents = (v: Voice) => v.notes.filter((n) => compare(n.start, end) < 0 && compare(eventEnd(n), start) > 0).every((n) => compare(n.start, start) >= 0 && compare(eventEnd(n), end) <= 0);
+       const fallback = candidates.filter((v) => v !== primary && v.score > 0 && hasNotes(v, start, end) && wholeEvents(v)).sort((a, b) => Number(localMonophonic(b)) - Number(localMonophonic(a)) || Number(supported(b)) - Number(supported(a)) || Number(guitarRegister(b)) - Number(guitarRegister(a)) || b.score - a.score)[0];
+      if (fallback) for (let b = i; b < j; b++) barAssignments[b] = { voice: fallback, silent: !hasNotes(fallback, source.bars[b]!.start, add(source.bars[b]!.start, source.bars[b]!.length)), reason: `Fallback during a whole-bar primary-silent run. Prefer a locally monophonic, fully supported existing source line in the standard guitar's MIDI 40–76 register, without transposing or editing any source note. Other source voices and their unsupported effects remain intact as alternatives, not silently simplified. Explicit highest-onset whole-event line from part ${fallback.partId}/${fallback.voiceId}; lower overlapping notes are disclosed omissions from the proposal, not removed source data. Instrumental-role choice remains unapproved.` };
     }
     i = j;
   }

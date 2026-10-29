@@ -13,4 +13,4 @@ export function fail(message: string, status: FailureStatus = 'unsupported', cod
   throw new SourceFailure(status, diagnostic(code, message, 'error', barIds));
 }
 
-export const PARSER_VERSION = '1.0.0';
+export const PARSER_VERSION = '1.4.1';

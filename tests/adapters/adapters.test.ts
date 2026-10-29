@@ -5,6 +5,7 @@ import { add, q } from '../../src/domain';
 import { compileTimeline, createAlphaTabScore, createPlaybackController, createTempoClock } from '../../src/adapters';
 import { createScoreAdapter } from '../../src/adapters/server';
 import { encodeMidi } from '../../src/adapters/midi';
+import { PdfLayoutSettingsSchema } from '../../src/adapters/pdf-settings';
 import { checkMidi, checkPdf } from './artifact-oracle';
 import { envelope, oracleValidator, stamp, study } from './fixture';
 import { FakeAudioContext } from './fake-audio';
@@ -12,7 +13,7 @@ import { FakeAudioContext } from './fake-audio';
 describe('canonical notation and runtime export boundary', () => {
   test('stable JSON IDs, exact triplets/crossbar tie, one combined staff/TAB; no repeat commands', async () => {
     const { score } = await study(3);
-    const first = createAlphaTabScore(score), second = createAlphaTabScore(score);
+    const first = createAlphaTabScore(score, { notationMode: 'unfolded' }), second = createAlphaTabScore(score, { notationMode: 'unfolded' });
     expect(first.projection).toEqual(second.projection);
     expect(JSON.parse(JSON.stringify(first.projection))).toEqual(first.projection);
     expect(first.projection.playback.events).toHaveLength(27);
@@ -38,6 +39,44 @@ describe('canonical notation and runtime export boundary', () => {
       expect(createHash('sha256').update(artifact.bytes).digest('hex')).toBe(artifact.manifest.artifactDigest);
       expect(artifact.filename).toContain(fixture.score.revision.digest.slice(0, 12));
     }
+  });
+
+  test('absolute TAB changes displayed frets without changing pitch, ties, timing or canonical score', async () => {
+    for (const capo of [0, 2] as const) {
+      const { score } = await study(2, capo, 2);
+      const original = JSON.stringify(score);
+      const relative = createAlphaTabScore(score, { notationMode: 'unfolded' }), absolute = createAlphaTabScore(score, { fretMode: 'absolute', notationMode: 'unfolded' });
+      expect(absolute.projection).toEqual(relative.projection);
+      expect(absolute.placements).toEqual(relative.placements.map(p => ({ ...p, displayedFret: p.relativeFret + capo })));
+      expect(absolute.placements[0]?.displayedFret).toBe(2);
+      const layout = await absolute.renderSvg();
+      expect(layout.fragments.map(f => f.svg).join('')).toContain('absolute neck frets');
+      expect(layout.systems.flatMap(s => s.bars)).toEqual([0, 1, 2, 3]);
+      expect(JSON.stringify(score)).toBe(original);
+    }
+  });
+
+  test('preview spacing and bars per row reduce layout height without changing musical projection', async () => {
+    const { score } = await study(4, 2, 2);
+    const original = JSON.stringify(score);
+    const normal = createAlphaTabScore(score, { notationMode: 'unfolded' });
+    let height = (await normal.renderSvg()).height;
+    for (const spacing of ['compact', 'tight'] as const) {
+      const notation = createAlphaTabScore(score, { spacing, notationMode: 'unfolded' });
+      expect(notation.projection).toEqual(normal.projection);
+      expect(notation.placements).toEqual(normal.placements);
+      const layout = await notation.renderSvg();
+      expect(layout.height).toBeLessThan(height); height = layout.height;
+      expect(layout.systems.flatMap(s => s.bars)).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
+    }
+    for (const barsPerRow of [3, 4]) {
+      const notation = createAlphaTabScore(score, { spacing: 'tight', barsPerRow, notationMode: 'unfolded' });
+      expect(notation.projection).toEqual(normal.projection);
+      const layout = await notation.renderSvg(1000);
+      expect(layout.systems.map(s => s.bars.length)).toEqual(barsPerRow === 3 ? [3, 3, 2] : [4, 4]);
+      expect(layout.height).toBeLessThan(height);
+    }
+    expect(JSON.stringify(score)).toBe(original);
   });
 
   test('shorter exact eighth triplets and overlapping independent harmony durations are not flattened', async () => {
@@ -136,7 +175,7 @@ describe('canonical notation and runtime export boundary', () => {
     const { source, score } = await study(12, 2, 2); const validator = oracleValidator(12, 2);
     const draft = envelope(source, score, validator);
     for (const pdfPageSize of ['A4', 'LETTER'] as const) {
-      const adapter = createScoreAdapter({ validator, getValidationContext: () => ({ approvedRevisions: [] }), pdfPageSize });
+      const adapter = createScoreAdapter({ validator, getValidationContext: () => ({ approvedRevisions: [] }), pdfPageSize, notationMode: 'unfolded', pdfLayout: PdfLayoutSettingsSchema.parse({ showMeasureLabels: true }) });
       const artifact = await adapter.exportArtifact(source, draft, 'pdf');
       const result = await checkPdf(artifact.bytes, 12, 2);
       expect(result.pageCount).toBeGreaterThan(1); expect(result.pages.every(p => p.lineCoverage >= 2 / 3)).toBe(true);

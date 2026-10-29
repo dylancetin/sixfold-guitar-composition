@@ -34,13 +34,8 @@ export interface Validator {
   validate(source: SourceScoreV1, score: ScoreV1, context: ValidationContext): ValidationReport;
 }
 
-export const AdapterProjectionSchema = z.strictObject({
-  schemaVersion: z.literal(1), scoreRevision: RevisionRefSchema,
-  form: z.literal('unfolded-no-repeat-commands'),
-  engraving: z.strictObject({
-    partCount: z.literal(1), staffAndTab: z.literal(true), writtenOctaveOffset: z.literal(12),
-    bars: z.array(z.strictObject({ occurrenceId: IdSchema, writtenBarId: IdSchema, pass: z.number().int().positive(), label: z.string().min(1) })).min(1),
-  }),
+const projectionContent = {
+  scoreRevision: RevisionRefSchema,
   mapping: z.array(z.strictObject({
     eventId: IdSchema, segmentId: IdSchema, occurrenceId: IdSchema,
     nativeBeatId: IdSchema, nativeNoteId: IdSchema.nullable(),
@@ -57,7 +52,26 @@ export const AdapterProjectionSchema = z.strictObject({
       role: z.enum(['melody', 'bass', 'harmony']), soundingMidi: z.number().int().min(0).max(127), start: TimeSchema, duration: DurationSchema,
     })).min(1),
   }),
-});
+};
+const engravingContent = { partCount: z.literal(1), staffAndTab: z.literal(true), writtenOctaveOffset: z.literal(12) };
+export const AdapterProjectionSchema = z.discriminatedUnion('schemaVersion', [
+  z.strictObject({
+    ...projectionContent, schemaVersion: z.literal(1), form: z.literal('unfolded-no-repeat-commands'),
+    unfoldedReason: z.string().min(1).optional(),
+    engraving: z.strictObject({
+      ...engravingContent,
+      bars: z.array(z.strictObject({ occurrenceId: IdSchema, writtenBarId: IdSchema, pass: z.number().int().positive(), label: z.string().min(1) })).min(1),
+    }),
+  }),
+  z.strictObject({
+    ...projectionContent, schemaVersion: z.literal(2), form: z.literal('folded-linear-repeats'),
+    engraving: z.strictObject({
+      ...engravingContent,
+      bars: z.array(z.strictObject({ nativeBarId: IdSchema, writtenBarId: IdSchema, representativeOccurrenceId: IdSchema, occurrenceIds: z.array(IdSchema).min(1), displayStart: TimeSchema, label: z.string().min(1) })).min(1),
+      repeats: z.array(z.strictObject({ id: IdSchema, fromBarId: IdSchema, toBarId: IdSchema, totalPasses: z.number().int().min(2).max(16) })).min(1),
+    }),
+  }),
+]);
 export type AdapterProjection = z.infer<typeof AdapterProjectionSchema>;
 export type Artifact = { bytes: Uint8Array; mediaType: 'application/pdf' | 'audio/midi'; filename: string; manifest: ArtifactManifest };
 export interface ScoreAdapter {

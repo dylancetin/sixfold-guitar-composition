@@ -33,16 +33,26 @@ export class PublishedFiles {
     try { names = await readdir(this.directory, { withFileTypes: true }); }
     catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return { arrangements: [], unavailableCount: 0 }; throw error; }
     const arrangements: LibraryEntry[] = [];
+    const projects = new Map<string, string>();
     let unavailableCount = 0;
     for (const entry of names) {
       if (entry.name.startsWith('.') || !PublicationIdSchema.safeParse(entry.name).success) continue;
       try {
         const bundle = await this.load(entry.name);
         if (!bundle) { unavailableCount++; continue; }
+        projects.set(bundle.manifest.id, bundle.score.projectId);
         arrangements.push({ manifest: bundle.manifest, summary: { difficulty: bundle.score.preferences.difficulty, capo: bundle.score.instrument.capo, writtenBars: bundle.score.bars.length, performedMeasures: bundle.score.occurrences.length, notes: bundle.score.performedSounds.length } });
       } catch { unavailableCount++; }
     }
     arrangements.sort((a, b) => b.manifest.createdAt.localeCompare(a.manifest.createdAt) || a.manifest.id.localeCompare(b.manifest.id));
-    return { arrangements, unavailableCount };
+    // Show the newest valid edition of each project; older immutable IDs remain
+    // directly loadable for existing viewer and download links.
+    const seen = new Set<string>();
+    return { arrangements: arrangements.filter(entry => {
+      const project = projects.get(entry.manifest.id)!;
+      if (seen.has(project)) return false;
+      seen.add(project);
+      return true;
+    }), unavailableCount };
   }
 }

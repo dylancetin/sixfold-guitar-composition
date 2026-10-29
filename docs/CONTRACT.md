@@ -50,6 +50,11 @@ External untrusted JSON may of course enter `.parse()` as `unknown`.
   and original fixture. Record parser version/retrieval time. Export no credentials, signed
   URLs, access tokens or opaque query secrets. Do not silently erase restricted flags in the
   importer: return `restricted` before producing `source-ready`.
+  Additive Songsterr identity extension `unversionedPartIds` records structurally validated
+  parts with missing upstream version metadata. `formatVersion` is the agreed, explicitly
+  declared version of the remaining parts, never a default assigned to those exceptions.
+  Existing versioned identities remain unchanged; all-unversioned imports still fail rather
+  than inventing a required version. This metadata extension changes no musical schema.
 
 ### Manageable immutable revisions, not an event-sourcing framework
 
@@ -204,9 +209,15 @@ at bar 3. Visits `[1,2,3,2,3]` have `[80,80,120,80,120]`, total **13s**. Carryin
 **12s** and fails. At PPQ960 the restore occurs at tick **11520**. The actual requested song marks
 its repeat entries, so alone it would not expose this bug.
 
-Score, cursor, seeks, role playback and MIDI must consume these same occurrence/sound IDs.
-Initial engraving is unfolded with no repeat instructions; visibly label written bar and pass.
-Never expand canonically and repeat again in the adapter.
+Score, cursor, seeks, role playback and MIDI consume these same occurrence/sound IDs.
+Engraving folds supported linear repeats when every pass has identical notation, fingering,
+tie state and relative effective tempos. It prints written bars with repeat barlines and total
+pass counts. Every performed segment retains a mapping to its printed beat, including later passes.
+If passes differ, engraving stays unfolded and explains why. An explicit unfolded adapter option
+also supports diagnostics and full-performance export oracles. Unfolded bars retain written-bar
+and pass labels. The transport always identifies the current written bar and performed pass.
+Native repeat instructions are engraving only. Never feed the expanded canonical timeline
+through the renderer's repeat player. Audio and MIDI use the canonical performed timeline directly.
 
 ## Plans, results, approvals and exports
 
@@ -253,6 +264,9 @@ event/segment/occurrence → native beat/note IDs (one-to-many ties and passes);
 tracks/channels 0/1/2, all zero-based acoustic program 24. Only the role-separated projection
 sounds. Muting filters by role without duplicating/truncating another role or losing cursor IDs.
 Renderer-native classes, layout engines and audio nodes never enter persisted documents.
+The version-1 projection describes unfolded engraving. A distinct version-2 projection describes
+folded repeats and the occurrences represented by each printed bar. Neither changes `ScoreV1`.
+Artifact `notationSegmentCount` counts logical performed segment mappings, not unique printed glyphs.
 
 U02 implementation `9217c32d36bd22f04a6fc505271b24fcb5d8e6ab` reports a bounded 24-occurrence
 original export proof; independent judge is pending at this freeze. Its documented alphaTab

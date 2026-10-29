@@ -23,3 +23,15 @@ helpers; strict rhythm/tie/meter consistency; raw hash-addressed artifacts;
 explicit unsupported effects and provisional identity; source-grounded but
 unapproved explicit melody proposal. This is an internal public player format,
 not a stable documented API or permission to redistribute score content.
+
+The 1.1/1.2 feel/grace interpretation independently implements the observable
+public player's inherited feel, pair-wise rational swing mapping and bounded
+grace time-borrowing conventions. The public client was inspected locally to
+establish timing semantics; no client bundle or downloaded musical excerpt is
+included in this repository's fixtures. Known expressive articulations remain
+explicit draft limitations rather than a claim of source-performance playback.
+
+The 1.3 source-capo interpretation was checked against the current public
+client's sounding-pitch and staff-position calculations: source tuning plus
+relative fret plus source capo. `tuningFlat` only controls note-name display.
+No public-client bundle or copyrighted musical excerpt is included in tests.

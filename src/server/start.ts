@@ -6,6 +6,6 @@ const port = Number(process.env.PORT ?? 4590);
 if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Invalid PORT');
 const server = Bun.serve({
   hostname: '0.0.0.0', port,
-  fetch: createPublishedHandler({ arrangementsDirectory: resolve(process.env.ARRANGEMENTS_DIR ?? '.arrangements'), frontendDirectory: resolve('dist/client') }),
+  fetch: createPublishedHandler({ arrangementsDirectory: resolve(process.env.ARRANGEMENTS_DIR ?? '.arrangements'), frontendDirectory: resolve('dist/client'), sourceDirectory: resolve(process.env.ARRANGEMENT_SOURCES_DIR ?? '.agent-runs') }),
 });
 console.log(`Sixfold published arrangement viewer: ${server.url}`);

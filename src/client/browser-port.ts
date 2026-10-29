@@ -1,6 +1,9 @@
 import type { ScoreV1 } from '../domain';
 
 export type Role = 'melody' | 'bass' | 'harmony';
+export type FretMode = 'relative' | 'absolute';
+export type PreviewLayout = { spacing: 'normal' | 'compact' | 'tight'; barsPerRow: number };
+export const DEFAULT_PREVIEW_LAYOUT: PreviewLayout = { spacing: 'tight', barsPerRow: 4 };
 export type PlaybackSnapshot = {
   status: 'stopped' | 'playing' | 'paused'; quarter: number; occurrenceIndex: number;
   seconds: number; durationSeconds: number; activePerformedSoundIds: string[];
@@ -16,6 +19,10 @@ export interface ScoreController {
   setSolo(roles: Role[]): void;
   setFollow(enabled: boolean): void;
   setZoom(scale: number): void;
+  setFretMode(mode: FretMode): Promise<void>;
+  setLayout(layout: PreviewLayout): Promise<void>;
+  setFingerNumbers(enabled: boolean): Promise<void>;
+  setMeasureLabels(enabled: boolean): Promise<void>;
   dispose(): void;
 }
 export interface BrowserViewerAdapter {

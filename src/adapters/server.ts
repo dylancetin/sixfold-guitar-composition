@@ -6,9 +6,12 @@ import { AdapterError, checkAbort } from './errors';
 import { encodeMidi } from './midi';
 import { encodePdf } from './pdf';
 import type { PdfPageSize } from './pdf';
+import { PdfLayoutSettingsSchema } from './pdf-settings';
+import type { PdfLayoutSettings } from './pdf-settings';
 import { compileTimeline } from './timeline';
+import type { NotationMode } from './notation-schedule';
 
-export const ADAPTER_VERSION = 'canonical-guitar-1.0.1';
+export const ADAPTER_VERSION = 'canonical-guitar-1.1.0';
 export type ScoreAdapterOptions = {
   validator: Validator;
   /** Server-owned loader, never a context supplied in the download request body. */
@@ -16,6 +19,9 @@ export type ScoreAdapterOptions = {
   /** API owns head/CAS authority; use this hook or check head before calling exportArtifact. */
   assertCurrentRevision?(score: RevisionRef, source: RevisionRef): void | Promise<void>;
   pdfPageSize?: PdfPageSize;
+  pdfLayout?: PdfLayoutSettings;
+  pdfTitle?: string;
+  notationMode?: NotationMode;
 };
 const ref = (revision: RevisionRef): RevisionRef => ({ id: revision.id, digest: revision.digest });
 const same = (a: RevisionRef, b: RevisionRef) => a.id === b.id && a.digest === b.digest;
@@ -25,12 +31,13 @@ const reviewContent = (score: ScoreV1) => {
 };
 
 export function createScoreAdapter(options: ScoreAdapterOptions): ScoreAdapter {
+  const pdfLayout = options.pdfLayout ? PdfLayoutSettingsSchema.parse(options.pdfLayout) : undefined;
   return {
     async project(input) {
       const draft = ValidatedScoreV1Schema.parse(input);
       if (!await verifyRevisionDigest(draft.score)) throw new AdapterError('revision-stale', 'Score digest does not match content');
       // Projection is not an authorization token. Export always validates afresh below.
-      return createAlphaTabScore(draft.score).projection;
+      return createAlphaTabScore(draft.score, { ...(options.notationMode ? { notationMode: options.notationMode } : {}) }).projection;
     },
     async exportArtifact(sourceInput, draftInput, format, signal) {
       checkAbort(signal);
@@ -48,11 +55,13 @@ export function createScoreAdapter(options: ScoreAdapterOptions): ScoreAdapter {
       if (report.status !== 'passed' || !same(report.scoreRevision, score.revision) || !same(report.sourceRevision, source.revision) || report.diagnostics.some(d => d.severity === 'error')) throw new AdapterError('validation-failed', 'Independent injected validator rejected this revision or returned a stale report');
       const timeline = compileTimeline(score);
       // Engraving representability is checked even for MIDI: downloadable revision must support both.
-      const notation = createAlphaTabScore(score);
+      const notation = createAlphaTabScore(score, { ...(options.notationMode ? { notationMode: options.notationMode } : {}), ...(format === 'pdf' ? { ...pdfLayout, ...(options.pdfTitle ? { title: options.pdfTitle, hideTitle: !!pdfLayout } : {}) } : {}) });
       const musicalReview = score.musicalReview;
       const reviewedFrom = musicalReview.status === 'reviewed' ? context.approvedRevisions.find(r => same(r.revision, musicalReview.reviewedRevision)) : undefined;
       const review = score.approvals.stage === 'arrangementApproved' && musicalReview.status === 'reviewed' && musicalReview.verdict === 'accepted' && musicalReview.objections.length === 0 && musicalReview.abilityId === score.ability.id && musicalReview.abilityVersion === score.ability.version && musicalReview.tempoScale === score.preferences.tempoScale && reviewedFrom && await contentDigest(reviewContent(reviewedFrom)) === await contentDigest(reviewContent(score)) ? 'musically-reviewed' : 'unreviewed-draft';
-      const bytes = format === 'midi' ? encodeMidi(timeline) : (await encodePdf(await notation.renderSvg(750, signal), `${review} | ${score.revision.id} | Capo ${score.instrument.capo} | ${score.revision.digest}`, options.pdfPageSize ?? 'A4', signal)).bytes;
+      // Inverse render width makes Size a real print-size change, not a scale
+      // subsequently cancelled by fitting the same engraving back to the page.
+      const bytes = format === 'midi' ? encodeMidi(timeline) : (await encodePdf(await notation.renderSvg(750 / (pdfLayout?.scale ?? 1), signal), `${review} | ${score.revision.id} | Capo ${score.instrument.capo} | ${score.revision.digest}`, options.pdfPageSize ?? 'A4', signal, { layout: pdfLayout, title: options.pdfTitle, form: notation.projection.form })).bytes;
       checkAbort(signal);
       // Head may have changed during rendering. The API should also gate binary response delivery.
       await options.assertCurrentRevision?.(ref(score.revision), ref(source.revision));
