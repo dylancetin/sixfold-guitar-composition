@@ -42,3 +42,18 @@ test('a fallback crossing the primary entry is not clipped or retriggered; actua
   expect(selected.has('p6:b1:v0:bt1:n0')).toBe(false);
   expect(selected.has('p4:b2:v0:bt0:n0')).toBe(true);
 });
+
+test('a supported polyphonic fallback outranks a monophonic line whose effects are unsupported', async () => {
+  const fixture = originalFixture();
+  const lead = structuredClone(fixture.parts.get(6)!);
+  lead.partId = 8;
+  (lead.measures as { voices: { beats: unknown[] }[] }[])[0]!.voices[0]!.beats = [12, 14].map((fret) => ({ type: 2, duration: [1, 2], notes: [{ string: 0, fret, letRing: true }] }));
+  fixture.parts.set(8, lead);
+  fixture.metadata.tracks.push({ partId: 8, name: 'Original ringing intro', instrumentId: 54, tuning: [60, 48] });
+  const result = await createSongsterrSourceAdapter({ fetch: fixtureFetch(fixture) }).import({ kind: 'songsterr-url', url: ORIGINAL_URL });
+  if (result.status !== 'source-ready') throw new Error(JSON.stringify(result));
+  const proposal = createDefaultMelodySelection(result.source);
+  if (proposal.status !== 'proposed') throw new Error(JSON.stringify(proposal));
+  expect(proposal.selection.sections[0]!.selectors[0]!.partId).toBe(6);
+  expect(result.source.events.filter((event) => event.kind === 'note' && event.partId === 8).every((event) => event.kind === 'note' && event.effects.some((effect) => effect.code === 'unsupported-letRing' && effect.affectsMelody))).toBe(true);
+});

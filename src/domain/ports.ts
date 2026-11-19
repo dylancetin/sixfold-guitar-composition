@@ -53,7 +53,7 @@ const projectionContent = {
     })).min(1),
   }),
 };
-const engravingContent = { partCount: z.literal(1), staffAndTab: z.literal(true), writtenOctaveOffset: z.literal(12) };
+const engravingContent = { partCount: z.literal(1), staffAndTab: z.boolean(), writtenOctaveOffset: z.literal(12) };
 export const AdapterProjectionSchema = z.discriminatedUnion('schemaVersion', [
   z.strictObject({
     ...projectionContent, schemaVersion: z.literal(1), form: z.literal('unfolded-no-repeat-commands'),

@@ -47,8 +47,12 @@ export const RawPartSchema = z.looseObject({
   songId: positiveId, revisionId: positiveId, partId,
   version: z.union([z.literal(5), z.literal(8)]).optional(), name: z.string().max(1024).optional(), title: z.string().max(1024).optional(),
   instrumentId: z.number().int().min(0).max(4095).optional(), tuning: tuning.optional(), tuningFlat: flag,
+  // Banjo-style short drone string. Only an explicit false (no drone) is interpretable.
+  tuningShortDrone: flag,
   capo: z.number().int().nonnegative().max(24).nullable().optional(),
   grandStaffGroup: z.number().int().nonnegative().max(4095).optional(),
+  // Songsterr marks an opening pickup bar; its exact length comes from source beats.
+  anacrusis: flag,
   measures: z.array(RawMeasureSchema).min(1).max(1000),
   automations: z.looseObject({ tempo: z.array(TempoSchema).min(1).max(1000) }),
 });

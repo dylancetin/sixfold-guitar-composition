@@ -1,4 +1,5 @@
 import type { ScoreV1 } from '../domain';
+import type { PreviewLyrics } from '../lyrics';
 
 export type Role = 'melody' | 'bass' | 'harmony';
 export type FretMode = 'relative' | 'absolute';
@@ -23,6 +24,8 @@ export interface ScoreController {
   setLayout(layout: PreviewLayout): Promise<void>;
   setFingerNumbers(enabled: boolean): Promise<void>;
   setMeasureLabels(enabled: boolean): Promise<void>;
+  setTabOnly(enabled: boolean): Promise<void>;
+  setLyrics(lyrics: PreviewLyrics | undefined): Promise<void>;
   dispose(): void;
 }
 export interface BrowserViewerAdapter {

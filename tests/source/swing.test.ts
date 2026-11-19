@@ -16,7 +16,7 @@ describe('exact swing interpretation — original fixtures', () => {
     if (result.status !== 'source-ready') throw new Error(JSON.stringify(result));
     const { source } = result;
     expect(await verifyRevisionDigest(source)).toBe(true);
-    expect(source.manifest.parser.version).toBe('1.4.1');
+    expect(source.manifest.parser.version).toBe('1.5.0');
     const intervals = source.events.map((event) => [event.start, event.duration]);
     expect(intervals.slice(0, 5)).toEqual([
       [q(0), q(2, 3)], [q(2, 3), q(1, 3)], [q(1), q(1)], [q(2), q(5, 3)], [q(11, 3), q(1, 3)],

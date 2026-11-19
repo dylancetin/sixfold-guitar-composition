@@ -61,6 +61,7 @@ button svg { flex-shrink: 0; }
 .finger-control input:checked { background: var(--teal); border-color: var(--teal); }
 .finger-control input:checked::before { transform: translateX(12px); background: var(--paper); }
 .finger-legend { flex-basis: 100%; font-size: 10px; line-height: 1.6; }
+.lyrics-control { display: flex; align-items: center; gap: 7px; font-size: 11px; color: #4d6241; }
 .score-panel[data-spacing=compact] { --control-padding: 10px 14px; --control-gap: 10px; }
 .score-panel[data-spacing=tight] { --control-padding: 7px 12px; --control-gap: 7px; }
 .score-panel[data-spacing]:not([data-spacing=normal]) .score-toolbar,
@@ -101,7 +102,7 @@ select { min-width: 0; background: var(--paper); border: 1px solid #c2ccb8; bord
 .score-loading small { display: block; margin-top: 12px; font-size: 11px; }
 .score-loading.failed { color: #81533d; }
 .transport { padding: 17px 20px 13px; border: 1px solid #cbd0c0; border-top: 0; border-radius: 0 0 7px 7px; background: #f5f4eb; }
-.primary-transport { display: flex; align-items: center; gap: 14px; }
+.primary-transport { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 .play-button { width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--maple); color: #3d3229; flex-shrink: 0; }
 .play-button .icon { width: 21px; height: 21px; }
 .play-button .icon path { fill: currentColor; stroke-width: 1; }

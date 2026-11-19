@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import { PublicationManifestSchema } from '../publication';
+export { PreviewLyricsSchema } from '../lyrics';
+export type { PreviewLyrics } from '../lyrics';
 export { PublicationIdSchema as PublishedIdSchema, PublicationManifestSchema as PublishedManifestSchema } from '../publication';
 export type { PublicationManifest as PublishedManifest } from '../publication';
 

@@ -1,6 +1,6 @@
 import { add, compare, contentDigest, eventEnd, multiply, q } from '../domain';
-import type { Diagnostic, Form, Meter, SourceEvent, SourceRef, SourceScoreV1, TempoPoint, WrittenBar } from '../domain';
-import { diagnostic, fail } from './common';
+import type { Diagnostic, Form, Meter, Q, SourceEvent, SourceRef, SourceScoreV1, TempoPoint, WrittenBar } from '../domain';
+import { diagnostic, fail, rawBeatId } from './common';
 import type { MetadataTrack, RawBeat, RawPart } from './raw';
 import { effectiveTripletFeels, swingDurations } from './swing';
 import type { TripletFeel } from './swing';
@@ -10,7 +10,7 @@ import { resolveClosedSlides } from './slides';
 
 type NoteEvent = Extract<SourceEvent, { kind: 'note' }>;
 type Effect = NoteEvent['effects'][number];
-const rootKeys = new Set('strings frets tuning tuningFlat name title grandStaffGroup instrument instrumentId volume balance measures capo newLyrics voices automations version withLyrics songId partId revisionId hasPlayer isBlocked isRestricted restriction'.split(' '));
+const rootKeys = new Set('anacrusis strings frets tuning tuningFlat tuningShortDrone name title grandStaffGroup instrument instrumentId volume balance measures capo newLyrics voices automations version withLyrics songId partId revisionId hasPlayer isBlocked isRestricted restriction'.split(' '));
 const measureKeys = new Set('signature marker voices rest repeatStart repeat repeatCount tempo alternateEnding tripletFeel'.split(' '));
 const beatKeys = new Set('type rest text notes duration velocity beamStart beamStop tuplet tupletStart tupletStop dotted dots lyrics graceNote chord'.split(' '));
 const noteKeys = new Set('rest string fret tie'.split(' '));
@@ -19,6 +19,37 @@ const articulations = new Set(['accentuated', 'ghost', 'velocity', 'hp', 'stacca
 function unknownKeys(value: Record<string, unknown>, allowed: Set<string>, label: string, barIds: string[] = []): void {
   const keys = Object.keys(value).filter((key) => !allowed.has(key));
   if (keys.length) fail(`${label}: unsupported fields ${keys.join(', ')}; raw retained, no silent interpretation.`, 'unsupported', 'unsupported-construct', barIds);
+}
+
+type RawMeasure = RawPart['measures'][number];
+
+/**
+ * An explicitly silent measure/voice with one undotted whole-rest symbol means the
+ * complete current bar, not necessarily four quarters, so it cannot size a pickup.
+ */
+function isWholeBarRestSymbol(measure: RawMeasure, voice: RawMeasure['voices'][number], beat: RawBeat, rhythm: ReturnType<typeof decodeExactRhythm>): boolean {
+  return Boolean((measure.rest || voice.rest) && voice.beats.length === 1 && beat.rest && beat.notes.every((note) => note.rest && note.fret === undefined && !note.tie)
+    && !beat.graceNote && rhythm.type === 1 && rhythm.dots === 0 && rhythm.actual === null);
+}
+
+/**
+ * Songsterr `anacrusis` marks only the opening bar as a pickup shorter than its meter.
+ * Its exact length is the explicit non-grace beat content (grace notation adds no bar
+ * time); every voice that determines a length must agree. Whole-bar rest symbols are
+ * indeterminate and then fill that length. No length is guessed from the meter.
+ */
+function pickupLength(measure: RawMeasure, meterLength: Q, barId: string): Q {
+  const lengths: Q[] = [];
+  for (const voice of measure.voices) {
+    const rhythms = voice.beats.map((beat) => decodeExactRhythm(beat, barId));
+    if (voice.beats.length === 1 && isWholeBarRestSymbol(measure, voice, voice.beats[0]!, rhythms[0]!)) continue;
+    lengths.push(rhythms.reduce((sum, rhythm, i) => voice.beats[i]!.graceNote ? sum : add(sum, rhythm.duration), q(0)));
+  }
+  const length = lengths[0];
+  if (!length) return fail('Declared source pickup has no explicit beat content that determines its length; none is guessed.', 'unsupported', 'unsupported-construct', [barId]);
+  if (lengths.some((other) => compare(other, length))) fail('Declared source pickup voices disagree on its exact length.', 'unsupported', 'unsupported-construct', [barId]);
+  if (compare(length, q(0)) <= 0 || compare(length, meterLength) >= 0) fail('Declared source pickup is not shorter than its meter; not reinterpreted.', 'unsupported', 'unsupported-construct', [barId]);
+  return length;
 }
 
 /** Nominal whole-note duration includes dots/tuplets, but not measure feel. Never apply either twice. */
@@ -59,8 +90,10 @@ export function normalizeStructure(raw: RawPart): { bars: WrittenBar[]; tempos: 
     if (measure.alternateEnding !== undefined && measure.alternateEnding !== 0 && (!Array.isArray(measure.alternateEnding) || measure.alternateEnding.length)) fail('Alternate endings are unsupported; form not flattened.', 'unsupported', 'unsupported-construct', [id]);
     if (measure.signature) meter = { beats: measure.signature[0], beatUnit: measure.signature[1] };
     if (!meter) fail('First source bar must declare a meter.');
-    const length = q(meter.beats * 4, meter.beatUnit);
-    const bar = { id, number: i + 1, start, length, meter: { ...meter }, kind: 'full' as const };
+    const meterLength = q(meter.beats * 4, meter.beatUnit);
+    const pickup = i === 0 && raw.anacrusis === true;
+    const length = pickup ? pickupLength(measure, meterLength, id) : meterLength;
+    const bar: WrittenBar = { id, number: i + 1, start, length, meter: { ...meter }, kind: pickup ? 'pickup' : 'full' };
     start = add(start, length);
     if (measure.repeatStart) {
       if (repeatStart !== null) fail('Nested/unclosed source repeats are unsupported.', 'unsupported', 'form-mismatch', [id]);
@@ -105,6 +138,7 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
   const capo = raw.capo ?? 0;
   if (percussion && capo) fail(`Part ${raw.partId}: source capo on percussion is unsupported.`);
   if (!percussion && !rawTuning) fail(`Part ${raw.partId} has no source tuning; standard guitar tuning not assumed.`);
+  if (raw.tuningShortDrone === true) fail(`Part ${raw.partId}: short drone-string tuning is unsupported; open-string pitches not reinterpreted.`);
   // Source frets are capo-relative. Materialize sounding open strings once;
   // final arrangement capo/fingering is independent and must not transpose them.
   const tuning = !percussion ? rawTuning?.map((midi) => midi + capo) : undefined;
@@ -135,11 +169,9 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
     if (slots > 100_000) fail('Source exceeds the 100,000 beat processing bound.');
     const rhythms = measure.voices.map((voice) => voice.beats.map((beat) => {
       const rhythm = decodeExactRhythm(beat, bar.id);
-      // An explicitly silent measure/voice with one undotted whole-rest symbol
-      // means the complete current meter, not necessarily four quarters.
+      // A whole-bar rest symbol fills the current bar (meter or exact pickup).
       // Keep the raw fraction; never resize pitched, partial or ambiguous beats.
-      if ((measure.rest || voice.rest) && voice.beats.length === 1 && beat.rest && beat.notes.every((note) => note.rest && note.fret === undefined && !note.tie)
-        && !beat.graceNote && rhythm.type === 1 && rhythm.dots === 0 && rhythm.actual === null) {
+      if (isWholeBarRestSymbol(measure, voice, beat, rhythm)) {
         if (compare(rhythm.duration, bar.length)) measureRestBars.add(bar.id);
         return { ...rhythm, duration: bar.length };
       }
@@ -162,7 +194,7 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
       let offset = q(0);
       let prior = previous.get(voiceId) ?? new Map<number, NoteEvent>();
       for (const [beatIndex, beat] of voice.beats.entries()) {
-        const beatId = `p${raw.partId}:b${barIndex + 1}:v${voiceIndex}:bt${beatIndex}`;
+        const beatId = rawBeatId(raw.partId, barIndex, voiceIndex, beatIndex);
         const rhythm = rhythms[voiceIndex]![beatIndex]!;
         const duration = durations[voiceIndex]![beatIndex]!;
         const start = add(bar.start, offset);

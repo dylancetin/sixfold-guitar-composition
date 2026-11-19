@@ -131,14 +131,20 @@ leading/multi-bar silent runs from a disclosed fallback line. It selects whole
 event IDs (highest simultaneous onset, held selection wins over overlap), never
 clips a tie. Source rests plus reasoned intentional rests cover all written time;
 provenance records selected, overlapping omitted and intentional-silence evidence
-IDs. Among locally monophonic fallback alternatives, prefer a fully supported
-existing source line, then MIDI 40–76 (the fixed standard-guitar physical range); do not
+IDs. Among fallback alternatives, prefer a fully supported existing source line,
+then a locally monophonic one, then MIDI 40–76 (the fixed standard-guitar physical range); do not
 transpose a high flute line to manufacture a replacement. This choice is
 explicitly unapproved and published by source part/section. Role/intro/outro
 judgments remain pending musician review.
 Unsupported effects remain intact on unselected alternatives. The primary voice
 and any actually selected unsupported note still block the proposal; no effect
 is stripped or reclassified to manufacture a successful import.
+
+Parser 1.5.0 accepts a declared opening pickup (`anacrusis: true`) as a `pickup`
+bar whose exact length is its explicit non-grace beat content. Every determining
+voice/part must agree; a whole-bar rest symbol fills that length. Full-length,
+indeterminate or disagreeing pickups fail closed. Only an explicit
+`tuningShortDrone: false` is accepted; a drone string still fails closed.
 
 Parser 1.4.1 validates beat `chord` as a strict descriptive `{text,width?}` label.
 Its text/layout is retained in raw artifacts and `source-chord-label` note effects;

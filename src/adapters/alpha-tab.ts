@@ -6,6 +6,8 @@ import { compileTimeline, PPQ, ROLES } from './timeline';
 import type { CompiledTimeline, PerformedSegment } from './timeline';
 import { createNotationSchedule } from './notation-schedule';
 import type { NotationMode, NotationSchedule } from './notation-schedule';
+import { lyricsForScore } from '../lyrics';
+import type { PreviewLyrics } from '../lyrics';
 
 type Rhythm = Pick<NotationSegment, 'baseDenominator' | 'dots' | 'tuplet' | 'duration'>;
 type Beat = InstanceType<typeof at.model.Beat>;
@@ -17,7 +19,7 @@ export type NotationLayout = {
   systems: { index: number; bars: number[]; visual: Bounds; real: Bounds }[];
   beats: { nativeBeatId: string; occurrenceId: string; bounds: Bounds; cursorX: number }[];
 };
-export type NotationOptions = { title?: string; barsPerRow?: number; fretMode?: 'relative' | 'absolute'; spacing?: 'normal' | 'compact' | 'tight'; showFingerNumbers?: boolean; showMeasureLabels?: boolean; hideTitle?: boolean; notationMode?: NotationMode };
+export type NotationOptions = { title?: string; barsPerRow?: number; fretMode?: 'relative' | 'absolute'; spacing?: 'normal' | 'compact' | 'tight'; showFingerNumbers?: boolean; showMeasureLabels?: boolean; tabOnly?: boolean; hideTitle?: boolean; notationMode?: NotationMode; lyrics?: PreviewLyrics };
 
 function rhythmCandidates(): Rhythm[] {
   const result: Rhythm[] = [];
@@ -68,6 +70,24 @@ function assignLanes(timeline: CompiledTimeline): Map<string, number> {
   return assignment;
 }
 
+/**
+ * Without a standard staff, alphaTab draws every voice's rest on the middle TAB line, over other voices'
+ * fret numbers. Keep a TAB rest only where the whole guitar is silent, once per silent span. Hidden rests
+ * stay in the layout (transparent), so cursor and selection geometry are unchanged.
+ */
+// Transparent rest/dot glyphs from hideCollidingTabRests; removed so SVG and PDF consumers never draw them.
+const HIDDEN_TAB_GLYPH = /<text [^>]*fill="rgba\(0,0,0,0\)"[^>]*>[^<]*<\/text>/g;
+export function hideCollidingTabRests(beats: { beat: Beat; lane: number; start: Q; end: Q }[]) {
+  const transparent = new at.model.Color(0, 0, 0, 0);
+  const shown: typeof beats = [];
+  for (const rest of beats.filter(b => !b.beat.notes.length)) {
+    const overlaps = (other: typeof rest) => compare(other.start, rest.end) < 0 && compare(rest.start, other.end) < 0;
+    if (!beats.some(other => other.lane !== rest.lane && other.beat.notes.length && overlaps(other)) && !shown.some(overlaps)) { shown.push(rest); continue; }
+    rest.beat.style = new at.model.BeatStyle();
+    for (const element of [at.model.BeatSubElement.GuitarTabRests, at.model.BeatSubElement.GuitarTabEffects, at.model.BeatSubElement.GuitarTabFlags, at.model.BeatSubElement.GuitarTabStem]) rest.beat.style.colors.set(element, transparent);
+  }
+}
+
 /** Native models are deliberately confined to this adapter module. */
 function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, options: NotationOptions) {
   const settings = new at.Settings();
@@ -89,6 +109,8 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
   if (options.hideTitle) settings.notation.elements.set(at.NotationElement.ScoreTitle, false);
   const score = new at.model.Score();
   const canonical = timeline.score;
+  const lyrics = lyricsForScore(canonical, options.lyrics);
+  const lyricPlacements: { syllableId: string; text: string; line: number; nativeBeatId: string; occurrenceIds: string[] }[] = [];
   score.title = options.title ?? 'Solo guitar arrangement';
   const absoluteFrets = options.fretMode === 'absolute';
   const formCaption = schedule.folded ? 'folded repeats' : schedule.unfoldedReason ? `unfolded, ${schedule.unfoldedReason}` : 'unfolded performance';
@@ -99,7 +121,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
   const staff = new at.model.Staff();
   staff.stringTuning = new at.model.Tuning('Standard EADGBE', [...canonical.instrument.tuning].reverse(), true);
   staff.capo = absoluteFrets ? 0 : canonical.instrument.capo; staff.transpositionPitch = 0; staff.displayTranspositionPitch = -12;
-  staff.showStandardNotation = true; staff.showTablature = true; track.addStaff(staff);
+  staff.showStandardNotation = !options.tabOnly; staff.showTablature = true; track.addStaff(staff);
   const laneFor = assignLanes(timeline);
   const laneCount = Math.max(...laneFor.values()) + 1;
   const mappings: AdapterProjection['mapping'] = [];
@@ -129,6 +151,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
     }
     score.addMasterBar(master);
     const bar = new at.model.Bar(); staff.addBar(bar);
+    const barBeats: { beat: Beat; lane: number; start: Q; end: Q }[] = [];
     for (let lane = 0; lane < laneCount; lane++) {
       const voice = new at.model.Voice(); bar.addVoice(voice);
       let position = occurrence.start;
@@ -137,6 +160,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
         beat.duration = rhythm.baseDenominator; beat.dots = rhythm.dots;
         if (rhythm.tuplet) { beat.tupletNumerator = rhythm.tuplet.actual; beat.tupletDenominator = rhythm.tuplet.normal; }
         voice.addBeat(beat); nativeBeats.push({ beat, occurrenceIds: display.occurrences.map(o => o.id), at: add(display.start, subtract(atTime, occurrence.start)), duration: rhythm.duration });
+        barBeats.push({ beat, lane, start: atTime, end: add(atTime, rhythm.duration) });
         return beat;
       };
       const addGap = (until: Q) => {
@@ -163,12 +187,19 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
             beat.addNote(note); nativeNoteId = String(note.id); nativeNotes.push({ note, segment: member });
           }
           for (const alias of display.occurrences) mappings.push({ eventId: segment.eventId, segmentId: segment.id, occurrenceId: alias.id, nativeBeatId: String(beat.id), nativeNoteId });
+          for (const lyric of lyrics.filter(lyric => lyric.segmentId === segment.id)) {
+            beat.lyrics ??= Array.from({ length: Math.max(...lyrics.map(l => l.line)) }, () => '');
+            if (beat.lyrics[lyric.line - 1]) continue;
+            beat.lyrics[lyric.line - 1] = lyric.text;
+            lyricPlacements.push({ syllableId: lyric.id, text: lyric.text, line: lyric.line, nativeBeatId: String(beat.id), occurrenceIds: display.occurrences.map(o => o.id) });
+          }
         }
         position = add(first.at, first.segment.duration);
       }
       addGap(add(occurrence.start, occurrence.length));
       if (lane === 0 && options.showMeasureLabels) voice.beats[0]!.text = `${display.label}${!schedule.folded && index === schedule.bars.length - 1 ? ' FINAL' : ''}`;
     }
+    if (options.tabOnly) hideCollidingTabRests(barBeats);
   }
   score.finish(settings);
   for (const { beat, at: atTime, duration } of nativeBeats) {
@@ -186,7 +217,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
     requireAdapter(master.isRepeatStart === start && master.repeatCount === passes && master.isRepeatEnd === (passes > 0), 'Native repeat boundaries/count differ from display schedule');
   }
   requireAdapter(mappings.length === timeline.segments.length && timeline.segments.every(s => mappings.filter(m => m.segmentId === s.segment.id && m.occurrenceId === s.occurrence.id).length === 1), 'Missing/duplicate performed notation mapping');
-  return { score, settings, mappings, nativeBeats, nativeNotes };
+  return { score, settings, mappings, nativeBeats, nativeNotes, lyricPlacements };
 }
 
 /** Browser-safe, non-audio notation facade. It never exposes native classes or plays the combined part. */
@@ -198,57 +229,102 @@ export function createAlphaTabScore(input: ScoreV1, options: NotationOptions = {
     scoreRevision: { id: timeline.score.revision.id, digest: timeline.score.revision.digest },
     ...(schedule.folded ? {
       schemaVersion: 2, form: 'folded-linear-repeats',
-      engraving: { partCount: 1, staffAndTab: true, writtenOctaveOffset: 12, bars: schedule.bars.map(b => ({ nativeBarId: b.nativeBarId, writtenBarId: b.written.id, representativeOccurrenceId: b.representative.id, occurrenceIds: b.occurrences.map(o => o.id), displayStart: b.start, label: b.label })), repeats: timeline.score.form.repeats },
+      engraving: { partCount: 1, staffAndTab: !options.tabOnly, writtenOctaveOffset: 12, bars: schedule.bars.map(b => ({ nativeBarId: b.nativeBarId, writtenBarId: b.written.id, representativeOccurrenceId: b.representative.id, occurrenceIds: b.occurrences.map(o => o.id), displayStart: b.start, label: b.label })), repeats: timeline.score.form.repeats },
     } : {
       schemaVersion: 1, form: 'unfolded-no-repeat-commands', ...(schedule.unfoldedReason ? { unfoldedReason: schedule.unfoldedReason } : {}),
-      engraving: { partCount: 1, staffAndTab: true, writtenOctaveOffset: 12, bars: schedule.bars.map(b => ({ occurrenceId: b.representative.id, writtenBarId: b.written.id, pass: b.representative.pass, label: b.label })) },
+      engraving: { partCount: 1, staffAndTab: !options.tabOnly, writtenOctaveOffset: 12, bars: schedule.bars.map(b => ({ occurrenceId: b.representative.id, writtenBarId: b.written.id, pass: b.representative.pass, label: b.label })) },
     }),
     mapping: native.mappings,
     playback: { activeProjection: 'role-separated-only', tracks: ROLES.map((role, channel) => ({ role, channel, program: 24 })), events: timeline.notes.map(({ placement: _placement, occurrenceIds: _occurrences, ...event }) => event) },
   });
   return {
     projection,
+    lyricPlacements: native.lyricPlacements,
     // JSON evidence is useful to inspect native pitch/timing, without leaking renderer classes.
     placements: native.nativeNotes.map(({ note, segment }) => ({ segmentId: segment.segment.id, performedSoundId: segment.performed!.performedSoundId, occurrenceId: segment.occurrence.id, stringIndex: segment.performed!.placement.stringIndex, relativeFret: segment.performed!.placement.fret, displayedFret: note.fret, soundingMidi: note.realValue, writtenMidi: note.displayValue, tieDestination: note.isTieDestination })),
     async renderSvg(width = 750, signal?: AbortSignal): Promise<NotationLayout> {
       checkAbort(signal); requireAdapter(Number.isFinite(width) && width >= 300 && width <= 4000, 'Notation width outside 300–4000');
-      const renderer = new at.rendering.ScoreRenderer(native.settings); renderer.width = width;
-      const chunks: at.rendering.RenderFinishedEventArgs[] = [];
-      renderer.partialRenderFinished.on(r => chunks.push(r));
-      try {
-        await new Promise<void>((resolve, reject) => {
-          const timer = setTimeout(() => finish(new Error('Notation render timeout')), 15000);
-          const abort = () => finish(signal?.reason instanceof Error ? signal.reason : new Error('Aborted'));
-          signal?.addEventListener('abort', abort, { once: true });
-          const finish = (error?: Error) => { clearTimeout(timer); signal?.removeEventListener('abort', abort); error ? reject(error) : resolve(); };
-          renderer.postRenderFinished.on(() => finish());
-          renderer.error.on(error => finish(error));
-          try { renderer.renderScore(native.score, [0]); } catch (error) { finish(error instanceof Error ? error : new Error(String(error))); }
-        });
+      const renderAt = async (width: number, rowCounts?: number[]): Promise<NotationLayout> => {
         checkAbort(signal);
-        const bounds = renderer.boundsLookup;
-        requireAdapter(bounds?.isFinished, 'Missing finished notation bounds');
-        const systems = bounds.staffSystems.map(s => ({ index: s.index, bars: s.bars.map(b => b.index), visual: { ...s.visualBounds }, real: { ...s.realBounds } }));
-        requireAdapter(JSON.stringify(systems.flatMap(s => s.bars)) === JSON.stringify(schedule.bars.map((_, i) => i)), 'Renderer omitted or duplicated display bar');
-        const fragments = chunks.map(c => {
-          requireAdapter(typeof c.renderResult === 'string', 'Expected SVG renderer output');
-          const contained = systems.filter(s => s.bars[0]! >= c.firstMasterBarIndex && s.bars.at(-1)! <= c.lastMasterBarIndex);
-          if (c.firstMasterBarIndex >= 0) {
-            requireAdapter(contained.length === 1, 'Partial must contain one complete system');
-            const system = contained[0]!;
-            requireAdapter(system.bars[0] === c.firstMasterBarIndex && system.bars.at(-1) === c.lastMasterBarIndex, 'Partial clips system bars');
-            requireAdapter(system.visual.y >= c.y - 1 && system.visual.y + system.visual.h <= c.y + c.height + 1 && system.visual.x >= c.x - 1 && system.visual.x + system.visual.w <= c.x + c.width + 1, 'Partial clips system bounds');
+        native.settings.display.systemsLayoutMode = rowCounts ? at.SystemsLayoutMode.UseModelLayout : at.SystemsLayoutMode.Automatic;
+        native.score.tracks[0]!.systemsLayout = rowCounts ?? [];
+        const renderer = new at.rendering.ScoreRenderer(native.settings); renderer.width = width;
+        const chunks: at.rendering.RenderFinishedEventArgs[] = [];
+        renderer.partialRenderFinished.on(r => chunks.push(r));
+        try {
+          await new Promise<void>((resolve, reject) => {
+            const timer = setTimeout(() => finish(new Error('Notation render timeout')), 15000);
+            const abort = () => finish(signal?.reason instanceof Error ? signal.reason : new Error('Aborted'));
+            signal?.addEventListener('abort', abort, { once: true });
+            const finish = (error?: Error) => { clearTimeout(timer); signal?.removeEventListener('abort', abort); error ? reject(error) : resolve(); };
+            renderer.postRenderFinished.on(() => finish());
+            renderer.error.on(error => finish(error));
+            try { renderer.renderScore(native.score, [0]); } catch (error) { finish(error instanceof Error ? error : new Error(String(error))); }
+          });
+          checkAbort(signal);
+          const bounds = renderer.boundsLookup;
+          requireAdapter(bounds?.isFinished, 'Missing finished notation bounds');
+          const systems = bounds.staffSystems.map(s => ({ index: s.index, bars: s.bars.map(b => b.index), visual: { ...s.visualBounds }, real: { ...s.realBounds } }));
+          requireAdapter(JSON.stringify(systems.flatMap(s => s.bars)) === JSON.stringify(schedule.bars.map((_, i) => i)), 'Renderer omitted or duplicated display bar');
+          const fragments = chunks.map(c => {
+            requireAdapter(typeof c.renderResult === 'string', 'Expected SVG renderer output');
+            const contained = systems.filter(s => s.bars[0]! >= c.firstMasterBarIndex && s.bars.at(-1)! <= c.lastMasterBarIndex);
+            if (c.firstMasterBarIndex >= 0) {
+              requireAdapter(contained.length === 1, 'Partial must contain one complete system');
+              const system = contained[0]!;
+              requireAdapter(system.bars[0] === c.firstMasterBarIndex && system.bars.at(-1) === c.lastMasterBarIndex, 'Partial clips system bars');
+              requireAdapter(system.visual.y >= c.y - 1 && system.visual.y + system.visual.h <= c.y + c.height + 1 && system.visual.x >= c.x - 1 && system.visual.x + system.visual.w <= c.x + c.width + 1, 'Partial clips system bounds');
+            }
+            return { x: c.x, y: c.y, width: c.width, height: c.height, first: c.firstMasterBarIndex, last: c.lastMasterBarIndex, system: c.firstMasterBarIndex < 0 ? null : contained[0]!.index, svg: (options.tabOnly ? c.renderResult.replace(HIDDEN_TAB_GLYPH, '') : c.renderResult).replaceAll('class="at"', 'class="at" font-family="alphaTab" font-size="34"') };
+          });
+          requireAdapter(fragments.filter(f => f.system !== null).length === systems.length, 'Missing system SVG');
+          const beats = native.nativeBeats.flatMap(({ beat, occurrenceIds }) => {
+            const b = bounds.findBeat(beat);
+            return b ? occurrenceIds.map(occurrenceId => ({ nativeBeatId: String(beat.id), occurrenceId, bounds: { ...b.realBounds }, cursorX: b.onNotesX })) : [];
+          });
+          requireAdapter(projection.mapping.every(m => beats.some(b => b.nativeBeatId === m.nativeBeatId && b.occurrenceId === m.occurrenceId)), 'Rendered geometry omitted a performed notation mapping');
+          if (native.lyricPlacements.length && renderer.canvas) {
+            const canvas = renderer.canvas;
+            canvas.font = native.settings.display.resources.elementFonts.get(at.NotationElement.EffectLyrics)!;
+            const rows = new Map<string, { system: number; syllables: { x: number; width: number }[] }>();
+            for (const lyric of native.lyricPlacements) {
+              const beat = native.nativeBeats.find(b => String(b.beat.id) === lyric.nativeBeatId)!.beat;
+              const system = systems.find(s => s.bars.includes(beat.voice.bar.index))!;
+              const key = `${system.index}:${lyric.line}`;
+              const row = rows.get(key) ?? { system: system.index, syllables: [] };
+              row.syllables.push({ x: bounds.findBeat(beat)!.onNotesX, width: canvas.measureText(lyric.text).width });
+              rows.set(key, row);
+            }
+            let expansion = 1;
+            const crowdedSystems = new Set<number>();
+            for (const { system, syllables } of rows.values()) {
+              syllables.sort((a, b) => a.x - b.x);
+              for (let i = 1; i < syllables.length; i++) {
+                const previous = syllables[i - 1]!, current = syllables[i]!;
+                const ratio = ((previous.width + current.width) / 2 + 12) / (current.x - previous.x);
+                expansion = Math.max(expansion, ratio);
+                if (ratio > 1.01 && systems.find(s => s.index === system)!.bars.length > 1) crowdedSystems.add(system);
+              }
+            }
+            // alphaTab reserves a lyric band vertically, but does not include syllables in horizontal spacing.
+            if (crowdedSystems.size) {
+              if (!rowCounts) for (const system of bounds.staffSystems) for (const bar of system.bars) {
+                native.score.tracks[0]!.staves[0]!.bars[bar.index]!.displayScale = bar.realBounds.w;
+              }
+              const nextRows = systems.flatMap(system => crowdedSystems.has(system.index)
+                ? [Math.ceil(system.bars.length / 2), Math.floor(system.bars.length / 2)] : [system.bars.length]);
+              return renderAt(width, nextRows);
+            }
+            if (expansion > 1.01) {
+              const expandedWidth = Math.min(4000, Math.ceil(width * expansion * 1.05));
+              requireAdapter(expandedWidth > width, 'Lyrics exceed the supported notation width');
+              return renderAt(expandedWidth, rowCounts);
+            }
           }
-          return { x: c.x, y: c.y, width: c.width, height: c.height, first: c.firstMasterBarIndex, last: c.lastMasterBarIndex, system: c.firstMasterBarIndex < 0 ? null : contained[0]!.index, svg: c.renderResult.replaceAll('class="at"', 'class="at" font-family="alphaTab" font-size="34"') };
-        });
-        requireAdapter(fragments.filter(f => f.system !== null).length === systems.length, 'Missing system SVG');
-        const beats = native.nativeBeats.flatMap(({ beat, occurrenceIds }) => {
-          const b = bounds.findBeat(beat);
-          return b ? occurrenceIds.map(occurrenceId => ({ nativeBeatId: String(beat.id), occurrenceId, bounds: { ...b.realBounds }, cursorX: b.onNotesX })) : [];
-        });
-        requireAdapter(projection.mapping.every(m => beats.some(b => b.nativeBeatId === m.nativeBeatId && b.occurrenceId === m.occurrenceId)), 'Rendered geometry omitted a performed notation mapping');
-        return { width, height: Math.max(...fragments.map(f => f.y + f.height)), fragments, systems, beats };
-      } finally { renderer.destroy(); }
+          return { width, height: Math.max(...fragments.map(f => f.y + f.height)), fragments, systems, beats };
+        } finally { renderer.destroy(); }
+      };
+      return renderAt(width);
     },
   };
 }

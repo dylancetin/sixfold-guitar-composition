@@ -1,7 +1,8 @@
 import { AdapterProjectionSchema } from '../domain';
 import type { AdapterProjection, ScoreV1 } from '../domain';
 import { DEFAULT_PREVIEW_LAYOUT } from './browser-port';
-import type { BrowserViewerAdapter, FretMode, PreviewLayout, Role } from './browser-port';
+import type { BrowserViewerAdapter, Role } from './browser-port';
+import type { NotationOptions } from '../adapters/alpha-tab';
 
 type Bounds = { x: number; y: number; w: number; h: number };
 type Layout = { width: number; height: number; fragments: { x: number; y: number; width: number; height: number; svg: string }[]; beats: { nativeBeatId: string; occurrenceId: string; bounds: Bounds; cursorX: number }[] };
@@ -12,7 +13,7 @@ type AudioSnapshot = {
 };
 export type AlphaTabFactories = {
   fontUrl: string;
-  createAlphaTabScore: (score: ScoreV1, options: { title: string; barsPerRow: number; fretMode?: FretMode; spacing?: PreviewLayout['spacing']; showFingerNumbers?: boolean; showMeasureLabels?: boolean }) => { projection: AdapterProjection; renderSvg(width: number, signal?: AbortSignal): Promise<Layout> };
+  createAlphaTabScore: (score: ScoreV1, options: NotationOptions) => { projection: AdapterProjection; renderSvg(width: number, signal?: AbortSignal): Promise<Layout> };
   createPlaybackController: (score: ScoreV1) => {
     play(): Promise<void>; pause(): void; stop(): void; seek(quarter: number): void;
     setTempoScale(scale: number): void; setMuted(role: Role, muted: boolean): void; setSolo(role: Role, solo: boolean): void;
@@ -32,7 +33,8 @@ export function createAlphaTabBridge(factories: AlphaTabFactories): BrowserViewe
       let unsubscribe = () => {};
       const surface = document.createElement('div'); surface.className = 'native-score';
       try {
-        let display = { fretMode: 'relative' as FretMode, ...DEFAULT_PREVIEW_LAYOUT, showFingerNumbers: false, showMeasureLabels: false };
+        let display: NotationOptions = { fretMode: 'relative', ...DEFAULT_PREVIEW_LAYOUT, showFingerNumbers: false, showMeasureLabels: false, tabOnly: false };
+        let requestedDisplay = display;
         const notation = factories.createAlphaTabScore(score, { title, ...display });
         const checkedProjection = (input: AdapterProjection) => {
           const projection = AdapterProjectionSchema.parse(input);
@@ -130,8 +132,15 @@ export function createAlphaTabBridge(factories: AlphaTabFactories): BrowserViewe
         let renderVersion = 0;
         const renderDisplay = async (options: typeof display) => {
           const version = ++renderVersion;
-          const notation = factories.createAlphaTabScore(score, { title, ...options });
-          const next = await notation.renderSvg(width, abort.signal);
+          requestedDisplay = options;
+          let notation: ReturnType<AlphaTabFactories['createAlphaTabScore']>, next: Layout;
+          try {
+            notation = factories.createAlphaTabScore(score, { title, ...options });
+            next = await notation.renderSvg(width, abort.signal);
+          } catch (error) {
+            if (version === renderVersion) requestedDisplay = display;
+            throw error;
+          }
           if (abort.signal.aborted || version !== renderVersion) return;
           const { projection, layout } = rendered;
           const top = container.scrollTop, left = container.scrollLeft;
@@ -160,10 +169,16 @@ export function createAlphaTabBridge(factories: AlphaTabFactories): BrowserViewe
             zoom = scale; size(); container.scrollTop = top * zoom; container.scrollLeft = left * zoom;
             if (latestSnapshot) updateCursor(latestSnapshot);
           },
-          setFretMode: fretMode => renderDisplay({ ...display, fretMode }),
-          setLayout: options => renderDisplay({ ...display, ...options }),
-          setFingerNumbers: showFingerNumbers => renderDisplay({ ...display, showFingerNumbers }),
-          setMeasureLabels: showMeasureLabels => renderDisplay({ ...display, showMeasureLabels }),
+          setFretMode: fretMode => renderDisplay({ ...requestedDisplay, fretMode }),
+          setLayout: options => renderDisplay({ ...requestedDisplay, ...options }),
+          setFingerNumbers: showFingerNumbers => renderDisplay({ ...requestedDisplay, showFingerNumbers }),
+          setMeasureLabels: showMeasureLabels => renderDisplay({ ...requestedDisplay, showMeasureLabels }),
+          setTabOnly: tabOnly => renderDisplay({ ...requestedDisplay, tabOnly }),
+          setLyrics: lyrics => {
+            if (requestedDisplay.lyrics === lyrics) return Promise.resolve();
+            const { lyrics: _previous, ...options } = requestedDisplay;
+            return renderDisplay(lyrics ? { ...options, lyrics } : options);
+          },
           setLoop: range => audio!.setLoop(range ? { startQuarter: number(score.occurrences[range.from]!.start), endQuarter: number(score.occurrences[range.to]!.start) + number(score.occurrences[range.to]!.length) } : null),
           dispose() { abort.abort(); unsubscribe(); void audio!.dispose(); surface.remove(); document.fonts.delete(font); },
         };

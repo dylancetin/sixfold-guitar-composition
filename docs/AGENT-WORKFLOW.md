@@ -126,6 +126,12 @@ The score page's **PDF score** button uses `GET /arrangements/<id>/preview.pdf` 
 
 The server privately locates the matching source in `ARRANGEMENT_SOURCES_DIR` (default `.agent-runs`), accepting only real UUID run directories and regular source files. It never serves that directory or accepts source paths, source documents or validation reports from the browser. Missing/corrupt sources or failed exports return an error with no PDF bytes. The UI remains retryable and offers **Original PDF**. Layout PDFs are uncached responses and are not installed into the publication store; `/arrangement.pdf`, library PDF links, score/MIDI bytes and publication manifests remain immutable and unchanged.
 
+### Preview lyrics for existing drafts
+
+`/arrangements/<id>/lyrics.json` derives synchronized syllables from digest-verified saved source parts. Where the selected source has no lyrics, a private supplement may live at `<source-run>/lyrics/<score-digest>/`. `manifest.json` follows `LyricsSupplementSchema` in `src/server/supplemental-lyrics.ts`: exact source/score revisions, SHA-256 and byte lengths for `lyrics.json` and retrieved `source.html`, retrieval time, actual model/task identity, and a public draft/coverage/source disclosure. `lyrics.json` follows `PreviewLyricsSchema`. Keep retrieved text, full lyrics and alignment evidence ignored/local, alongside the supplement; never rewrite the saved source or published bundle to add them.
+
+The loader checks source bytes, payload bytes, revision bindings, every source event/reference/onset, selected melody/notation/occurrence mapping, and unique lyric slots. Invalid or missing supplements supply no text. Verified upstream syllables take precedence. The viewer displays model-aligned/partial status and limitations beside the default-on Lyrics switch. Model alignment is not source-provided timing or human approval. Alternate verses may occupy separate lines over folded repeats; occurrence aliases do not implement pass-specific highlighting. Lyrics are preview-only, including when a supplement is present.
+
 ## Checks and remaining acceptance
 
 ```sh

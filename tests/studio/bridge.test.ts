@@ -100,6 +100,23 @@ test('folded bridge resolves passes and replaces projection/geometry transaction
     await expect(controller.setFretMode('absolute')).rejects.toThrow('render failed');
     await controller.setLayout({ spacing: 'tight', barsPerRow: 4 });
     expect(calls.at(-1)).toMatchObject({ fretMode: 'relative', showFingerNumbers: true, showMeasureLabels: true });
+    await controller.setTabOnly(true);
+    expect(calls.at(-1)).toMatchObject({ tabOnly: true, showFingerNumbers: true, showMeasureLabels: true, spacing: 'tight', barsPerRow: 4 });
+    await controller.setLayout({ spacing: 'tight', barsPerRow: 4 });
+    expect(calls.at(-1)).toMatchObject({ tabOnly: true });
+    expect(audioCount).toBe(1); expect(cursor().hidden).toBe(false);
+    const lyrics = { sourceRevision: score.source.revision, scoreRevision: { id: score.revision.id, digest: score.revision.digest }, syllables: [] };
+    await controller.setLyrics(lyrics);
+    expect(calls.at(-1)?.lyrics).toEqual(lyrics);
+    hold = true;
+    const incomingLyrics = controller.setLyrics({ ...lyrics });
+    const incomingLayout = controller.setLayout({ spacing: 'normal', barsPerRow: 2 });
+    expect(calls.at(-1)).toMatchObject({ lyrics, spacing: 'normal', barsPerRow: 2 });
+    pending.at(-1)!(); await incomingLayout;
+    pending.at(-2)!(); await incomingLyrics;
+    hold = false;
+    await controller.setLyrics(undefined);
+    expect(calls.at(-1)?.lyrics).toBeUndefined();
     expect(audioCount).toBe(1); expect(cursor().hidden).toBe(false);
     controller.dispose();
   } finally {
