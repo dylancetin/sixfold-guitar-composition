@@ -60,6 +60,15 @@ button svg { flex-shrink: 0; }
 .finger-control input::before { content: ''; position: absolute; width: 12px; height: 12px; top: 2px; left: 2px; border-radius: 50%; background: #5d6d51; }
 .finger-control input:checked { background: var(--teal); border-color: var(--teal); }
 .finger-control input:checked::before { transform: translateX(12px); background: var(--paper); }
+.staff-view-control { display: flex; align-items: center; gap: 7px; font-size: 10px; }
+.preview-layout-controls .staff-view-control label { gap: 0; position: relative; min-height: 32px; padding: 0 11px; border: 1px solid #a9b59e; margin-left: -1px; background: transparent; color: #4d6241; cursor: pointer; font-weight: 500; }
+.staff-view-control label:nth-child(2) { margin-left: 0; border-radius: 5px 0 0 5px; }
+.staff-view-control label:last-child { border-radius: 0 5px 5px 0; }
+.staff-view-control input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.staff-view-control label:has(input:checked) { z-index: 1; background: var(--teal); border-color: var(--teal); color: var(--paper); }
+.staff-view-control label:has(input:focus-visible) { outline: 2px solid var(--teal); outline-offset: 2px; z-index: 2; }
+.staff-view-control label:has(input:disabled) { cursor: default; opacity: .6; }
+.staff-view-control input:disabled { cursor: default; }
 .finger-legend { flex-basis: 100%; font-size: 10px; line-height: 1.6; }
 .lyrics-control { display: flex; align-items: center; gap: 7px; font-size: 11px; color: #4d6241; }
 .score-panel[data-spacing=compact] { --control-padding: 10px 14px; --control-gap: 10px; }

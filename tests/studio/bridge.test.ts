@@ -100,10 +100,12 @@ test('folded bridge resolves passes and replaces projection/geometry transaction
     await expect(controller.setFretMode('absolute')).rejects.toThrow('render failed');
     await controller.setLayout({ spacing: 'tight', barsPerRow: 4 });
     expect(calls.at(-1)).toMatchObject({ fretMode: 'relative', showFingerNumbers: true, showMeasureLabels: true });
-    await controller.setTabOnly(true);
-    expect(calls.at(-1)).toMatchObject({ tabOnly: true, showFingerNumbers: true, showMeasureLabels: true, spacing: 'tight', barsPerRow: 4 });
+    await controller.setStaves('tab');
+    expect(calls.at(-1)).toMatchObject({ staves: 'tab', showFingerNumbers: true, showMeasureLabels: true, spacing: 'tight', barsPerRow: 4 });
     await controller.setLayout({ spacing: 'tight', barsPerRow: 4 });
-    expect(calls.at(-1)).toMatchObject({ tabOnly: true });
+    expect(calls.at(-1)).toMatchObject({ staves: 'tab' });
+    await controller.setStaves('notation');
+    expect(calls.at(-1)).toMatchObject({ staves: 'notation', spacing: 'tight', barsPerRow: 4 });
     expect(audioCount).toBe(1); expect(cursor().hidden).toBe(false);
     const lyrics = { sourceRevision: score.source.revision, scoreRevision: { id: score.revision.id, digest: score.revision.digest }, syllables: [] };
     await controller.setLyrics(lyrics);

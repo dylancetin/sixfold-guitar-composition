@@ -8,36 +8,48 @@ import { study } from './fixture';
 
 const TREBLE_CLEF = '&#57424;', TAB_CLEF = '&#57453;';
 
-test('TAB-only preview hides the standard staff without changing mappings, frets or timing', async () => {
+test('staff view switches notes/TAB/both without changing mappings, frets or timing', async () => {
   const { score } = await study(2, 2, 2);
   const original = JSON.stringify(score);
   const both = createAlphaTabScore(score, { notationMode: 'unfolded', showFingerNumbers: true });
-  const tab = createAlphaTabScore(score, { notationMode: 'unfolded', showFingerNumbers: true, tabOnly: true });
+  const tab = createAlphaTabScore(score, { notationMode: 'unfolded', showFingerNumbers: true, staves: 'tab' });
+  const notes = createAlphaTabScore(score, { notationMode: 'unfolded', showFingerNumbers: true, staves: 'notation' });
+  expect(createAlphaTabScore(score, { notationMode: 'unfolded', showFingerNumbers: true, staves: 'both' }).projection).toEqual(both.projection);
   expect(both.projection.engraving.staffAndTab).toBe(true);
-  expect(tab.projection.engraving.staffAndTab).toBe(false);
-  expect({ ...tab.projection, engraving: { ...tab.projection.engraving, staffAndTab: true } }).toEqual(both.projection);
-  expect(tab.placements).toEqual(both.placements);
-  const [bothLayout, tabLayout] = [await both.renderSvg(), await tab.renderSvg()];
+  for (const single of [tab, notes]) {
+    expect(single.projection.engraving.staffAndTab).toBe(false);
+    expect({ ...single.projection, engraving: { ...single.projection.engraving, staffAndTab: true } }).toEqual(both.projection);
+    expect(single.placements).toEqual(both.placements);
+  }
+  const [bothLayout, tabLayout, notesLayout] = [await both.renderSvg(), await tab.renderSvg(), await notes.renderSvg()];
   const svg = (layout: typeof bothLayout) => layout.fragments.map(f => f.svg).join('');
-  const bothSvg = svg(bothLayout), tabSvg = svg(tabLayout);
+  const bothSvg = svg(bothLayout), tabSvg = svg(tabLayout), notesSvg = svg(notesLayout);
   expect(bothSvg).toContain(TREBLE_CLEF); expect(bothSvg).toContain(TAB_CLEF);
   expect(tabSvg).not.toContain(TREBLE_CLEF); expect(tabSvg).toContain(TAB_CLEF);
-  // Every performed beat stays clickable/cursor-addressable in the TAB-only layout.
-  expect(tabLayout.beats.length).toBe(bothLayout.beats.length);
-  expect(tabLayout.height).toBeLessThan(bothLayout.height);
+  expect(notesSvg).toContain(TREBLE_CLEF); expect(notesSvg).not.toContain(TAB_CLEF);
+  // Every performed beat stays clickable/cursor-addressable in single-staff layouts.
+  for (const layout of [tabLayout, notesLayout]) {
+    expect(layout.beats.length).toBe(bothLayout.beats.length);
+    expect(layout.height).toBeLessThan(bothLayout.height);
+  }
   // Finger numbers are drawn only beside staff notes.
-  expect(tabSvg.match(/&#606(?:8[89]|9[0-2]);/g) ?? []).toHaveLength(0);
+  const fingers = (text: string) => text.match(/&#606(?:8[89]|9[0-2]);/g) ?? [];
+  expect(fingers(tabSvg)).toHaveLength(0);
+  expect(fingers(notesSvg).length).toBe(fingers(bothSvg).length);
+  expect(fingers(bothSvg).length).toBeGreaterThan(0);
+  // Notes-only drops the TAB fret caption.
+  expect(notesSvg).not.toContain('frets relative to capo'); expect(bothSvg).toContain('frets relative to capo');
   expect(JSON.stringify(score)).toBe(original);
 });
 
-test('TAB-only PDF option defaults off and round-trips strictly', () => {
-  expect(PdfLayoutSettingsSchema.parse({}).tabOnly).toBe(false);
-  expect(parsePdfLayoutQuery(new URLSearchParams()).tabOnly).toBe(false);
-  for (const tabOnly of [false, true]) {
-    const settings = PdfLayoutSettingsSchema.parse({ tabOnly });
+test('staff view PDF option defaults to both and round-trips strictly', () => {
+  expect(PdfLayoutSettingsSchema.parse({}).staves).toBe('both');
+  expect(parsePdfLayoutQuery(new URLSearchParams()).staves).toBe('both');
+  for (const staves of ['both', 'notation', 'tab'] as const) {
+    const settings = PdfLayoutSettingsSchema.parse({ staves });
     expect(parsePdfLayoutQuery(new URLSearchParams(pdfLayoutQuery(settings)))).toEqual(settings);
   }
-  for (const query of ['tabOnly=1', 'tabOnly=yes', 'tabOnly=true&tabOnly=false']) expect(() => parsePdfLayoutQuery(new URLSearchParams(query))).toThrow();
+  for (const query of ['staves=1', 'staves=notes', 'staves=TAB', 'staves=tab&staves=both', 'tabOnly=true']) expect(() => parsePdfLayoutQuery(new URLSearchParams(query))).toThrow();
 });
 
 test('TAB-only keeps one rest per fully silent span and hides rests under another voice', () => {
@@ -57,6 +69,6 @@ test('TAB-only keeps one rest per fully silent span and hides rests under anothe
 
 test('hidden TAB rests leave no glyphs in the SVG used by the viewer and PDF', async () => {
   const { score } = await study(2, 2, 2);
-  const svg = (await createAlphaTabScore(score, { notationMode: 'unfolded', tabOnly: true }).renderSvg()).fragments.map(f => f.svg).join('');
+  const svg = (await createAlphaTabScore(score, { notationMode: 'unfolded', staves: 'tab' }).renderSvg()).fragments.map(f => f.svg).join('');
   expect(svg).not.toContain('rgba(0,0,0,0)');
 });

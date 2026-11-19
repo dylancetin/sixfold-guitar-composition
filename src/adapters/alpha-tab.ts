@@ -19,7 +19,9 @@ export type NotationLayout = {
   systems: { index: number; bars: number[]; visual: Bounds; real: Bounds }[];
   beats: { nativeBeatId: string; occurrenceId: string; bounds: Bounds; cursorX: number }[];
 };
-export type NotationOptions = { title?: string; barsPerRow?: number; fretMode?: 'relative' | 'absolute'; spacing?: 'normal' | 'compact' | 'tight'; showFingerNumbers?: boolean; showMeasureLabels?: boolean; tabOnly?: boolean; hideTitle?: boolean; notationMode?: NotationMode; lyrics?: PreviewLyrics };
+/** Which staves to engrave: standard notation + TAB, notation only, or TAB only. Layout only. */
+export type StaffView = 'both' | 'notation' | 'tab';
+export type NotationOptions = { title?: string; barsPerRow?: number; fretMode?: 'relative' | 'absolute'; spacing?: 'normal' | 'compact' | 'tight'; showFingerNumbers?: boolean; showMeasureLabels?: boolean; staves?: StaffView; hideTitle?: boolean; notationMode?: NotationMode; lyrics?: PreviewLyrics };
 
 function rhythmCandidates(): Rhythm[] {
   const result: Rhythm[] = [];
@@ -114,14 +116,16 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
   score.title = options.title ?? 'Solo guitar arrangement';
   const absoluteFrets = options.fretMode === 'absolute';
   const formCaption = schedule.folded ? 'folded repeats' : schedule.unfoldedReason ? `unfolded, ${schedule.unfoldedReason}` : 'unfolded performance';
-  score.subTitle = `Capo ${canonical.instrument.capo} | ${absoluteFrets ? 'absolute neck frets' : 'frets relative to capo'} | ${formCaption}`;
+  const fretCaption = options.staves === 'notation' ? '' : ` | ${absoluteFrets ? 'absolute neck frets' : 'frets relative to capo'}`;
+  score.subTitle = `Capo ${canonical.instrument.capo}${fretCaption} | ${formCaption}`;
   const track = new at.model.Track(); track.name = 'Guitar'; track.shortName = 'Gtr.';
   track.playbackInfo.program = 24;
   score.addTrack(track);
   const staff = new at.model.Staff();
   staff.stringTuning = new at.model.Tuning('Standard EADGBE', [...canonical.instrument.tuning].reverse(), true);
   staff.capo = absoluteFrets ? 0 : canonical.instrument.capo; staff.transpositionPitch = 0; staff.displayTranspositionPitch = -12;
-  staff.showStandardNotation = !options.tabOnly; staff.showTablature = true; track.addStaff(staff);
+  const staves = options.staves ?? 'both';
+  staff.showStandardNotation = staves !== 'tab'; staff.showTablature = staves !== 'notation'; track.addStaff(staff);
   const laneFor = assignLanes(timeline);
   const laneCount = Math.max(...laneFor.values()) + 1;
   const mappings: AdapterProjection['mapping'] = [];
@@ -199,7 +203,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
       addGap(add(occurrence.start, occurrence.length));
       if (lane === 0 && options.showMeasureLabels) voice.beats[0]!.text = `${display.label}${!schedule.folded && index === schedule.bars.length - 1 ? ' FINAL' : ''}`;
     }
-    if (options.tabOnly) hideCollidingTabRests(barBeats);
+    if (options.staves === 'tab') hideCollidingTabRests(barBeats);
   }
   score.finish(settings);
   for (const { beat, at: atTime, duration } of nativeBeats) {
@@ -229,10 +233,10 @@ export function createAlphaTabScore(input: ScoreV1, options: NotationOptions = {
     scoreRevision: { id: timeline.score.revision.id, digest: timeline.score.revision.digest },
     ...(schedule.folded ? {
       schemaVersion: 2, form: 'folded-linear-repeats',
-      engraving: { partCount: 1, staffAndTab: !options.tabOnly, writtenOctaveOffset: 12, bars: schedule.bars.map(b => ({ nativeBarId: b.nativeBarId, writtenBarId: b.written.id, representativeOccurrenceId: b.representative.id, occurrenceIds: b.occurrences.map(o => o.id), displayStart: b.start, label: b.label })), repeats: timeline.score.form.repeats },
+      engraving: { partCount: 1, staffAndTab: (options.staves ?? 'both') === 'both', writtenOctaveOffset: 12, bars: schedule.bars.map(b => ({ nativeBarId: b.nativeBarId, writtenBarId: b.written.id, representativeOccurrenceId: b.representative.id, occurrenceIds: b.occurrences.map(o => o.id), displayStart: b.start, label: b.label })), repeats: timeline.score.form.repeats },
     } : {
       schemaVersion: 1, form: 'unfolded-no-repeat-commands', ...(schedule.unfoldedReason ? { unfoldedReason: schedule.unfoldedReason } : {}),
-      engraving: { partCount: 1, staffAndTab: !options.tabOnly, writtenOctaveOffset: 12, bars: schedule.bars.map(b => ({ occurrenceId: b.representative.id, writtenBarId: b.written.id, pass: b.representative.pass, label: b.label })) },
+      engraving: { partCount: 1, staffAndTab: (options.staves ?? 'both') === 'both', writtenOctaveOffset: 12, bars: schedule.bars.map(b => ({ occurrenceId: b.representative.id, writtenBarId: b.written.id, pass: b.representative.pass, label: b.label })) },
     }),
     mapping: native.mappings,
     playback: { activeProjection: 'role-separated-only', tracks: ROLES.map((role, channel) => ({ role, channel, program: 24 })), events: timeline.notes.map(({ placement: _placement, occurrenceIds: _occurrences, ...event }) => event) },
@@ -275,7 +279,7 @@ export function createAlphaTabScore(input: ScoreV1, options: NotationOptions = {
               requireAdapter(system.bars[0] === c.firstMasterBarIndex && system.bars.at(-1) === c.lastMasterBarIndex, 'Partial clips system bars');
               requireAdapter(system.visual.y >= c.y - 1 && system.visual.y + system.visual.h <= c.y + c.height + 1 && system.visual.x >= c.x - 1 && system.visual.x + system.visual.w <= c.x + c.width + 1, 'Partial clips system bounds');
             }
-            return { x: c.x, y: c.y, width: c.width, height: c.height, first: c.firstMasterBarIndex, last: c.lastMasterBarIndex, system: c.firstMasterBarIndex < 0 ? null : contained[0]!.index, svg: (options.tabOnly ? c.renderResult.replace(HIDDEN_TAB_GLYPH, '') : c.renderResult).replaceAll('class="at"', 'class="at" font-family="alphaTab" font-size="34"') };
+            return { x: c.x, y: c.y, width: c.width, height: c.height, first: c.firstMasterBarIndex, last: c.lastMasterBarIndex, system: c.firstMasterBarIndex < 0 ? null : contained[0]!.index, svg: (options.staves === 'tab' ? c.renderResult.replace(HIDDEN_TAB_GLYPH, '') : c.renderResult).replaceAll('class="at"', 'class="at" font-family="alphaTab" font-size="34"') };
           });
           requireAdapter(fragments.filter(f => f.system !== null).length === systems.length, 'Missing system SVG');
           const beats = native.nativeBeats.flatMap(({ beat, occurrenceIds }) => {

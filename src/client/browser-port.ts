@@ -3,6 +3,8 @@ import type { PreviewLyrics } from '../lyrics';
 
 export type Role = 'melody' | 'bass' | 'harmony';
 export type FretMode = 'relative' | 'absolute';
+/** Standard notation + TAB, notation only, or TAB only. */
+export type StaffView = 'both' | 'notation' | 'tab';
 export type PreviewLayout = { spacing: 'normal' | 'compact' | 'tight'; barsPerRow: number };
 export const DEFAULT_PREVIEW_LAYOUT: PreviewLayout = { spacing: 'tight', barsPerRow: 4 };
 export type PlaybackSnapshot = {
@@ -24,7 +26,7 @@ export interface ScoreController {
   setLayout(layout: PreviewLayout): Promise<void>;
   setFingerNumbers(enabled: boolean): Promise<void>;
   setMeasureLabels(enabled: boolean): Promise<void>;
-  setTabOnly(enabled: boolean): Promise<void>;
+  setStaves(staves: StaffView): Promise<void>;
   setLyrics(lyrics: PreviewLyrics | undefined): Promise<void>;
   dispose(): void;
 }
