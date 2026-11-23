@@ -9,6 +9,7 @@ export const PdfLayoutSettingsSchema = z.strictObject({
   showFingerNumbers: z.boolean().default(false),
   showMeasureLabels: z.boolean().default(false),
   staves: z.enum(['both', 'notation', 'tab']).default('both'),
+  noteNames: z.boolean().default(false),
 });
 export type PdfLayoutSettings = z.infer<typeof PdfLayoutSettingsSchema>;
 
@@ -22,7 +23,7 @@ export function parsePdfLayoutQuery(params: URLSearchParams): PdfLayoutSettings 
   for (const [key, value] of params) {
     if (Object.hasOwn(input, key)) throw new Error('Duplicate PDF layout setting');
     input[key] = key === 'scale' || key === 'barsPerRow' ? Number(value)
-      : key === 'showFingerNumbers' || key === 'showMeasureLabels' ? value === 'true' ? true : value === 'false' ? false : value : value;
+      : key === 'showFingerNumbers' || key === 'showMeasureLabels' || key === 'noteNames' ? value === 'true' ? true : value === 'false' ? false : value : value;
   }
   return PdfLayoutSettingsSchema.parse(input);
 }

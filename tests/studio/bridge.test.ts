@@ -106,6 +106,8 @@ test('folded bridge resolves passes and replaces projection/geometry transaction
     expect(calls.at(-1)).toMatchObject({ staves: 'tab' });
     await controller.setStaves('notation');
     expect(calls.at(-1)).toMatchObject({ staves: 'notation', spacing: 'tight', barsPerRow: 4 });
+    await controller.setNoteNames(true);
+    expect(calls.at(-1)).toMatchObject({ noteNames: true, staves: 'notation', spacing: 'tight', barsPerRow: 4 });
     expect(audioCount).toBe(1); expect(cursor().hidden).toBe(false);
     const lyrics = { sourceRevision: score.source.revision, scoreRevision: { id: score.revision.id, digest: score.revision.digest }, syllables: [] };
     await controller.setLyrics(lyrics);

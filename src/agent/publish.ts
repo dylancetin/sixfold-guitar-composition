@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { AdapterProjectionSchema, contentDigest, ValidatedScoreV1Schema, revisionDigest, ScoreV1Schema, verifyRevisionDigest } from '../domain';
+import { AdapterProjectionSchema, contentDigest, GUITAR_TUNINGS, guitarTuningId, ValidatedScoreV1Schema, revisionDigest, ScoreV1Schema, verifyRevisionDigest } from '../domain';
 import type { Artifact, Engine, ScoreAdapter, Validator } from '../domain';
 import { guitarValidator } from '../engine';
 import { PublicationManifestSchema, publicationId, publicationLinks } from '../publication';
@@ -78,6 +78,23 @@ export async function publishArrangement(options: PublishOptions, dependencies: 
   const selectedSourceIds = new Set(request.selection.sections.flatMap((section) => section.selectors.flatMap((selector) => selector.eventIds)));
   const selectedArticulations = [...new Set(source.events.flatMap((event) => event.kind === 'note' && selectedSourceIds.has(event.id) ? event.effects.filter((effect) => effect.code.startsWith('articulation-')).map((effect) => effect.code) : []))].sort();
   const simplifiedBendIds = source.events.filter((event) => selectedSourceIds.has(event.id) && event.kind === 'note' && event.effects.some((effect) => effect.code === 'source-bend-simplified')).map((event) => event.id);
+  // Opt-in ornament simplifications and display-only spelling hints on every source note this arrangement uses.
+  const usedSourceIds = new Set([...selectedSourceIds, ...score.sounds.flatMap((sound) => sound.provenance.kind === 'source' ? sound.provenance.eventIds : sound.provenance.evidenceEventIds)]);
+  const simplifiedOrnaments = new Map<string, { melody: string[]; accompaniment: string[] }>();
+  const spellingHintIds: string[] = [];
+  for (const event of source.events) {
+    if (event.kind !== 'note' || !usedSourceIds.has(event.id)) continue;
+    for (const effect of event.effects) {
+      if (effect.code === 'source-ornament-simplified') {
+        const field = (() => { try { return String((JSON.parse(effect.description) as { field?: unknown }).field ?? 'ornament'); } catch { return 'ornament'; } })();
+        const entry = simplifiedOrnaments.get(field) ?? { melody: [], accompaniment: [] };
+        (selectedSourceIds.has(event.id) ? entry.melody : entry.accompaniment).push(event.id);
+        simplifiedOrnaments.set(field, entry);
+      }
+    }
+    if (event.effects.some((effect) => effect.code.startsWith('source-notation-spn') || effect.code.startsWith('source-notation-courtesyAccidental'))) spellingHintIds.push(event.id);
+  }
+  const ornamentNames: Record<string, string> = { slide: 'slide-in/slide-out glides', leftHandVibrato: 'vibrato', vibratoWithTremoloBar: 'tremolo-bar vibrato', letRing: 'let-ring sustain beyond the written duration' };
   const sourceGraceIds = new Set(source.events.filter((event) => event.kind === 'note' && event.effects.some((effect) => effect.code === 'source-grace')).map((event) => event.id));
   const retainedGraceSoundIds = new Set(score.sounds.filter((sound) => (sound.provenance.kind === 'source' ? sound.provenance.eventIds : sound.provenance.evidenceEventIds).some((id) => sourceGraceIds.has(id))).map((sound) => sound.id));
   const retainedGraceAttacks = score.performedSounds.filter((sound) => retainedGraceSoundIds.has(sound.soundId)).length;
@@ -86,7 +103,7 @@ export async function publishArrangement(options: PublishOptions, dependencies: 
     `# ${run.title}`, '', `Status: ${label}. Human melody audition, movement calibration and guitarist review remain pending.`,
     `Source: ${run.sourceUrl}`, `Source revision: ${source.revision.id} / ${source.revision.digest}`,
     `Score revision: ${score.revision.id} / ${score.revision.digest}`,
-    `Difficulty: ${score.preferences.difficulty}; standard tuning; capo ${score.instrument.capo}; sounding key preserved.`,
+    `Difficulty: ${score.preferences.difficulty}; ${GUITAR_TUNINGS[guitarTuningId(score.instrument.tuning) ?? 'standard'].label.toLowerCase()} (${GUITAR_TUNINGS[guitarTuningId(score.instrument.tuning) ?? 'standard'].strings}); capo ${score.instrument.capo}; sounding key preserved.`,
     `Form: ${score.bars.length} written bars / ${score.occurrences.length} performed occurrences / ${score.performedSounds.length} attacks.`,
     `Capo comparison: ${JSON.stringify(score.capoComparison)}`,
     accepted ? `Agent: ${accepted.delegation.provider}/${accepted.delegation.model}; task ${accepted.delegation.taskId}; call ${accepted.delegation.callId}; transport project-subagent (not an HTTP planner); called ${accepted.delegation.calledAt}; exact response SHA-256 ${accepted.delegation.responseDigest}.` : 'Planner: deterministic fallback. No model-authored arrangement claim.',
@@ -97,6 +114,8 @@ export async function publishArrangement(options: PublishOptions, dependencies: 
     ...request.selection.sections.map((section) => `- ${section.label}: ${section.selectors.length ? section.selectors.map((selector) => `part ${selector.partId}/${selector.voiceId} (${source.parts.find((part) => part.id === selector.partId)?.name ?? 'source identity'})`).join(', ') : 'explicit source-grounded silence'}.`),
     ...(request.selection.sections.some((section) => section.label.includes('fallback line')) ? ['- Instrumental fallback is an unapproved choice of an existing source line, not established orchestral-foreground fidelity. Its contour and grace timing can differ materially from another instrument. Selected-voice silence does not establish ensemble silence. Audition these choices; no high line was transposed to manufacture a replacement.'] : []),
     ...(sourceGraceIds.size ? [`- Imported source: ${sourceGraceIds.size} grace attacks preserved in the private source using source-player bounded time borrowing, with raw nominal fractions and separate pitches retained. This arrangement retains ${retainedGraceAttacks} source-derived grace attacks across its performed roles. Retained grace-derived attacks are engraved as realized note values, not small-note ornamental glyphs; any accompaniment adaptations are audited below.`] : []),
+    ...[...simplifiedOrnaments].sort(([a], [b]) => a.localeCompare(b)).map(([field, ids]) => `- EXPLICIT SIMPLIFIED DRAFT (--simplify-ornaments): ${ornamentNames[field] ?? field} NOT reproduced on ${ids.melody.length} melody and ${ids.accompaniment.length} accompaniment source notes used here${ids.melody.length ? ` (melody: ${ids.melody.slice(0, 12).join(', ')}${ids.melody.length > 12 ? ', …' : ''})` : ''}. Notated pitch, onset and exact metrical duration are preserved; this is not exact expressive source fidelity.`),
+    ...(spellingHintIds.length ? [`- Source display spelling hints (spn/courtesyAccidental) on ${spellingHintIds.length} used source notes (${spellingHintIds.slice(0, 8).join(', ')}${spellingHintIds.length > 8 ? ', …' : ''}) are retained privately but not reproduced in engraving; sounding pitch is unaffected.`] : []),
     ...(selectedArticulations.length ? [`- Selected source articulations retained in the private source: ${selectedArticulations.join(', ')}. Draft engraving/audio preserve nominal metrical pitches/durations but do not reproduce expressive legato/staccato/velocity/ghost articulation. This is not an expressive source-performance transcription.`] : []),
     ...(selectedArticulations.includes('articulation-closed-slide') ? ['- Closed legato/shift slides are a nominal endpoint transcription: the explicit contiguous source-note pitches and metrical onsets/releases are preserved. Continuous glides and slide glyphs are not reproduced. Unknown/open-ended slides remain unsupported and are not silently flattened.'] : []),
     '', '## Plan decisions', ...plan.candidates.map((c) => `- ${c.id} (${c.role}, ${c.sourceEventIds.join(', ')}): ${c.reason}`),

@@ -1,7 +1,8 @@
 import { contentDigest, ImportResultSchema, revisionDigest, SourceScoreV1Schema } from '../domain';
 import type { Diagnostic, ImportResult, SourceAdapter, SourceScoreV1 } from '../domain';
 import { diagnostic, fail, PARSER_VERSION, SourceFailure } from './common';
-import { deriveUncertainKey, normalizePart, normalizeStructure, sameStructure } from './normalize';
+import { declaredKeySignature, normalizePart, normalizeStructure, sameStructure, sourceKey } from './normalize';
+import type { DeclaredKeySignature } from './normalize';
 import { checkRestrictions, metadataFromPage, parseBoundary, parseJson, RawPartSchema } from './raw';
 import { CDN_HOST, PAGE_HOSTS, parseSongUrl, SourceArtifactStore, Transport } from './transport';
 import type { ArtifactSink, SourceFetch } from './transport';
@@ -13,6 +14,7 @@ export type SongsterrSourceOptions = {
   now?: () => Date;
   /** Explicitly requested simplified draft: retain notated pitch, disclose omitted bend motion. Default rejects selected bends. */
   simplifyBends?: boolean;
+  simplifyOrnaments?: boolean;
 };
 export const songsterrRawArtifacts = new SourceArtifactStore();
 
@@ -36,6 +38,7 @@ export function createSongsterrSourceAdapter(options: SongsterrSourceOptions = {
         let structure: ReturnType<typeof normalizeStructure> | undefined;
         let version: number | undefined;
         const unversionedPartIds: number[] = [];
+        const keyDeclarations: Array<{ partId: number; key: DeclaredKeySignature | null }> = [];
         // Sequential acquisition stops immediately on any denial, including an irrelevant part's 403.
         for (const track of metadata.tracks) {
           abort.throwIfAborted();
@@ -62,7 +65,8 @@ export function createSongsterrSourceAdapter(options: SongsterrSourceOptions = {
             const nextStructure = normalizeStructure(raw);
             if (structure && !await sameStructure(structure, nextStructure)) fail(`Part ${track.partId} disagrees on written bars/meter/tempo/repeats.`, 'unsupported', 'form-mismatch');
             structure = nextStructure;
-            const normalized = normalizePart(track, raw, structure.bars, options.simplifyBends === true ? { simplifyBends: true } : {});
+            keyDeclarations.push({ partId: track.partId, key: declaredKeySignature(raw) });
+            const normalized = normalizePart(track, raw, structure.bars, { ...(options.simplifyBends === true ? { simplifyBends: true } : {}), ...(options.simplifyOrnaments === true ? { simplifyOrnaments: true } : {}) });
             parts.push(normalized.part); events.push(...normalized.events); diagnostics.push(...normalized.diagnostics);
           } catch (error) {
             if (!(error instanceof SourceFailure) || !(track.isDrums || raw.instrumentId === 1024)) throw error;
@@ -79,7 +83,7 @@ export function createSongsterrSourceAdapter(options: SongsterrSourceOptions = {
         const source = SourceScoreV1Schema.parse({
           schemaVersion: 1, revision: { id: `provisional-source-${provisionalHash.slice(0, 32)}`, parentId: null, digest: '0'.repeat(64) },
           manifest: { identity: { kind: 'songsterr', url: parsed.url.href, songId: metadata.songId, upstreamRevisionId: metadata.revisionId, formatVersion: version, ...(unversionedPartIds.length ? { unversionedPartIds } : {}) }, retrievedAt: (options.now?.() ?? new Date()).toISOString(), parser: { name: 'songsterr-source-adapter', version: PARSER_VERSION }, artifacts: transport.artifacts },
-          key: deriveUncertainKey(events), parts, events, bars: structure.bars, tempos: structure.tempos, form: structure.form,
+          key: sourceKey(keyDeclarations, events), parts, events, bars: structure.bars, tempos: structure.tempos, form: structure.form,
         });
         source.revision.digest = await revisionDigest(source);
         diagnostics.push(diagnostic('selection-needed', 'Valid PROVISIONAL IMPORT document: its schema and digest are internally valid, but its header is not an API-allocated saved source identity. API must allocate project/source revision identity and parent, recompute digest BEFORE saving, then call createDefaultMelodySelection(stampedSource). No source data is corrupted or stale.', 'info'));

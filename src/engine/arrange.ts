@@ -1,4 +1,4 @@
-import { add, ArrangementRequestSchema, compare, eventEnd, overlaps, PlanSchema, PlannerProvenanceSchema, q, ScoreV1Schema, SourceScoreV1Schema, subtract } from '../domain';
+import { add, ArrangementRequestSchema, compare, GUITAR_TUNINGS, preferredTuning, eventEnd, overlaps, PlanSchema, PlannerProvenanceSchema, q, ScoreV1Schema, SourceScoreV1Schema, subtract } from '../domain';
 import type { ArrangeResult, ArrangementRequest, Diagnostic, Engine, Instrument, Occurrence, PerformedSound, Placement, Plan, PlannerProvenance, Rest, ScoreV1, Sound, SourceEvent, SourceScoreV1 } from '../domain';
 import { diagnostic, expandForm } from './form';
 import { digest, documentDigest, same } from './identity';
@@ -66,7 +66,8 @@ export const guitarEngine:Engine={
 };
 
 function arrangeCapo(source:SourceScoreV1,request:ArrangementRequest,plan:Plan,planner:PlannerProvenance,melody:Sound[],melodyRests:Rest[],capo:number,budget:Budget):Trial {
-  const instrument:Instrument={id:'standard-six-string-guitar-v1',tuning:[40,45,50,55,59,64],stringOrder:'low-to-high',capo,maxPhysicalFret:request.maxPhysicalFret,writtenOctaveOffset:12};
+  const tuning=GUITAR_TUNINGS[preferredTuning(request.preferences)];
+  const instrument:Instrument={id:tuning.instrumentId,tuning:[...tuning.midi] as Instrument['tuning'],stringOrder:'low-to-high',capo,maxPhysicalFret:request.maxPhysicalFret,writtenOctaveOffset:12};
   if (capo>instrument.maxPhysicalFret||capo>request.ability.maxPhysicalFret) return {status:'invalid-input',diagnostics:[diagnostic('profile-limit','Capo exceeds instrument/profile physical neck limit')]};
   const roles=new Set(request.locks.map((l)=>l.role));
   if (roles.size!==request.locks.length) return {status:'invalid-input',diagnostics:[diagnostic('approval-stale','Duplicate approved role lock')]};

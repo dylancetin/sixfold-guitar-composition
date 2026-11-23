@@ -1,4 +1,4 @@
-import { add, compare, eventEnd } from '../domain';
+import { add, compare, eventEnd, GUITAR_TUNINGS, preferredTuning } from '../domain';
 import type { ArrangementRequest, Plan, Q, SourceScoreV1 } from '../domain';
 
 const fraction = (q: Q) => `${q.n}/${q.d}`;
@@ -21,7 +21,7 @@ export function musicianBrief(source: SourceScoreV1, request: ArrangementRequest
     'Review baseline-plan.json against the source. You may retain good baseline choices; explain them as model-reviewed/selected, not newly composed material. A rename or a difference alone proves no model involvement.',
     'Plan cannot edit melody/selection, shorten notes directly, label chords, or guarantee retention: engine chooses feasible register/sustain variants and audits omissions.',
     '', `Source revision: ${source.revision.id} / ${source.revision.digest}`,
-    `Difficulty: ${request.preferences.difficulty}; tuning: standard [40,45,50,55,59,64]; capo: ${JSON.stringify(request.preferences.capo)}`,
+    `Difficulty: ${request.preferences.difficulty}; tuning: ${GUITAR_TUNINGS[preferredTuning(request.preferences)].label} [${GUITAR_TUNINGS[preferredTuning(request.preferences)].midi.join(',')}]; capo: ${JSON.stringify(request.preferences.capo)}`,
     `Key evidence (do not assert B major): ${JSON.stringify(source.key)}`,
     `Upstream identity / version exceptions: ${JSON.stringify(source.manifest.identity)}`,
     `Form: ${JSON.stringify(source.form)}; written bars: ${source.bars.length}`,

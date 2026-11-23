@@ -13,6 +13,6 @@ export function fail(message: string, status: FailureStatus = 'unsupported', cod
   throw new SourceFailure(status, diagnostic(code, message, 'error', barIds));
 }
 
-export const PARSER_VERSION = '1.5.0';
+export const PARSER_VERSION = '1.6.0';
 
 export const rawBeatId = (partId: number, barIndex: number, voiceIndex: number, beatIndex: number) => `p${partId}:b${barIndex + 1}:v${voiceIndex}:bt${beatIndex}`;

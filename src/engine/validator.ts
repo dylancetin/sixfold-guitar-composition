@@ -1,4 +1,4 @@
-import { add, compare, eventEnd, overlaps, q, subtract, ScoreV1Schema, SourceScoreV1Schema, ValidationContextSchema } from '../domain';
+import { add, compare, eventEnd, GUITAR_TUNINGS, guitarTuningId, preferredTuning, overlaps, q, subtract, ScoreV1Schema, SourceScoreV1Schema, ValidationContextSchema } from '../domain';
 import type { Diagnostic, Occurrence, PerformedTempo, Q, ScoreV1, Sound, SourceEvent, SourceScoreV1, ValidationContext, ValidationReport, Validator } from '../domain';
 import { documentDigest, same } from './identity';
 import { ordered, scopeDigest } from './scopes';
@@ -208,6 +208,7 @@ function validateNotation(score: ScoreV1,error: ErrorSink) {
 
 function validatePhysical(score: ScoreV1, tempos: PerformedTempo[],error: ErrorSink) {
   const { ability:a,instrument:g,preferences:p }=score;
+  if (guitarTuningId(g.tuning)!==preferredTuning(p)||GUITAR_TUNINGS[preferredTuning(p)].instrumentId!==g.id) error('profile-limit','Instrument tuning disagrees with the requested tuning preference');
   if (p.difficulty!==a.difficulty||p.ability.id!==a.id||p.ability.version!==a.version||score.capoComparison.selected!==g.capo||(p.capo.mode==='chosen'&&p.capo.value!==g.capo)||(p.capo.mode==='recommend'&&!p.capo.compare.includes(g.capo as 0|2))) error('profile-limit','Difficulty, resolved profile and selected capo disagree');
   const placements=new Map(score.placements.map((p)=>[p.id,p]));
   const contactsBySound=new Map<string,typeof score.contacts>();

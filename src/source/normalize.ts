@@ -7,11 +7,12 @@ import type { TripletFeel } from './swing';
 import { graceDurations } from './grace';
 import { simplifiedBend } from './bend';
 import { resolveClosedSlides } from './slides';
+import { simplifiedOrnament } from './ornament';
 
 type NoteEvent = Extract<SourceEvent, { kind: 'note' }>;
 type Effect = NoteEvent['effects'][number];
-const rootKeys = new Set('anacrusis strings frets tuning tuningFlat tuningShortDrone name title grandStaffGroup instrument instrumentId volume balance measures capo newLyrics voices automations version withLyrics songId partId revisionId hasPlayer isBlocked isRestricted restriction'.split(' '));
-const measureKeys = new Set('signature marker voices rest repeatStart repeat repeatCount tempo alternateEnding tripletFeel'.split(' '));
+const rootKeys = new Set('clef anacrusis strings frets tuning tuningFlat tuningShortDrone name title grandStaffGroup instrument instrumentId volume balance measures capo newLyrics voices automations version withLyrics songId partId revisionId hasPlayer isBlocked isRestricted restriction'.split(' '));
+const measureKeys = new Set('clef signature keySignature marker voices rest repeatStart repeat repeatCount tempo alternateEnding tripletFeel'.split(' '));
 const beatKeys = new Set('type rest text notes duration velocity beamStart beamStop tuplet tupletStart tupletStop dotted dots lyrics graceNote chord'.split(' '));
 const noteKeys = new Set('rest string fret tie'.split(' '));
 const articulations = new Set(['accentuated', 'ghost', 'velocity', 'hp', 'staccato']);
@@ -59,7 +60,7 @@ export function decodeExactRhythm(beat: RawBeat, barId: string) {
   const actual = beat.tuplet;
   const normal = actual === undefined ? 1 : actual === 2 ? 3 : 2 ** Math.floor(Math.log2(actual - 1));
   const factor = actual === undefined ? q(1) : q(normal, actual);
-  const types = beat.type === undefined ? [1, 2, 4, 8, 16, 32, 64] : [beat.type];
+  const types = beat.type === undefined ? [1, 2, 4, 8, 16, 32, 64, 128] : [beat.type];
   const dots = beat.dots !== undefined ? [beat.dots] : beat.dotted ? [1] : [0, 1, 2, 3];
   for (const type of types) {
     for (const dot of dots) {
@@ -132,7 +133,7 @@ export function normalizeStructure(raw: RawPart): { bars: WrittenBar[]; tempos: 
   return { bars, tempos, form: { kind: 'linear-repeats', repeats, tempoPolicy: 'restore-written-position', jumpTiePolicy: 'reject-cross-jump' }, tripletFeels };
 }
 
-export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: WrittenBar[], options: { simplifyBends?: boolean } = {}): { part: SourceScoreV1['parts'][number]; events: SourceEvent[]; diagnostics: Diagnostic[] } {
+export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: WrittenBar[], options: { simplifyBends?: boolean; simplifyOrnaments?: boolean } = {}): { part: SourceScoreV1['parts'][number]; events: SourceEvent[]; diagnostics: Diagnostic[] } {
   const percussion = metadata.isDrums === true || (raw.instrumentId ?? metadata.instrumentId) === 1024;
   const rawTuning = raw.tuning ?? metadata.tuning;
   const capo = raw.capo ?? 0;
@@ -153,6 +154,8 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
   const events: SourceEvent[] = [];
   const diagnostics: Diagnostic[] = [];
   const measureRestBars = new Set<string>();
+  const barStartGraceBars = new Set<string>();
+  const mutedStringBars = new Set<string>();
   if (capo) diagnostics.push(diagnostic('unsupported-construct', `Part ${raw.partId}: source capo ${capo} materialized once in sounding open-string pitches (source tuning + capo + relative fret). Original tuning/capo/frets remain in raw artifacts and source positions; the arrangement capo does not transpose these pitches.`, 'info'));
   const tripletFeels = effectiveTripletFeels(raw);
   const previous = new Map<string, Map<number, NoteEvent>>();
@@ -178,11 +181,13 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
       return rhythm;
     }));
     const mainDurations = swingDurations(measure.voices.map((voice, i) => ({ rest: voice.rest === true, rhythms: rhythms[i]!.filter((_, j) => !voice.beats[j]!.graceNote) })), tripletFeels[barIndex]!, bar.length);
-    const durations = measure.voices.map((voice, i) => {
+    const graced = measure.voices.map((voice, i) => {
       let main = 0;
       const played = voice.beats.map((beat, j) => beat.graceNote ? rhythms[i]![j]!.duration : mainDurations[i]![main++]!);
       return graceDurations(voice.beats, rhythms[i]!, played, bar.id, barIndex === 0);
     });
+    const durations = graced.map((voice) => voice.durations);
+    if (graced.some((voice) => voice.barStartOnBeat.size)) barStartGraceBars.add(bar.id);
     const graceDonors = measure.voices.map((voice, i) => {
       let main = 0;
       return voice.beats.map((beat, j) => !beat.graceNote && compare(durations[i]![j]!, mainDurations[i]![main++]!) !== 0);
@@ -200,7 +205,7 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
         const start = add(bar.start, offset);
         offset = add(offset, duration);
         if (compare(offset, bar.length) > 0) fail(`Part ${raw.partId} ${bar.id}: voice overfills meter.`, 'unsupported', 'unsupported-construct', [bar.id]);
-        const beatEffects: Effect[] = Object.keys(beat).filter((key) => !beatKeys.has(key)).map((key) => ({ code: `unsupported-${key.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80) || 'field'}`, description: `Uninterpreted source beat field: ${key.slice(0, 100)}. Original value retained in raw artifact.`, affectsMelody: true }));
+        const beatEffects: Effect[] = Object.keys(beat).filter((key) => !beatKeys.has(key)).map((key) => (options.simplifyOrnaments === true ? simplifiedOrnament(key, (beat as Record<string, unknown>)[key], beatId) : null) ?? ({ code: `unsupported-${key.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80) || 'field'}`, description: `Uninterpreted source beat field: ${key.slice(0, 100)}. Original value retained in raw artifact.`, affectsMelody: true }));
         const ref = (noteIndex: number): SourceRef => ({
           sourceNoteId: `${beatId}:n${noteIndex}`, partId: raw.partId, barId: bar.id, voiceId, beatId, noteIndex,
           rawWholeNoteDuration: rhythm.whole,
@@ -216,7 +221,16 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
         }
         const current = new Map<number, NoteEvent>();
         const byPitch = new Map<number, number[]>();
+        // A dead (muted) string without a fret is an unpitched strum scratch. It is retained raw and
+        // disclosed on the beat's pitched members; a beat of only muted strings is not interpreted.
+        const muted = beat.notes.flatMap((note, noteIndex) => !note.rest && note.fret === undefined && (note as { dead?: unknown }).dead === true ? [noteIndex] : []);
+        if (muted.length) {
+          if (muted.length === beat.notes.length) fail(`Beat of only unpitched muted strings at ${beatId}; no pitch or rest invented.`, 'unsupported', 'unsupported-construct', [bar.id]);
+          if (muted.some((i) => Object.keys(beat.notes[i]!).some((key) => !['string', 'dead'].includes(key)))) fail(`Muted string with extra fields at ${beatId}; not interpreted.`, 'unsupported', 'unsupported-construct', [bar.id]);
+          mutedStringBars.add(bar.id);
+        }
         for (const [noteIndex, note] of beat.notes.entries()) {
+          if (muted.includes(noteIndex)) continue;
           if (note.rest) fail(`Mixed rest and pitched chord members at ${beatId}.`);
           if (note.fret === undefined) fail(`Missing source fret at ${beatId}.`);
           const open = note.string === undefined ? undefined : tuning?.[note.string];
@@ -230,11 +244,12 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
           const tied = beat.notes[firstIndex]!.tie === true;
           if (indexes.some((i) => (beat.notes[i]!.tie === true) !== tied)) fail(`Unison contains conflicting attack/tie flags at ${beatId}.`);
           const effects: Effect[] = [...beatEffects];
+          if (muted.length) effects.push({ code: 'source-muted-strings-omitted', description: JSON.stringify({ beatId, mutedSourceNoteIds: muted.map((i) => ref(i).sourceNoteId), policy: 'unpitched-dead-strings-not-pitched-events' }), affectsMelody: false });
           if (beat.chord) effects.push({ code: 'source-chord-label', description: JSON.stringify({ beatId, ...beat.chord, policy: 'descriptive-label-only-explicit-notes-authoritative' }), affectsMelody: false });
           // Retain exact notation hints for every raw member/continuation, without adding parallel domain types.
           effects.push({ code: 'source-notation', description: JSON.stringify({ beatId, type: rhythm.type, dots: rhythm.dots, tuplet: rhythm.actual, normal: rhythm.normal, tupletStart: beat.tupletStart ?? false, tupletStop: beat.tupletStop ?? false }), affectsMelody: false });
           if (capo) effects.push({ code: 'source-capo', description: JSON.stringify({ fret: capo, policy: 'source-tuning-plus-capo-plus-relative-fret' }), affectsMelody: false });
-          if (beat.graceNote) effects.push({ code: 'source-grace', description: JSON.stringify({ beatId, kind: beat.graceNote, policy: 'songsterr-bounded-time-borrowing-v1', nominalDuration: rhythm.duration, interpretedDuration: duration }), affectsMelody: false });
+          if (beat.graceNote) effects.push({ code: 'source-grace', description: JSON.stringify({ beatId, kind: beat.graceNote, policy: 'songsterr-bounded-time-borrowing-v1', ...(graced[voiceIndex]!.barStartOnBeat.has(beatIndex) ? { interpretation: 'bar-opening-before-beat-played-on-beat' } : {}), nominalDuration: rhythm.duration, interpretedDuration: duration }), affectsMelody: false });
           else if (graceDonors[voiceIndex]![beatIndex]) effects.push({ code: 'source-grace-donor', description: JSON.stringify({ beatId, policy: 'songsterr-bounded-time-borrowing-v1', interpretedDuration: duration }), affectsMelody: false });
           if (tripletFeels[barIndex] !== 'off') effects.push({ code: 'source-triplet-feel', description: JSON.stringify({ beatId, feel: tripletFeels[barIndex], writtenDuration: rhythm.duration, interpretedDuration: duration }), affectsMelody: false });
           for (const index of indexes) {
@@ -244,6 +259,15 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
                 effects.push(simplifiedBend(note[key], ref(index).sourceNoteId));
                 continue;
               }
+              // Display-only spelling hints; sounding pitch still comes from tuning + capo + fret.
+              const spelling = note[key];
+              if ((key === 'courtesyAccidental' && typeof spelling === 'boolean')
+                || (key === 'spn' && Array.isArray(spelling) && spelling.length <= 4 && spelling.every((v) => Number.isInteger(v) && v >= -16 && v <= 16))) {
+                effects.push({ code: `source-notation-${key}`, description: JSON.stringify({ sourceNoteId: ref(index).sourceNoteId, field: key, value: spelling, policy: 'display-spelling-only-not-reproduced' }), affectsMelody: false });
+                continue;
+              }
+              const ornament = options.simplifyOrnaments === true ? simplifiedOrnament(key, note[key], ref(index).sourceNoteId) : null;
+              if (ornament) { effects.push(ornament); continue; }
               effects.push({ code: `${articulations.has(key) ? 'articulation' : 'unsupported'}-${key.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80) || 'field'}`, description: `Source ${key.slice(0, 100)}=${JSON.stringify(note[key]).slice(0, 200)} at ${ref(index).sourceNoteId}; original retained in raw.`, affectsMelody: !articulations.has(key) });
             }
           }
@@ -277,7 +301,11 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
   if (measureRestBars.size) diagnostics.push(diagnostic('unsupported-construct', `Part ${raw.partId}: explicit full-measure rest symbols use the current meter length; original whole-note symbol durations remain in raw references. No pitched or partial beat was resized.`, 'info', [...measureRestBars]));
   const simplifiedBends = events.filter((event) => event.kind === 'note' && event.effects.some((effect) => effect.code === 'source-bend-simplified'));
   if (simplifiedBends.length) diagnostics.push(diagnostic('unsupported-construct', `Explicit simplified-melody draft: ${simplifiedBends.length} bent source notes in part ${raw.partId} retain their notated starting pitches and exact metrical durations, but NOT bend pitch motion. Raw curves are retained. Do not claim exact expressive melody fidelity.`, 'warning', [], simplifiedBends.map((event) => event.id)));
+  const simplifiedOrnaments = events.filter((event) => event.kind === 'note' && event.effects.some((effect) => effect.code === 'source-ornament-simplified'));
+  if (simplifiedOrnaments.length) diagnostics.push(diagnostic('unsupported-construct', `Explicit simplified-melody draft: ${simplifiedOrnaments.length} source notes in part ${raw.partId} with slide-in/slide-out glides, vibrato or let-ring retain their notated pitches, onsets and exact metrical durations, but NOT the glide, vibrato or let-ring sustain. Raw values are retained. Do not claim exact expressive melody fidelity.`, 'warning', [], simplifiedOrnaments.map((event) => event.id)));
   if (raw.measures.some((measure) => measure.voices.some((voice) => voice.beats.some((beat) => beat.graceNote)))) diagnostics.push(diagnostic('unsupported-construct', `Part ${raw.partId}: grace pitches and raw references retained as separate exact attacks using disclosed source-player bounded time borrowing. Grace notation adds no extra bar time; donor notes/rests supply the time.`, 'info'));
+  if (mutedStringBars.size) diagnostics.push(diagnostic('unsupported-construct', `Part ${raw.partId}: unpitched muted (dead) strings without frets inside otherwise pitched strums are retained raw and disclosed on those beats, but are not pitched events or percussion audio.`, 'info', [...mutedStringBars]));
+  if (barStartGraceBars.size) diagnostics.push(diagnostic('unsupported-construct', `Part ${raw.partId}: before-beat grace groups that open a bar are played on the beat, borrowing from the following note in the same bar, as at score zero. The previous bar is not shortened and no attack crosses a barline or repeat boundary, so these graces sound slightly later than a before-beat reading.`, 'warning', [...barStartGraceBars]));
   if (tripletFeels.some((feel) => feel !== 'off')) diagnostics.push(diagnostic('unsupported-construct', `Part ${raw.partId}: eighth/sixteenth swing materialized as exact 2:1 rational timing, with inherited settings and explicit straight-time resets. Explicit tuplets/finer subdivisions retain straight timing in their pair; raw notation durations are retained. No additional playback swing is needed.`, 'info', bars.filter((_, i) => tripletFeels[i] !== 'off').map((bar) => bar.id)));
   const eventsById = new Map(events.map((event) => [event.id, event]));
   for (const [code, locations] of unsupported) {
@@ -293,6 +321,55 @@ export function normalizePart(metadata: MetadataTrack, raw: RawPart, bars: Writt
 
 export async function sameStructure(a: ReturnType<typeof normalizeStructure>, b: ReturnType<typeof normalizeStructure>): Promise<boolean> {
   return await contentDigest(a) === await contentDigest(b);
+}
+
+export type DeclaredKeySignature = { accidentals: number; symbol: '#' | 'b'; mode: 'major' | 'minor' };
+
+/**
+ * Songsterr `keySignature` draws |accidentalCount| accidentals of the `transposeAs` symbol
+ * in the declared mode. Only one opening declaration, repeated identically, is interpreted.
+ * Changes, cancellations (null), sign/symbol conflicts and unknown fields fail closed.
+ * Parts without any declaration return null (no key is invented for them).
+ */
+export function declaredKeySignature(raw: RawPart): DeclaredKeySignature | null {
+  let declared: DeclaredKeySignature | null = null;
+  raw.measures.forEach((measure, i) => {
+    const id = `bar-${i + 1}`;
+    if (!('keySignature' in measure)) return;
+    const value = (measure as { keySignature?: unknown }).keySignature;
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return fail(`Part ${raw.partId} bar ${i + 1}: key signature cancellation/non-object is unsupported; not interpreted.`, 'unsupported', 'unsupported-construct', [id]);
+    unknownKeys(value as Record<string, unknown>, new Set(['accidentalCount', 'mode', 'transposeAs']), `Part ${raw.partId} bar ${i + 1} keySignature`, [id]);
+    const { accidentalCount, mode, transposeAs } = value as { accidentalCount?: unknown; mode?: unknown; transposeAs?: unknown };
+    if (!Number.isInteger(accidentalCount) || Math.abs(accidentalCount as number) > 7 || (mode !== 'major' && mode !== 'minor') || (transposeAs !== '#' && transposeAs !== 'b')) return fail(`Part ${raw.partId} bar ${i + 1}: malformed key signature; not interpreted.`, 'unsupported', 'unsupported-construct', [id]);
+    if ((accidentalCount as number) < 0 && transposeAs === '#') return fail(`Part ${raw.partId} bar ${i + 1}: key signature has a negative accidental count with a sharp symbol; not interpreted.`, 'unsupported', 'unsupported-construct', [id]);
+    const next: DeclaredKeySignature = { accidentals: Math.abs(accidentalCount as number), symbol: transposeAs, mode };
+    if (declared === null) {
+      if (i !== 0) return fail(`Part ${raw.partId}: key signature first declared after bar 1; mid-song key changes are unsupported.`, 'unsupported', 'unsupported-construct', [id]);
+      declared = next;
+    } else if (declared.accidentals !== next.accidentals || declared.mode !== next.mode || (declared.accidentals !== 0 && declared.symbol !== next.symbol)) {
+      return fail(`Part ${raw.partId} bar ${i + 1}: key signature change is unsupported; not flattened.`, 'unsupported', 'unsupported-construct', [id]);
+    }
+  });
+  return declared;
+}
+
+/** Every declaring part must agree. Undeclaring parts add no key evidence. */
+export function sourceKey(declarations: Array<{ partId: number; key: DeclaredKeySignature | null }>, events: SourceEvent[]): SourceScoreV1['key'] {
+  const declaring = declarations.filter((d): d is { partId: number; key: DeclaredKeySignature } => d.key !== null);
+  if (!declaring.length) return deriveUncertainKey(events);
+  const first = declaring[0]!.key;
+  if (declaring.some(({ key }) => key.accidentals !== first.accidentals || key.mode !== first.mode || (key.accidentals !== 0 && key.symbol !== first.symbol))) {
+    return fail(`Source parts declare conflicting key signatures (${declaring.map(({ partId, key }) => `part ${partId}: ${key.accidentals}${key.symbol} ${key.mode}`).join('; ')}); not reconciled.`, 'unsupported', 'unsupported-construct');
+  }
+  const step = first.symbol === '#' ? 7 : 5;
+  const major = (first.accidentals * step) % 12;
+  const tonicPitchClass = first.mode === 'major' ? major : (major + 9) % 12;
+  const names = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+  const silent = declarations.filter((d) => d.key === null).map((d) => d.partId);
+  return {
+    status: 'identified', tonicPitchClass, mode: first.mode, certainty: 'source-declared',
+    evidence: `Songsterr key signature ${first.accidentals === 0 ? 'with no accidentals' : `of ${first.accidentals} ${first.symbol === '#' ? 'sharp' : 'flat'}${first.accidentals === 1 ? '' : 's'}`} (${first.mode}) declared from bar 1 without changes in part${declaring.length === 1 ? '' : 's'} ${declaring.map((d) => d.partId).join(', ')}${silent.length ? `; part${silent.length === 1 ? '' : 's'} ${silent.join(', ')} declare none` : ''}. Interpreted as ${names[tonicPitchClass]} ${first.mode}. This is the transcriber's notation declaration, not harmonic analysis; modulation and modal colour are not asserted.`,
+  };
 }
 
 export function deriveUncertainKey(events: SourceEvent[]): SourceScoreV1['key'] {

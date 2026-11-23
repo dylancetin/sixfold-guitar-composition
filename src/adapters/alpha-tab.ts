@@ -1,5 +1,5 @@
 import * as at from '@coderline/alphatab';
-import { AdapterProjectionSchema, add, compare, exactTicks, q, subtract } from '../domain';
+import { AdapterProjectionSchema, add, compare, exactTicks, guitarTuningId, q, subtract } from '../domain';
 import type { AdapterProjection, NotationSegment, Q, ScoreV1 } from '../domain';
 import { checkAbort, requireAdapter } from './errors';
 import { compileTimeline, PPQ, ROLES } from './timeline';
@@ -21,7 +21,7 @@ export type NotationLayout = {
 };
 /** Which staves to engrave: standard notation + TAB, notation only, or TAB only. Layout only. */
 export type StaffView = 'both' | 'notation' | 'tab';
-export type NotationOptions = { title?: string; barsPerRow?: number; fretMode?: 'relative' | 'absolute'; spacing?: 'normal' | 'compact' | 'tight'; showFingerNumbers?: boolean; showMeasureLabels?: boolean; staves?: StaffView; hideTitle?: boolean; notationMode?: NotationMode; lyrics?: PreviewLyrics };
+export type NotationOptions = { title?: string; barsPerRow?: number; fretMode?: 'relative' | 'absolute'; spacing?: 'normal' | 'compact' | 'tight'; showFingerNumbers?: boolean; showMeasureLabels?: boolean; staves?: StaffView; noteNames?: boolean; hideTitle?: boolean; notationMode?: NotationMode; lyrics?: PreviewLyrics };
 
 function rhythmCandidates(): Rhythm[] {
   const result: Rhythm[] = [];
@@ -90,6 +90,23 @@ export function hideCollidingTabRests(beats: { beat: Beat; lane: number; start: 
   }
 }
 
+/** Letter + ASCII accidental (Helvetica in PDFs has no ♭/♯ glyphs). */
+const NAME_ACCIDENTALS: Record<number, string> = { [-2]: 'bb', [-1]: 'b', 0: '', 1: '#', 2: '##' };
+type NamedHead = { bounds: Bounds; step: string; accidental: string; hollow: boolean };
+/**
+ * Note-name noteheads: an enlarged notehead with its letter inside, drawn over alphaTab's notehead at the
+ * exact rendered notehead bounds. Half and longer notes stay hollow (white), so rhythm still reads.
+ */
+export function noteNameOverlay(heads: NamedHead[], origin: { x: number; y: number }): string {
+  if (!heads.length) return '';
+  const r = (n: number) => Math.round(n * 100) / 100;
+  const placed = heads.map(head => ({ ...head, cx: r(head.bounds.x + head.bounds.w / 2 - origin.x), cy: r(head.bounds.y + head.bounds.h / 2 - origin.y) }));
+  // All heads first, then all letters: in close chords a neighbouring head never covers a letter.
+  const ovals = placed.map(({ bounds, cx, cy, hollow }) => `<ellipse cx="${cx}" cy="${cy}" rx="${r(Math.max(9.2, bounds.w / 2 + .8))}" ry="${r(Math.max(6.4, bounds.h / 2 + 1.2))}" fill="${hollow ? '#FFFFFF' : '#D4D4D4'}" stroke="#1F1F1F" stroke-width="${hollow ? 1.5 : .9}" />`);
+  const letters = placed.map(({ cx, cy, step, accidental }) => `<text x="${cx}" y="${r(cy + 3.4)}" font-family="Helvetica, Arial, sans-serif" font-weight="bold" font-size="9.5" text-anchor="middle" fill="#111111">${step}${accidental ? `<tspan font-size="7">${accidental}</tspan>` : ''}</text>`);
+  return `<g class="note-names">${ovals.join('')}${letters.join('')}</g>`;
+}
+
 /** Native models are deliberately confined to this adapter module. */
 function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, options: NotationOptions) {
   const settings = new at.Settings();
@@ -122,7 +139,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
   track.playbackInfo.program = 24;
   score.addTrack(track);
   const staff = new at.model.Staff();
-  staff.stringTuning = new at.model.Tuning('Standard EADGBE', [...canonical.instrument.tuning].reverse(), true);
+  staff.stringTuning = new at.model.Tuning(guitarTuningId(canonical.instrument.tuning) === 'whole-step-down' ? 'Whole step down DGCFAD' : 'Standard EADGBE', [...canonical.instrument.tuning].reverse(), guitarTuningId(canonical.instrument.tuning) === 'standard');
   staff.capo = absoluteFrets ? 0 : canonical.instrument.capo; staff.transpositionPitch = 0; staff.displayTranspositionPitch = -12;
   const staves = options.staves ?? 'both';
   staff.showStandardNotation = staves !== 'tab'; staff.showTablature = staves !== 'notation'; track.addStaff(staff);
@@ -131,6 +148,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
   const mappings: AdapterProjection['mapping'] = [];
   const nativeBeats: { beat: Beat; occurrenceIds: string[]; at: Q; duration: Q }[] = [];
   const nativeNotes: { note: Note; segment: PerformedSegment }[] = [];
+  const noteNames = new Map<Note, { step: string; accidental: string }>();
   let beatId = 0, noteId = 0;
   let previousBpm: number | undefined;
   for (const [index, display] of schedule.bars.entries()) {
@@ -188,6 +206,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
             note.isTieDestination = compare(member.at, performed.start) > 0;
             const sound = timeline.sounds.get(segment.eventId)!;
             note.accidentalMode = sound.spelling.alter === -2 ? at.model.NoteAccidentalMode.ForceDoubleFlat : sound.spelling.alter === -1 ? at.model.NoteAccidentalMode.ForceFlat : sound.spelling.alter === 1 ? at.model.NoteAccidentalMode.ForceSharp : sound.spelling.alter === 2 ? at.model.NoteAccidentalMode.ForceDoubleSharp : at.model.NoteAccidentalMode.Default;
+            if (options.noteNames && staves !== 'tab') noteNames.set(note, { step: sound.spelling.step, accidental: NAME_ACCIDENTALS[sound.spelling.alter] ?? '' });
             beat.addNote(note); nativeNoteId = String(note.id); nativeNotes.push({ note, segment: member });
           }
           for (const alias of display.occurrences) mappings.push({ eventId: segment.eventId, segmentId: segment.id, occurrenceId: alias.id, nativeBeatId: String(beat.id), nativeNoteId });
@@ -221,7 +240,7 @@ function buildNative(timeline: CompiledTimeline, schedule: NotationSchedule, opt
     requireAdapter(master.isRepeatStart === start && master.repeatCount === passes && master.isRepeatEnd === (passes > 0), 'Native repeat boundaries/count differ from display schedule');
   }
   requireAdapter(mappings.length === timeline.segments.length && timeline.segments.every(s => mappings.filter(m => m.segmentId === s.segment.id && m.occurrenceId === s.occurrence.id).length === 1), 'Missing/duplicate performed notation mapping');
-  return { score, settings, mappings, nativeBeats, nativeNotes, lyricPlacements };
+  return { score, settings, mappings, nativeBeats, nativeNotes, lyricPlacements, noteNames };
 }
 
 /** Browser-safe, non-audio notation facade. It never exposes native classes or plays the combined part. */
@@ -270,6 +289,12 @@ export function createAlphaTabScore(input: ScoreV1, options: NotationOptions = {
           requireAdapter(bounds?.isFinished, 'Missing finished notation bounds');
           const systems = bounds.staffSystems.map(s => ({ index: s.index, bars: s.bars.map(b => b.index), visual: { ...s.visualBounds }, real: { ...s.realBounds } }));
           requireAdapter(JSON.stringify(systems.flatMap(s => s.bars)) === JSON.stringify(schedule.bars.map((_, i) => i)), 'Renderer omitted or duplicated display bar');
+          // The standard-notation staff is the first staff of each system whenever it is shown.
+          const namedHeads = new Map<number, NamedHead[]>();
+          if (native.noteNames.size) for (const system of bounds.staffSystems) namedHeads.set(system.index, system.bars.flatMap(master => master.bars[0]?.beats ?? []).flatMap(beat => (beat.notes ?? []).flatMap(head => {
+            const name = native.noteNames.get(head.note);
+            return name ? [{ bounds: { ...head.noteHeadBounds }, ...name, hollow: head.note.beat.duration <= at.model.Duration.Half }] : [];
+          })));
           const fragments = chunks.map(c => {
             requireAdapter(typeof c.renderResult === 'string', 'Expected SVG renderer output');
             const contained = systems.filter(s => s.bars[0]! >= c.firstMasterBarIndex && s.bars.at(-1)! <= c.lastMasterBarIndex);
@@ -279,7 +304,11 @@ export function createAlphaTabScore(input: ScoreV1, options: NotationOptions = {
               requireAdapter(system.bars[0] === c.firstMasterBarIndex && system.bars.at(-1) === c.lastMasterBarIndex, 'Partial clips system bars');
               requireAdapter(system.visual.y >= c.y - 1 && system.visual.y + system.visual.h <= c.y + c.height + 1 && system.visual.x >= c.x - 1 && system.visual.x + system.visual.w <= c.x + c.width + 1, 'Partial clips system bounds');
             }
-            return { x: c.x, y: c.y, width: c.width, height: c.height, first: c.firstMasterBarIndex, last: c.lastMasterBarIndex, system: c.firstMasterBarIndex < 0 ? null : contained[0]!.index, svg: (options.staves === 'tab' ? c.renderResult.replace(HIDDEN_TAB_GLYPH, '') : c.renderResult).replaceAll('class="at"', 'class="at" font-family="alphaTab" font-size="34"') };
+            const system = c.firstMasterBarIndex < 0 ? null : contained[0]!.index;
+            let svg = (options.staves === 'tab' ? c.renderResult.replace(HIDDEN_TAB_GLYPH, '') : c.renderResult).replaceAll('class="at"', 'class="at" font-family="alphaTab" font-size="34"');
+            const overlay = system === null ? '' : noteNameOverlay(namedHeads.get(system) ?? [], c);
+            if (overlay) { const end = svg.lastIndexOf('</svg>'); requireAdapter(end >= 0, 'Unterminated SVG fragment'); svg = svg.slice(0, end) + overlay + svg.slice(end); }
+            return { x: c.x, y: c.y, width: c.width, height: c.height, first: c.firstMasterBarIndex, last: c.lastMasterBarIndex, system, svg };
           });
           requireAdapter(fragments.filter(f => f.system !== null).length === systems.length, 'Missing system SVG');
           const beats = native.nativeBeats.flatMap(({ beat, occurrenceIds }) => {

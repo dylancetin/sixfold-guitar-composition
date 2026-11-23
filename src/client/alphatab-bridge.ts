@@ -33,7 +33,7 @@ export function createAlphaTabBridge(factories: AlphaTabFactories): BrowserViewe
       let unsubscribe = () => {};
       const surface = document.createElement('div'); surface.className = 'native-score';
       try {
-        let display: NotationOptions = { fretMode: 'relative', ...DEFAULT_PREVIEW_LAYOUT, showFingerNumbers: false, showMeasureLabels: false, staves: 'both' };
+        let display: NotationOptions = { fretMode: 'relative', ...DEFAULT_PREVIEW_LAYOUT, showFingerNumbers: false, showMeasureLabels: false, staves: 'both', noteNames: false };
         let requestedDisplay = display;
         const notation = factories.createAlphaTabScore(score, { title, ...display });
         const checkedProjection = (input: AdapterProjection) => {
@@ -174,6 +174,7 @@ export function createAlphaTabBridge(factories: AlphaTabFactories): BrowserViewe
           setFingerNumbers: showFingerNumbers => renderDisplay({ ...requestedDisplay, showFingerNumbers }),
           setMeasureLabels: showMeasureLabels => renderDisplay({ ...requestedDisplay, showMeasureLabels }),
           setStaves: staves => renderDisplay({ ...requestedDisplay, staves }),
+          setNoteNames: noteNames => renderDisplay({ ...requestedDisplay, noteNames }),
           setLyrics: lyrics => {
             if (requestedDisplay.lyrics === lyrics) return Promise.resolve();
             const { lyrics: _previous, ...options } = requestedDisplay;

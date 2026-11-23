@@ -27,6 +27,7 @@ export interface ScoreController {
   setFingerNumbers(enabled: boolean): Promise<void>;
   setMeasureLabels(enabled: boolean): Promise<void>;
   setStaves(staves: StaffView): Promise<void>;
+  setNoteNames(enabled: boolean): Promise<void>;
   setLyrics(lyrics: PreviewLyrics | undefined): Promise<void>;
   dispose(): void;
 }

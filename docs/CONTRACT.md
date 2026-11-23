@@ -136,7 +136,7 @@ the final event. Only `preferences.transposition = {mode:'explicit', semitones, 
 reason}` authorizes a semitone change. `preserve` is exactly zero. No independent octave editing
 escape hatch. Source/key uncertainty remains visible; do not assert B major from a capo suggestion.
 
-Standard tuning is **`[40,45,50,55,59,64]` low-to-high**; internal string 0 is low E, TAB string
+Standard tuning is **`[40,45,50,55,59,64]` low-to-high** (default). The only other supported tuning is whole-step-down `[38,43,48,53,57,62]` (`whole-step-down-six-string-guitar-v1`), selected by the optional `preferences.tuning`; the validator rejects an instrument tuning that disagrees with it. In both, internal string 0 is low E, TAB string
 number is `6-stringIndex`. Physical/MIDI pitches are already sounding. Spellings are in sounding
 octave; guitar engraving displays `writtenOctaveOffset:12`. The projection must account for the
 octave-transposing instrument exactly once, never modify the canonical sounding pitch.

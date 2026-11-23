@@ -9,9 +9,15 @@ import type { RawBeat } from './raw';
  * from the preceding beat (beforeBeat) or following beat (onBeat). Its budget
  * is at most the mean nominal grace duration and leaves half of the donor
  * (a quarter/eighth for dotted/double-dotted grace notation).
+ *
+ * A before-beat group that opens a bar has no donor inside the bar. Rather than
+ * shortening the previous bar (which would move attacks across the barline and
+ * any repeat boundary), it is interpreted on the beat, as at score zero. Those
+ * beat indexes are returned so the interpretation can be disclosed per event.
  */
-export function graceDurations(beats: RawBeat[], nominal: { duration: Q; dots: number }[], played: Q[], barId: string, firstBar: boolean): Q[] {
+export function graceDurations(beats: RawBeat[], nominal: { duration: Q; dots: number }[], played: Q[], barId: string, firstBar: boolean): { durations: Q[]; barStartOnBeat: Set<number> } {
   const result = played.map((duration) => ({ ...duration }));
+  const barStartOnBeat = new Set<number>();
   for (let i = 0; i < beats.length;) {
     const kind = beats[i]!.graceNote;
     if (!kind) { i++; continue; }
@@ -19,7 +25,9 @@ export function graceDurations(beats: RawBeat[], nominal: { duration: Q; dots: n
     while (end < beats.length && beats[end]!.graceNote === kind) end++;
     if (beats[end]?.graceNote) fail('Mixed before/on-beat grace groups need explicit interpretation.', 'unsupported', 'unsupported-construct', [barId]);
     // At score zero the player falls back to on-beat grace rather than negative time.
-    const onBeat = kind === 'onBeat' || (i === 0 && firstBar);
+    // A bar-opening before-beat group uses the same in-bar interpretation (disclosed).
+    const onBeat = kind === 'onBeat' || i === 0;
+    if (kind === 'beforeBeat' && i === 0 && !firstBar) for (let index = i; index < end; index++) barStartOnBeat.add(index);
     const donor = onBeat ? end : i - 1;
     if (donor < 0 || donor >= beats.length || beats[donor]!.graceNote) fail('Cross-bar/orphan grace group needs a supported donor; no grace note was dropped.', 'unsupported', 'unsupported-construct', [barId]);
     if (beats.slice(i, end).some((beat) => beat.rest || beat.notes.some((note) => note.rest || note.tie))) fail('Rest/tied grace notes need explicit interpretation.', 'unsupported', 'unsupported-construct', [barId]);
@@ -37,5 +45,5 @@ export function graceDurations(beats: RawBeat[], nominal: { duration: Q; dots: n
     if (compare(result[donor]!, q(0)) <= 0) fail('Grace groups exhaust their shared donor; no zero/negative note accepted.', 'unsupported', 'unsupported-construct', [barId]);
     i = end;
   }
-  return result;
+  return { durations: result, barStartOnBeat };
 }

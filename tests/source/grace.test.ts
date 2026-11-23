@@ -94,3 +94,19 @@ describe('grace time borrowing — original exercise, no downloaded music', () =
     expect(result.source.events.filter((event) => event.partId === 8 && event.kind === 'note').map((event) => event.kind === 'note' && event.soundingMidi)).toEqual([80, 82]);
   });
 });
+
+describe('bar-opening before-beat grace — original exercise', () => {
+  test('is played on the beat inside its own bar, with per-event and diagnostic disclosure', async () => {
+    const fixture = graceFixture([{ type: 1, duration: [1, 1], notes: [{ string: 0, fret: 0 }] }]);
+    const part = fixture.parts.get(4)!;
+    (part.measures as unknown[]).push({ voices: [{ beats: [graceNote(2, 'beforeBeat'), { type: 4, duration: [1, 4], notes: [{ string: 0, fret: 4 }] }, rest] }] });
+    const result = await importFixture(fixture);
+    if (result.status !== 'source-ready') throw new Error(JSON.stringify(result));
+    expect(result.source.events.map((event) => [event.start, event.duration])).toEqual([[q(0), q(4)], [q(4), q(1, 4)], [q(17, 4), q(3, 4)], [q(5), q(3)]]);
+    const grace = result.source.events[1]!;
+    expect(grace.kind === 'note' && grace.effects.find((effect) => effect.code === 'source-grace')?.description).toContain('bar-opening-before-beat-played-on-beat');
+    const first = result.source.events[0]!;
+    expect(first.kind === 'note' && first.effects.some((effect) => effect.code === 'source-grace-donor')).toBe(false);
+    expect(result.diagnostics.some((d) => d.severity === 'warning' && d.message.includes('open a bar are played on the beat') && d.barIds.includes('bar-2'))).toBe(true);
+  });
+});

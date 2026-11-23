@@ -3,7 +3,9 @@ import type { NotationSegment, Q, Rest, Sound, WrittenBar } from '../domain';
 
 type Value=Pick<NotationSegment,'duration'|'baseDenominator'|'dots'|'tuplet'>;
 const values:Value[]=[];
-for (const baseDenominator of [1,2,4,8,16,32,64] as const) for (let dots=0;dots<=3;dots++) {
+// At most two dots: the canonical alphaTab engraver (1.8.x) ignores a third dot, so a
+// triple-dotted value is spelled as tied double-dotted/plain values instead.
+for (const baseDenominator of [1,2,4,8,16,32,64] as const) for (let dots=0;dots<=2;dots++) {
   const plain=multiply(q(4,baseDenominator),q(2**(dots+1)-1,2**dots));
   values.push({duration:plain,baseDenominator,dots,tuplet:null});
   if (dots===0) for (const [actual,normal] of [[3,2],[5,4],[7,4],[9,8],[11,8],[13,8],[15,8]] as const) values.push({duration:multiply(plain,q(normal,actual)),baseDenominator,dots,tuplet:{groupId:'pending',actual,normal,index:0}});

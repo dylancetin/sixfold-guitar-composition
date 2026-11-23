@@ -72,3 +72,30 @@ test('hidden TAB rests leave no glyphs in the SVG used by the viewer and PDF', a
   const svg = (await createAlphaTabScore(score, { notationMode: 'unfolded', staves: 'tab' }).renderSvg()).fragments.map(f => f.svg).join('');
   expect(svg).not.toContain('rgba(0,0,0,0)');
 });
+
+test('note names draw a lettered notehead over every staff notehead, never on TAB-only', async () => {
+  const { score } = await study(2, 2, 2);
+  const render = async (options: Parameters<typeof createAlphaTabScore>[1]) => {
+    const notation = createAlphaTabScore(score, { notationMode: 'unfolded', ...options });
+    return { notation, svg: (await notation.renderSvg()).fragments.map(f => f.svg).join('') };
+  };
+  const plain = await render({}), named = await render({ noteNames: true }), notesOnly = await render({ noteNames: true, staves: 'notation' }), tab = await render({ noteNames: true, staves: 'tab' });
+  expect(plain.svg).not.toContain('note-names');
+  expect(tab.svg).not.toContain('note-names');
+  expect(named.notation.projection).toEqual(plain.notation.projection);
+  const heads = (svg: string) => svg.match(/<ellipse /g)?.length ?? 0;
+  // One lettered head per engraved note (ties included), in both staff layouts.
+  expect(heads(named.svg)).toBe(named.notation.placements.length);
+  expect(heads(notesOnly.svg)).toBe(heads(named.svg));
+  const letters = [...named.svg.matchAll(/<text [^>]*font-weight="bold"[^>]*>([A-G])(?:<tspan[^>]*>(bb|b|##|#)<\/tspan>)?<\/text>/g)].map(m => m[1]! + (m[2] ?? ''));
+  expect(letters).toHaveLength(heads(named.svg));
+  const spelled = new Set(score.sounds.map(s => s.spelling.step + ({ [-2]: 'bb', [-1]: 'b', 0: '', 1: '#', 2: '##' } as Record<number, string>)[s.spelling.alter]));
+  expect(letters.every(name => spelled.has(name))).toBe(true);
+});
+
+test('note names PDF option defaults off and round-trips strictly', () => {
+  expect(PdfLayoutSettingsSchema.parse({}).noteNames).toBe(false);
+  const settings = PdfLayoutSettingsSchema.parse({ noteNames: true, staves: 'notation' });
+  expect(parsePdfLayoutQuery(new URLSearchParams(pdfLayoutQuery(settings)))).toEqual(settings);
+  expect(() => parsePdfLayoutQuery(new URLSearchParams('noteNames=yes'))).toThrow();
+});

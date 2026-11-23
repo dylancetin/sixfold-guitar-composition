@@ -97,12 +97,31 @@ export const MelodySelectionSchema = z.strictObject({
   id: IdSchema, sourceRevision: RevisionRefSchema, sections: z.array(MelodySectionSchema).min(1),
 });
 
+/**
+ * Supported six-string tunings, low-to-high sounding MIDI. Standard remains the default;
+ * whole-step-down (D G C F A D) is an explicit user preference. Instrument id names the tuning.
+ */
+export const GUITAR_TUNINGS = {
+  standard: { instrumentId: 'standard-six-string-guitar-v1', midi: [40, 45, 50, 55, 59, 64], label: 'Standard tuning', strings: 'E A D G B e' },
+  'whole-step-down': { instrumentId: 'whole-step-down-six-string-guitar-v1', midi: [38, 43, 48, 53, 57, 62], label: 'Whole step down', strings: 'D G C F A d' },
+} as const;
+export type GuitarTuningId = keyof typeof GUITAR_TUNINGS;
+export const GuitarTuningIdSchema = z.enum(['standard', 'whole-step-down']);
+/** Identify a canonical instrument tuning; undefined for anything unsupported. */
+export function guitarTuningId(tuning: readonly number[]): GuitarTuningId | undefined {
+  return (Object.keys(GUITAR_TUNINGS) as GuitarTuningId[]).find((id) => GUITAR_TUNINGS[id].midi.length === tuning.length && GUITAR_TUNINGS[id].midi.every((m, i) => m === tuning[i]));
+}
+const TuningSchema = z.union([
+  z.tuple([z.literal(40), z.literal(45), z.literal(50), z.literal(55), z.literal(59), z.literal(64)]),
+  z.tuple([z.literal(38), z.literal(43), z.literal(48), z.literal(53), z.literal(57), z.literal(62)]),
+]);
 export const InstrumentSchema = z.strictObject({
-  id: z.literal('standard-six-string-guitar-v1'),
-  tuning: z.tuple([z.literal(40), z.literal(45), z.literal(50), z.literal(55), z.literal(59), z.literal(64)]),
+  id: z.enum(['standard-six-string-guitar-v1', 'whole-step-down-six-string-guitar-v1']),
+  tuning: TuningSchema,
   stringOrder: z.literal('low-to-high'), capo: NonnegativeInt.max(12), maxPhysicalFret: PositiveInt.max(24),
   writtenOctaveOffset: z.literal(12),
-}).refine(({ capo, maxPhysicalFret }) => capo <= maxPhysicalFret, 'Capo exceeds neck');
+}).refine(({ capo, maxPhysicalFret }) => capo <= maxPhysicalFret, 'Capo exceeds neck')
+  .refine(({ id, tuning }) => { const t = guitarTuningId(tuning); return t !== undefined && GUITAR_TUNINGS[t].instrumentId === id; }, 'Instrument id must name its tuning');
 
 export const AbilityProfileSchema = z.strictObject({
   id: IdSchema, version: Version, difficulty: z.enum(['beginner', 'intermediate', 'advanced']),
@@ -115,7 +134,7 @@ export const AbilityProfileSchema = z.strictObject({
   ]),
 });
 
-export const PreferencesSchema = z.strictObject({
+const BasePreferencesSchema = z.strictObject({
   difficulty: z.enum(['beginner', 'intermediate', 'advanced']), ability: z.strictObject({ id: IdSchema, version: Version }),
   capo: z.discriminatedUnion('mode', [
     z.strictObject({ mode: z.literal('chosen'), value: NonnegativeInt.max(12) }),
@@ -127,6 +146,12 @@ export const PreferencesSchema = z.strictObject({
   ]),
   tempoScale: z.number().finite().min(0.5).max(1.25), bassDensity: z.enum(['none', 'sparse', 'regular']), harmonyDensity: z.enum(['none', 'sparse']),
 });
+// Additive V1 extension: absent means standard tuning (all documents before this field).
+export const PreferencesSchema = z.union([BasePreferencesSchema.extend({ tuning: GuitarTuningIdSchema }), BasePreferencesSchema]);
+/** Requested tuning; standard when the optional preference is absent. */
+export function preferredTuning(preferences: z.infer<typeof PreferencesSchema>): GuitarTuningId {
+  return 'tuning' in preferences ? preferences.tuning : 'standard';
+}
 export const CapoComparisonSchema = z.strictObject({
   selected: NonnegativeInt.max(12), reason: z.string().min(1),
   alternatives: z.array(z.strictObject({ capo: NonnegativeInt.max(12), outcome: z.enum(['candidate', 'unsatisfied', 'search-exhausted', 'not-evaluated']), reason: z.string().min(1) })).min(1),
@@ -283,7 +308,7 @@ export const ArtifactManifestSchema = z.strictObject({
   format: z.enum(['pdf', 'midi']), artifactDigest: DigestSchema, byteLength: PositiveInt,
   occurrenceCount: PositiveInt, soundingAttackCount: PositiveInt, notationSegmentCount: PositiveInt,
   review: z.enum(['unreviewed-draft', 'musically-reviewed']), validationVersion: Version,
-  tuning: InstrumentSchema.shape.tuning, capo: NonnegativeInt.max(12), midiPitchPolicy: z.literal('already-sounding-no-capo-offset'),
+  tuning: TuningSchema, capo: NonnegativeInt.max(12), midiPitchPolicy: z.literal('already-sounding-no-capo-offset'),
 });
 
 export type SourceScoreV1 = z.infer<typeof SourceScoreV1Schema>;

@@ -12,7 +12,7 @@ bun scripts/prepare-arrangement.ts \
   --title 'The Beach Boys — You Still Believe in Me'
 ```
 
-`--capo compare` evaluates 0 and 2 later, with unchanged sounding melody/key. A chosen capo is `--capo 0` … `--capo 12`; ability limits still apply. Difficulty is required (`beginner|intermediate|advanced`). These are conservative, versioned, **uncalibrated** ability defaults, not measured human ability. Ask in chat only for missing difficulty/capo; notify with the `ntfy-notify` skill before a human question. Standard tuning is fixed in V1. No inferred B-major/A-shapes assertion is made when the source key is unknown.
+`--capo compare` evaluates 0 and 2 later, with unchanged sounding melody/key. A chosen capo is `--capo 0` … `--capo 12`; ability limits still apply. Difficulty is required (`beginner|intermediate|advanced`). These are conservative, versioned, **uncalibrated** ability defaults, not measured human ability. Ask in chat only for missing difficulty/capo; notify with the `ntfy-notify` skill before a human question. Standard tuning is the default. Whole-step-down tuning (D G C F A D, `[38,43,48,53,57,62]`) is an additive, explicit `request.preferences.tuning: 'whole-step-down'` option (absent means standard); the engine and validator read it, and the instrument id names the tuning. No inferred B-major/A-shapes assertion is made when the source key is unknown.
 
 The command returns an absolute run directory under `.agent-runs/<uuid>/`:
 

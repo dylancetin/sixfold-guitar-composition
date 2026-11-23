@@ -25,7 +25,7 @@ export const RawNoteSchema = z.looseObject({
   slide: z.string().max(64).optional(),
 });
 export const RawBeatSchema = z.looseObject({
-  duration: Whole, type: z.union([z.literal(1), z.literal(2), z.literal(4), z.literal(8), z.literal(16), z.literal(32), z.literal(64)]).optional(),
+  duration: Whole, type: z.union([z.literal(1), z.literal(2), z.literal(4), z.literal(8), z.literal(16), z.literal(32), z.literal(64), z.literal(128)]).optional(),
   dots: z.number().int().min(0).max(3).optional(), dotted: flag,
   tuplet: z.number().int().min(2).max(16).optional(), tupletStart: flag, tupletStop: flag,
   graceNote: z.enum(['beforeBeat', 'onBeat']).nullable().optional(),
@@ -42,6 +42,8 @@ export const RawMeasureSchema = z.looseObject({
   signature: z.tuple([z.number().int().positive().max(32), z.union([z.literal(1), z.literal(2), z.literal(4), z.literal(8), z.literal(16), z.literal(32)])]).optional(),
   voices: z.array(VoiceSchema).min(1).max(16), rest: flag, repeatStart: flag,
   repeat: z.number().int().min(0).max(16).optional(), repeatCount: z.number().int().min(0).max(16).optional(),
+  // Bar-level staff display clef only (same values as part clef); never affects sounding pitch.
+  clef: z.enum(['G2', 'F4', 'C3', 'C4', 'G2-8', 'F4-8', 'neutral']).optional(),
 });
 export const RawPartSchema = z.looseObject({
   songId: positiveId, revisionId: positiveId, partId,
@@ -51,6 +53,8 @@ export const RawPartSchema = z.looseObject({
   tuningShortDrone: flag,
   capo: z.number().int().nonnegative().max(24).nullable().optional(),
   grandStaffGroup: z.number().int().nonnegative().max(4095).optional(),
+  // Staff display clef only; sounding pitch always comes from tuning + capo + fret.
+  clef: z.enum(['G2', 'F4', 'C3', 'C4', 'G2-8', 'F4-8', 'neutral']).optional(),
   // Songsterr marks an opening pickup bar; its exact length comes from source beats.
   anacrusis: flag,
   measures: z.array(RawMeasureSchema).min(1).max(1000),

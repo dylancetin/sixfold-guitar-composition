@@ -124,6 +124,15 @@ test('cross-bar 9/4 sustain exactly tiles 5/4 + 1 without introducing unrelated 
   expect(notation.every((n)=>n.tuplet===null)).toBe(true);
 });
 
+test('a 15/16-quarter duration is spelled with at most two dots, which the alphaTab engraver supports (live regression)',()=>{
+  const {source}=eightBarStudy();
+  const sound:ScoreV1['sounds'][number]={id:'triple-dot',role:'bass',voiceId:'bass',start:q(0),duration:q(15,16),soundingMidi:40,spelling:{step:'E',alter:0,octave:2},provenance:{kind:'source',eventIds:['original-regression']}};
+  const notation=makeNotation([sound],source.bars)!;
+  expect(notation.every((n)=>n.dots<=2)).toBe(true);
+  expect(notation.map((n)=>n.duration)).toEqual([q(7,8),q(1,16)]);
+  expect(notation.map((n)=>n.tie)).toEqual(['start','end']);
+});
+
 test('specified hand movement cannot be bypassed by assigning a fresh finger; uncalibrated draft remains available',()=>{
   const {source,request,plan}=oneBarStudy([['low',0,0,1,65],['high',0,1,3,76]]);
   const uncalibrated=candidate(guitarEngine.arrange(source,request,plan,literalPlanner));

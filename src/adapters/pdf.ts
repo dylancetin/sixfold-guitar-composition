@@ -35,8 +35,8 @@ export async function encodePdf(layout: NotationLayout, caption: string, size: P
     doc.text(`${size} - ${pages.length}${labels} | ${frets}; written = sounding + 12`, 28, doc.page.height - 22, { lineBreak: false });
     y = 40;
     if (display.layout) {
-      const { spacing, barsPerRow, scale, showFingerNumbers } = display.layout;
-      doc.text(`PDF layout: ${spacing} spacing | ${barsPerRow} bars per row | size ${Math.round(scale * 100)}% | ${showFingerNumbers ? 'finger numbers on' : 'finger numbers off'}`, 28, 37, { lineBreak: false });
+      const { spacing, barsPerRow, scale, showFingerNumbers, noteNames, staves } = display.layout;
+      doc.text(`PDF layout: ${spacing} spacing | ${barsPerRow} bars per row | size ${Math.round(scale * 100)}% | ${showFingerNumbers ? 'finger numbers on' : 'finger numbers off'}${noteNames && staves !== 'tab' ? ' | note names in noteheads' : ''}`, 28, 37, { lineBreak: false });
       y = 54;
       if (display.title) {
         // The engraving's single-line title can overflow at large notation
